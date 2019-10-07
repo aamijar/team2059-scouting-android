@@ -3,4 +3,6 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="hh_orange">#F99546</color>
+    <color name="hh_blue">#548ed4</color>
 </resources>

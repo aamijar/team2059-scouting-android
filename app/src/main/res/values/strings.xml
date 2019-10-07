@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Team2059_Scouting</string>
+    <string name="logo_title">The Hitchhikers</string>
+    <string name="description">Scouting App</string>
+    <string name="submit">Submit</string>
+
 </resources>
