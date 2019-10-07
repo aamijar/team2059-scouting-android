@@ -21,21 +21,25 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        tools:layout_editor_absoluteX="102dp"
-        tools:layout_editor_absoluteY="31dp" />
-
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="501dp" />
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="648dp" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="266dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="18dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Hello" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
