@@ -10,4 +10,6 @@
     <string name="sheet_teleop_header">Teleoperated</string>
     <string name="sheet_comments_header">Comments</string>
 
+    <string name="comments_hint">IMPORTANT* Enter in any other information about the team's performance(no show, poor driver, lost connection)</string>
+
 </resources>
