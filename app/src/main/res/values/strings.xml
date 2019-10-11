@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">Team2059_Scouting</string>
     <string name="logo_title">The Hitchhikers</string>
-    <string name="description">Scouting App</string>
+    <string name="description">Scouting App - Scout Sheet</string>
     <string name="submit">Submit</string>
+    <string name="letterhead_info">Hitchhikers Logo</string>
+
+    <string name="scout_header">Scout Sheet</string>
+    <string name="sheet_auto_header">Autonomous</string>
+    <string name="sheet_teleop_header">Teleoperated</string>
+    <string name="sheet_comments_header">Comments</string>
 
 </resources>
