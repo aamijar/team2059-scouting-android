@@ -6,6 +6,8 @@
     <string name="letterhead_info">Hitchhikers Logo</string>
 
     <string name="scout_header">Scout Sheet</string>
+
+    <!--Headers-->
     <string name="sheet_auto_header">Autonomous</string>
     <string name="sheet_teleop_header">Teleoperated</string>
     <string name="sheet_comments_header">Comments</string>
@@ -13,5 +15,21 @@
     <string name="comments_hint">IMPORTANT* Enter in any other information about the team performance (no show, poor driver, lost connection)</string>
 
 
-    <string name="team_name">Team Name</string>
+<!--    <string name="team_name">Team Name</string>-->
+
+    <!--Auto Entries-->
+    <string name="popup">Info!</string>
+    <string name="auto_text_habLine">Hab Line</string>
+    <string name="auto_text_level">Starting Hab Level</string>
+
+    <string-array
+        name="auto_array_habLevel">
+        <item>Level 1</item>
+        <item>Level 2</item>
+        <item>Level 3</item>
+    </string-array>
+
+
+    <!--Teleoperated Entries-->
+
 </resources>
