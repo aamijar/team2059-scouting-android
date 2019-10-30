@@ -1,9 +1,12 @@
 package com.team2059.scouting;
+import java.io.OutputStreamWriter;
 import java.util.Scanner;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
 import java.util.ArrayList;
+import android.content.Context;
+import android.util.Log;
 
 public class FileManager
 {
@@ -31,6 +34,22 @@ public class FileManager
         }
         sc.close();
         return strList;
+    }
+    public static void writeToFile(ArrayList<String> stats, Context context)
+    {
+        try
+        {
+            OutputStreamWriter writer = new OutputStreamWriter(context.openFileOutput("config.txt", Context.MODE_PRIVATE));
+            for(String s : stats)
+            {
+                writer.write(s);
+            }
+            writer.close();
+        }
+        catch (IOException e)
+        {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
     }
 
 }
