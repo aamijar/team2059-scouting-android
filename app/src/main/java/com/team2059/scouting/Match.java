@@ -1,4 +1,13 @@
+/**
+ * Implemented in Master Menu
+ * Match objects are created for every
+ * file read from app
+ *
+ * @author Anupam
+ */
+
 package com.team2059.scouting;
+
 public class Match
 {
     private String teamName;

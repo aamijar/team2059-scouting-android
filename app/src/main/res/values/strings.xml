@@ -19,6 +19,7 @@
 
     <!--Auto Entries-->
     <string name="popup">Info!</string>
+
     <string name="auto_text_habLine">Hab Line</string>
     <string name="auto_text_level">Starting Hab Level</string>
 

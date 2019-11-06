@@ -1,4 +1,15 @@
+/**
+ * implemented in Master Menu
+ * one team object per team
+ * class methods are used to display
+ * attributes of team in
+ * a table layout
+ *
+ * @author Anupam
+ */
+
 package com.team2059.scouting;
+
 import java.util.ArrayList;
 
 public class Team {
