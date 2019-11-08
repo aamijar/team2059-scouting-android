@@ -11,6 +11,7 @@ package com.team2059.scouting;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Bundle;
+
 //widget imports
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
         //declare primitive types
         final ArrayList<String> data = new ArrayList<String>();
+
         final Context context = getApplicationContext();
+
 
         //declare objects
         final DateFormat dateFormat = DateFormat.getDateTimeInstance();
@@ -50,13 +53,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 String user_entry = comments.getText().toString();
+                String user_entry2 = temp.getText().toString();
                 //String fileName = temp.getText().toString();
                 //name the file according to current date
                 String fileName = dateFormat.format(date);
 
-                test1.setText(user_entry);
+                //test1.setText(user_entry);
                 data.add(user_entry);
-                FileManager.writeToFile(fileName, data, context);
+                data.add(user_entry2);
+                //FileManager.writeToFile(fileName, data, context);
+
+                ArrayList<String> readData = new ArrayList<String>();
+                readData = FileManager.readFromFile(context);
+                test1.setText(readData.get(0) + " " + readData.get(1));
 
             }
         });

@@ -8,7 +8,10 @@
 
 package com.team2059.scouting;
 
-
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -62,11 +65,12 @@ public class FileManager
     {
         try
         {
-
+            fileName = fileName + ".txt";
             OutputStreamWriter writer = new OutputStreamWriter(context.openFileOutput(fileName, Context.MODE_PRIVATE));
+
             for(String s : stats)
             {
-                writer.write(s);
+                writer.write(s + "\n");
             }
             Toast.makeText(context, "Save Successful", Toast.LENGTH_LONG).show();
             writer.close();
@@ -77,6 +81,47 @@ public class FileManager
             Log.e("Exception", "File write failed: " + e.toString());
             Toast.makeText(context, "Unable to Save", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public static ArrayList<String> readFromFile(Context context)
+    {
+        ArrayList<String> data = new ArrayList<String>();
+
+        try
+        {
+
+            InputStream inputStream = context.openFileInput("config.txt");
+
+            if(inputStream != null)
+            {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                String recieveString = "";
+                while((recieveString = bufferedReader.readLine()) != null)
+                {
+                    data.add(recieveString);
+                }
+
+                inputStream.close();
+
+            }
+        }
+        catch(FileNotFoundException e)
+        {
+            Log.e("file reading" , "File not found: " + e.toString());
+            Toast.makeText(context, "File not found!", Toast.LENGTH_LONG).show();
+        }
+        catch(IOException e)
+        {
+            Log.e("file reading", "File not read" + e.toString());
+            Toast.makeText(context, "File cannot be read", Toast.LENGTH_LONG).show();
+        }
+
+
+        return data;
+
+
     }
 
 }
