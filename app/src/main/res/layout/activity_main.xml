@@ -52,7 +52,7 @@
             <ImageView
                 android:id="@+id/hh_logo"
                 android:layout_width="0dp"
-                android:layout_height="99dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="8dp"
@@ -60,6 +60,7 @@
                 android:layout_marginRight="10dp"
                 android:contentDescription="@string/logo_title"
                 android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/app_desc"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -201,13 +202,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:autofillHints=""
                 android:ems="10"
-                android:hint="@string/comments_hint"
+                android:hint="@string/popup"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/header_2"
-                android:autofillHints="" />
+                app:layout_constraintTop_toBottomOf="@+id/header_2" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/popup"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

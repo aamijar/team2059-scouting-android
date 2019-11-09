@@ -10,6 +10,7 @@ package com.team2059.scouting;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 //widget imports
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 
 import java.util.ArrayList;
 import java.text.DateFormat;
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText temp = (EditText)findViewById(R.id.editText);
         final TextView test1 = (TextView)findViewById(R.id.textView);
         Button button = (Button)findViewById(R.id.submit); //submit button
-
+        Button buttonActivity = (Button) findViewById(R.id.button); //to switch between pages
         //declare primitive types
         final ArrayList<String> data = new ArrayList<String>();
 
@@ -70,8 +72,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
+        buttonActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMasterView();
+            }
+        });
         
+    }
+
+    public void openMasterView()
+    {
+        Intent intent = new Intent(this, MasterView.class);
+        startActivity(intent);
     }
 }

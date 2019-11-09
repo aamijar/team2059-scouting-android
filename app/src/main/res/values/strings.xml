@@ -15,7 +15,7 @@
     <string name="comments_hint">IMPORTANT* Enter in any other information about the team performance (no show, poor driver, lost connection)</string>
 
 
-<!--    <string name="team_name">Team Name</string>-->
+    <!--    <string name="team_name">Team Name</string>-->
 
     <!--Auto Entries-->
     <string name="popup">Info!</string>
@@ -23,14 +23,22 @@
     <string name="auto_text_habLine">Hab Line</string>
     <string name="auto_text_level">Starting Hab Level</string>
 
-    <string-array
-        name="auto_array_habLevel">
+    <string-array name="auto_array_habLevel">
         <item>Level 1</item>
         <item>Level 2</item>
         <item>Level 3</item>
     </string-array>
 
 
+
     <!--Teleoperated Entries-->
+
+    <!--MasterView    -->
+    <string name="description_master">Scouting App - Master View</string>
+    <string name="refresh_button">Touch to refresh data</string>
+
+
+
+
 
 </resources>

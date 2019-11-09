@@ -89,7 +89,8 @@ public class FileManager
 
         try
         {
-
+            String [] fileNameArr = context.getFilesDir().list();
+            Toast.makeText(context, fileNameArr[3], Toast.LENGTH_LONG).show();
             InputStream inputStream = context.openFileInput("config.txt");
 
             if(inputStream != null)
