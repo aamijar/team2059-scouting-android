@@ -2,6 +2,7 @@ package com.team2059.scouting;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import android.view.View;
@@ -35,10 +36,14 @@ public class MasterView extends AppCompatActivity {
             public void onClick(View v) {
 
                 TableLayout tableLayout = findViewById(R.id.table_master);
+
                 TableRow row = new TableRow(context);
                 TextView text = new TextView(context);
 
                 text.setText("team2059");
+                //add column lines
+                text.setBackgroundResource(R.drawable.textlines_col);
+
                 row.addView(text);
                 tableLayout.addView(row);
                 //refreshData();

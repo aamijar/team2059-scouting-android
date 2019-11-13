@@ -39,7 +39,9 @@
 
     <string name="t_col_team">Team Name</string>
     <string name="t_col_number">Team Number</string>
-    <string name="t_col_district">Home District, Home District, Home District</string>
+    <string name="t_col_district">Home District</string>
+    <string name="t_col_rank_points">Rank Points</string>
+    <string name="t_col_scored_points">Total Points</string>
 
 
 
