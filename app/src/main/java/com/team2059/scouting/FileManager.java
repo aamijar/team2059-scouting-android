@@ -9,7 +9,10 @@
 package com.team2059.scouting;
 
 import java.io.BufferedReader;
+
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -17,12 +20,21 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
 
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import android.content.Context;
+
 import android.util.Log;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 
 public class FileManager
@@ -61,6 +73,7 @@ public class FileManager
      * @param context context of application
      */
 
+    //txt method
     public static void writeToFile(String fileName, ArrayList<String> stats, Context context)
     {
         try
@@ -83,6 +96,8 @@ public class FileManager
         }
     }
 
+
+    //txt method
     public static ArrayList<String> readFromFile(Context context)
     {
         ArrayList<String> data = new ArrayList<String>();
@@ -124,6 +139,91 @@ public class FileManager
 
 
     }
+
+    /**
+     *
+     * @param fileName name of file
+     * @param match match object of attributes
+     * @param context context of application
+     * @throws IOException file not found
+     */
+
+
+    public static void writeToJsonFile(String fileName, Match match, Context context) throws IOException
+    {
+        JSONArray jsonArr = new JSONArray();
+        JSONObject matchObject = new JSONObject();
+        JSONObject matchDetails = new JSONObject();
+
+        try
+        {
+            matchDetails.put("teamName", match.getTeamName());
+            matchDetails.put("matchNumber", match.getMatchNumber());
+            matchDetails.put("teamPoints", match.getTeamPoints());
+            matchDetails.put("alliancePoints", match.getAlliancePoints());
+            matchDetails.put("rankPoints", match.getRankPoints());
+            matchDetails.put("matchResult", match.getMatchResult());
+
+            matchObject.put("matchObject", matchDetails);
+            jsonArr.put(matchObject);
+        }
+        catch(JSONException e)
+        {
+            Log.e("JSON write error", "failed to write desc: " + e.toString());
+            Toast.makeText(context, "JSON write failed!", Toast.LENGTH_LONG).show();
+        }
+
+        //saves on internal storage (only visible in virtual device manager in Android Studio)
+        //File jsonFile = new File(context.getFilesDir(), fileName);
+
+        //saves to external storage (public, visible in device files on phone)
+        File jsonFile = new File(context.getExternalFilesDir(null), fileName);
+
+
+
+
+        if(!jsonFile.exists()) //make new file
+        {
+            FileWriter writer = new FileWriter(jsonFile);
+            writer.write(jsonArr.toString()); //JSON STRING ADDED
+            Toast.makeText(context, jsonArr.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Successful Write JSON: " + fileName, Toast.LENGTH_LONG).show();
+
+            writer.close();
+        }
+        else //update existing file
+        {
+            try
+            {
+                JSONParser jsonParser = new JSONParser();
+
+                //Read from internal storage (private, only visible in android studio virtual explorer)
+                //FileReader reader = new FileReader(context.getFilesDir().getAbsoluteFile() + "/" + fileName);
+
+
+                //Read from external storage (public, visible in phone file explorer)
+                FileReader reader = new FileReader(context.getExternalFilesDir(fileName));
+
+                org.json.simple.JSONArray updateJsonArr = (org.json.simple.JSONArray) jsonParser.parse(reader);
+                updateJsonArr.add(matchObject);
+
+
+                FileWriter writer = new FileWriter(jsonFile);
+                writer.write(updateJsonArr.toString()); //updated JSON String written
+                writer.close();
+                Toast.makeText(context, fileName + " updated successfully!", Toast.LENGTH_LONG).show();
+
+            }
+            catch(ParseException e)
+            {
+                Log.e("JSON parser error","parser desc: " + e.toString());
+                Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
+            }
+
+        }
+
+    }
+
 
 }
 
