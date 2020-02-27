@@ -26,6 +26,7 @@ import java.util.Scanner;
 
 import android.content.Context;
 
+import android.media.MediaScannerConnection;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -210,6 +211,10 @@ public class FileManager
 
                 FileWriter writer = new FileWriter(jsonFile);
                 writer.write(updateJsonArr.toString()); //updated JSON String written
+
+
+                MediaScannerConnection.scanFile(context, new String[] {jsonFile.toString()}, null, null);
+
                 writer.close();
                 Toast.makeText(context, fileName + " updated successfully!", Toast.LENGTH_LONG).show();
 

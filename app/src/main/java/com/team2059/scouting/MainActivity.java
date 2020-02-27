@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 //widget imports
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,10 +22,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.text.DateFormat;
 import java.util.Date;
+
+import android.media.MediaScannerConnection;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,8 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 //FileManager.writeToFile(fileName, data, context);
 
                 ArrayList<String> readData = new ArrayList<String>();
-                readData = FileManager.readFromFile(context);
-                test1.setText(readData.get(0) + " " + readData.get(1));
+                //readData = FileManager.readFromFile(context);
+                //test1.setText(readData.get(0) + " " + readData.get(1));
+
 
                 /*
                 create Match Object and append data from scout sheet
@@ -83,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
                 {
                     Log.e("fileManager class error", "MainActivity started error");
                 }
+
+
+
+
+
+
 
             }
         });
