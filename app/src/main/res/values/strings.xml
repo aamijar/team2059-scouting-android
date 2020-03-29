@@ -4,6 +4,8 @@
     <string name="description">Scouting App - Scout Sheet</string>
     <string name="submit">Submit</string>
     <string name="letterhead_info">Hitchhikers Logo</string>
+    <string name="first_logo">FIRST Logo</string>
+
 
     <string name="scout_header">Scout Sheet</string>
 
@@ -30,7 +32,6 @@
     </string-array>
 
 
-
     <!--Teleoperated Entries-->
 
     <!--MasterView    -->
@@ -42,8 +43,6 @@
     <string name="t_col_district">Home District</string>
     <string name="t_col_rank_points">Rank Points</string>
     <string name="t_col_scored_points">Total Points</string>
-
-
 
 
 </resources>

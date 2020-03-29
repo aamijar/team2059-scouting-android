@@ -223,6 +223,7 @@ public class FileManager
             {
                 Log.e("JSON parser error","parser desc: " + e.toString());
                 Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
+
             }
 
         }

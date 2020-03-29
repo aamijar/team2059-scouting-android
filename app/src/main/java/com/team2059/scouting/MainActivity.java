@@ -13,8 +13,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-//widget imports
-import android.os.Environment;
+/*widget imports*/
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,16 +26,18 @@ import java.util.ArrayList;
 import java.text.DateFormat;
 import java.util.Date;
 
-import android.media.MediaScannerConnection;
 
 
 public class MainActivity extends AppCompatActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //default setup for app
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //create widget references
         final EditText comments = (EditText)findViewById(R.id.entry_comment); //multiline comments
@@ -43,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
         final TextView test1 = (TextView)findViewById(R.id.textView);
         Button button = (Button)findViewById(R.id.submit); //submit button
         Button buttonActivity = (Button) findViewById(R.id.button); //to switch between pages
+
         //declare primitive types
         final ArrayList<String> data = new ArrayList<String>();
-
         final Context context = getApplicationContext();
 
 
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         final Date date = new Date();
 
 
-        //submit button function
+
         button.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v)
@@ -76,9 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 //test1.setText(readData.get(0) + " " + readData.get(1));
 
 
-                /*
-                create Match Object and append data from scout sheet
-                 */
+
+                /*create Match Object and append data from scout sheet*/
                 Match match = new Match("The Hitchhikers, FRC 2059", 1, 45, 100, 2, true);
                 try
                 {   FileManager.writeToJsonFile("TEST_JSON.json", match, context);
@@ -87,13 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 {
                     Log.e("fileManager class error", "MainActivity started error");
                 }
-
-
-
-
-
-
-
             }
         });
 
@@ -103,7 +97,10 @@ public class MainActivity extends AppCompatActivity {
                 openMasterView();
             }
         });
-        
+
+
+
+
     }
 
     public void openMasterView()
