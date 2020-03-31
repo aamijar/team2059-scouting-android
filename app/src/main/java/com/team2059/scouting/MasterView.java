@@ -49,8 +49,6 @@ public class MasterView extends AppCompatActivity {
                 //refreshData();
             }
         });
-
-
     }
 
     public void refreshData()
@@ -69,9 +67,6 @@ public class MasterView extends AppCompatActivity {
             row.addView(text);
             tableLayout.addView(row);
         }
-
-
-
     }
 
 }

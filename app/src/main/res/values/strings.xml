@@ -12,12 +12,21 @@
     <!--Headers-->
     <string name="sheet_auto_header">Autonomous</string>
     <string name="sheet_teleop_header">Teleoperated</string>
+    <string name="sheet_endgame_header">Endgame</string>
     <string name="sheet_comments_header">Comments</string>
+
+    <string name="match_number">Match:</string>
+    <string name="hint_number">#</string>
+    <string name="team_name">Team:</string>
+
 
     <string name="comments_hint">IMPORTANT* Enter in any other information about the team performance (no show, poor driver, lost connection)</string>
 
 
-    <!--    <string name="team_name">Team Name</string>-->
+
+
+
+
 
     <!--Auto Entries-->
     <string name="popup">Info!</string>

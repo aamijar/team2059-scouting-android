@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="frc2020_teams">
+        <item>Team, 9999</item>
+        <item>Team, 9998</item>
+        <item>Robodogs, 435</item>
+        <item>The Hedgehogs, 587</item>
+        <item>The Zebracorns, 900</item>
+        <item>The Gorillas, 1225</item>
+        <item>Triple Strange, 1533</item>
+        <item>The Hitchhikers, 2059</item>
+        <item>HOTBOTZ, 2640</item>
+        <item>Pitt Pirates, 2642</item>
+        <item>The Flying Platypi, 2655</item>
+        <item>Boneyard Robotics, 2682</item>
+        <item>Team SPORK, 3196</item>
+        <item>Hawktimus Prime, 3229</item>
+        <item>Zimanators, 3336</item>
+        <item>Team PyroTech, 3459</item>
+        <item>YETI Robotics, 3506</item>
+        <item>RoboWolves, 3661</item>
+        <item>Elemental Dragons, 3680</item>
+        <item>Roto Raptors, 3737</item>
+        <item>Technical Assassins, 3796</item>
+        <item>Neon Kracken, 3822</item>
+        <item>Bots on Wheels, 4290</item>
+        <item>AstroBots, 4291</item>
+        <item>Wired Wizards, 4534</item>
+        <item>TerrorBytes, 4561</item>
+        <item>EastBots, 4795</item>
+        <item>holographic, 4816</item>
+        <item>RoboEagles, 4828</item>
+        <item>Titanium Tigers, 4829</item>
+        <item>T-Rex, 4935</item>
+        <item>Chargers, 5160</item>
+        <item>Green Hope Falcons, 5190</item>
+        <item>Cortechs Robotics, 5511</item>
+        <item>Techno Wolves, 5518</item>
+        <item>Team Firewall, 5607</item>
+        <item>Girls on Fire, 5679</item>
+        <item>Omegabytes, 5727</item>
+        <item>FranklinBots-TEAM HYDRA, 5762</item>
+        <item>GLITCH, 5854</item>
+        <item>JoCo RoBos, 5919</item>
+        <item>f(x) Robotics, 6004</item>
+        <item>PHEnix, 6214</item>
+        <item>Armored Eagles, 6215</item>
+        <item>Eagles of the Knight, 6240</item>
+        <item>Robo Gladiators, 6426</item>
+        <item>AREA 27, 6496</item>
+        <item>GearCats, 6500</item>
+        <item>DARC SIDE, 6502</item>
+        <item>Coastal CATastrophe, 6512</item>
+        <item>Team Bobcat, 6565</item>
+        <item>The Mechanical Minds, 6639</item>
+        <item>RobCoBots, 6729</item>
+        <item>Burke County Breakouts, 6888</item>
+        <item>Iced Java, 6894</item>
+        <item>Infuzed, 6908</item>
+        <item>SMART, 6932</item>
+        <item>Skeleton Crew, 7265</item>
+        <item>The Bandits, 7270</item>
+        <item>Overhills Jag-Wires, 7443</item>
+        <item>Incandescent Mice, 7463</item>
+        <item>Fire Hazard, 7671</item>
+        <item>Spark Guardians, 7675</item>
+        <item>Robo-Banditos, 7715</item>
+        <item>Carrborobotics, 7763</item>
+        <item>CavBots, 7815</item>
+        <item>SeQuEnCe, 7890</item>
+        <item>East lincoln Iron stangs, 8030</item>
+        <item>Mavnesium, 8090</item>
+        <item>Mind Over Metal, 8205</item>
+        <item>MaST, 8304</item>
+        <item>Spartan Robots, 8315</item>
+        <item>The CITI Pack, 8358</item>
+    </string-array>
+
+</resources>

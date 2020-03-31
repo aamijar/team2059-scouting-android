@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#548ED4</color>
     <color name="colorAccent">#548ED4</color>
 
-
-
+    <color name="text_primary_dark">#8A000000</color>
+    <color name="text_primary_light">#FFFFFFFF</color>
 
 
     <color name="hh_orange">#F99546</color>
@@ -15,6 +15,4 @@
 
 
 
-
-    <color name="secondary_text_default_material_light">#8A000000</color>
 </resources>

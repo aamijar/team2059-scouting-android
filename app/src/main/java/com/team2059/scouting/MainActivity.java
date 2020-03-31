@@ -17,8 +17,11 @@ import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 
@@ -31,6 +34,7 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
 
+    private EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,45 +43,32 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        //create widget references
-        final EditText comments = (EditText)findViewById(R.id.entry_comment); //multiline comments
-        final EditText temp = (EditText)findViewById(R.id.editText);
-        final TextView test1 = (TextView)findViewById(R.id.textView);
+        Spinner spinner = findViewById(R.id.spinner);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.frc2020_teams, R.layout.spinner_item);
+        spinner.setAdapter(adapter);
+
+        editText = findViewById(R.id.low_att);
+        editText.setText("0");
+
+
         Button button = (Button)findViewById(R.id.submit); //submit button
-        Button buttonActivity = (Button) findViewById(R.id.button); //to switch between pages
+        ImageButton button1 = findViewById(R.id.increment_up);
+        ImageButton button2 = findViewById(R.id.increment_down);
+
+        //Button buttonActivity = (Button) findViewById(R.id.button); //to switch between pages
 
         //declare primitive types
-        final ArrayList<String> data = new ArrayList<String>();
         final Context context = getApplicationContext();
-
 
         //declare objects
         final DateFormat dateFormat = DateFormat.getDateTimeInstance();
         final Date date = new Date();
 
 
-
         button.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v)
             {
-                String user_entry = comments.getText().toString();
-                String user_entry2 = temp.getText().toString();
-
-                //String fileName = temp.getText().toString();
-                //name the file according to current date
-                String fileName = dateFormat.format(date);
-
-                //test1.setText(user_entry);
-                data.add(user_entry);
-                data.add(user_entry2);
-                //FileManager.writeToFile(fileName, data, context);
-
-                ArrayList<String> readData = new ArrayList<String>();
-                //readData = FileManager.readFromFile(context);
-                //test1.setText(readData.get(0) + " " + readData.get(1));
-
-
 
                 /*create Match Object and append data from scout sheet*/
                 Match match = new Match("The Hitchhikers, FRC 2059", 1, 45, 100, 2, true);
@@ -91,12 +82,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        buttonActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openMasterView();
-            }
+        button1.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v)
+            {incrementUp();}
         });
+        button2.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v)
+            {incrementDown();}
+        });
+
+
+//        buttonActivity.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openMasterView();
+//            }
+//        });
 
 
 
@@ -107,5 +108,28 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this, MasterView.class);
         startActivity(intent);
+    }
+
+    public void incrementUp()
+    {
+        int val;
+        if(!editText.getText().toString().equals(""))
+        {val = Integer.parseInt(editText.getText().toString());}
+        else
+        {val = 0;}
+        val ++;
+        String str = Integer.toString(val);
+        editText.setText(str);
+    }
+    public void incrementDown()
+    {
+        int val;
+        if(!editText.getText().toString().equals("") && Integer.parseInt(editText.getText().toString()) > 0)
+        {val = Integer.parseInt(editText.getText().toString());}
+        else
+        {val = 1;}
+        val --;
+        String str = Integer.toString(val);
+        editText.setText(str);
     }
 }

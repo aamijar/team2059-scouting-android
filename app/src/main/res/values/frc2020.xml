@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<!--    Auto-->
+    <string name="init_line">Initiation Line:</string>
+    <string name="lower_att">Low Attempt:</string>
+    <string name="lower_made">Low Made:</string>
+    <string name="outer_att">Outer Attempt:</string>
+    <string name="outer_made">Outer Made:</string>
+    <string name="inner_made">Inner Made:</string>
+
+
+
+</resources>
