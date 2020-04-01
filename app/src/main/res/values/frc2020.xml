@@ -9,6 +9,12 @@
     <string name="outer_made">Outer Made:</string>
     <string name="inner_made">Inner Made:</string>
 
+    <string name="position_control">Position Control:</string>
+    <string name="rotation_control">Rotation Control:</string>
 
+    <string name="park">Park:</string>
+    <string name="climb_att">Climb Attempt:</string>
+    <string name="climb">Climb Success:</string>
+    <string name="level">Level:</string>
 
 </resources>
