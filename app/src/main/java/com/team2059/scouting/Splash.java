@@ -82,8 +82,9 @@ public class Splash extends AppCompatActivity {
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             Log.d(DEBUG_TAG, "onSingleTapUp" + e.toString());
-            splashDone = true;
             openMainActivity();
+            image.clearAnimation();
+            splashDone = true;
             return true;
         }
     }

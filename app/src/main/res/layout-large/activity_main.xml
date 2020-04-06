@@ -121,7 +121,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/header_2" />
 
             <EditText
-                android:id="@+id/entry_comment"
+                android:id="@+id/notes"
                 android:layout_width="0dp"
                 android:layout_height="75dp"
                 android:layout_marginStart="12dp"

@@ -9,26 +9,34 @@
 package com.team2059.scouting;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 
-/*widget imports*/
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Switch;
 
-import java.util.Locale;
+import com.google.gson.Gson;
 
+import org.json.simple.JSONArray;
+import org.team2059.scouting.frc2020.IrAuto;
+import org.team2059.scouting.frc2020.IrControlPanel;
+import org.team2059.scouting.frc2020.IrEndgame;
+import org.team2059.scouting.frc2020.IrMatch;
+import org.team2059.scouting.frc2020.IrTeleop;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,7 +53,13 @@ public class MainActivity extends AppCompatActivity {
     private EditText out_made2;
     private EditText inn_made2;
 
-
+    private Switch switch1;
+    private Switch switch2;
+    private Switch switch3;
+    private Switch switch4;
+    private Switch switch5;
+    private Switch switch6;
+    private Switch switch7;
 
 
     @Override
@@ -54,15 +68,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setupUI(findViewById(R.id.parentView));
 
+        /*hides notification bar*/
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        //hides keyboard onCreate()
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        Spinner spinner = findViewById(R.id.spinner);
+        /*Initialize custom spinner with NC FRC teams list*/
+        final Spinner spinner = findViewById(R.id.spinner);
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.frc2020_teams, R.layout.spinner_item);
         spinner.setAdapter(adapter);
 
+        /*Initialize editText number widgets with value of 0*/
         low_att = findViewById(R.id.low_att);
         low_att.setText("0");
         low_made = findViewById(R.id.low_made);
@@ -87,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        /*Initialize increment up and down buttons*/
         ImageButton button1 = findViewById(R.id.increment_up);
         ImageButton button2 = findViewById(R.id.increment_down);
         ImageButton button3 = findViewById(R.id.increment_up2);
@@ -97,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
         ImageButton button8 = findViewById(R.id.increment_down4);
         ImageButton button9 = findViewById(R.id.increment_up5);
         ImageButton button10 = findViewById(R.id.increment_down5);
-
 
         ImageButton button11 = findViewById(R.id.increment_up6);
         ImageButton button12 = findViewById(R.id.increment_down6);
@@ -111,42 +131,68 @@ public class MainActivity extends AppCompatActivity {
         ImageButton button20 = findViewById(R.id.increment_down10);
 
 
+        /*Define Fonts from assets folder NOT from /res/font */
+        Typeface eagleLight = Typeface.createFromAsset(getAssets(), "fonts/eagle_light.otf");
+        Typeface eagleBook = Typeface.createFromAsset(getAssets(), "fonts/eagle_book.otf");
+        Typeface eagleBold = Typeface.createFromAsset(getAssets(), "fonts/eagle_bold.otf");
+
+        /*set fonts for switch widgets
+        * minSdk < 26 and android:fontFamily gives warning
+        * app:fontFamily is not working for switches
+        *
+        * Alt Solution: setting font programmatically
+        * via typeface
+        * */
+        final Switch switch1 = findViewById(R.id.switch1);
+        final Switch switch2 = findViewById(R.id.switch2);
+        final Switch switch3 = findViewById(R.id.switch3);
+        final Switch switch4 = findViewById(R.id.switch4);
+        final Switch switch5 = findViewById(R.id.switch5);
+        final Switch switch6 = findViewById(R.id.switch6);
+        final Switch switch7 = findViewById(R.id.switch7);
 
 
+        switch1.setTypeface(eagleLight, Typeface.BOLD);
+        switch2.setTypeface(eagleLight, Typeface.BOLD);
+        switch3.setTypeface(eagleLight, Typeface.BOLD);
+        switch4.setTypeface(eagleLight, Typeface.BOLD);
+        switch5.setTypeface(eagleLight, Typeface.BOLD);
+        switch6.setTypeface(eagleLight, Typeface.BOLD);
+        switch7.setTypeface(eagleLight, Typeface.BOLD);
 
         Button button = (Button)findViewById(R.id.submit); //submit button
-
-        //AssetManager am = getApplicationContext().getAssets();
-
-//        Typeface typeface = Typeface.createFromAsset(am,
-//                String.format(Locale.US, "font/%s", "eagle_book.otf"));
-//        low_att.setTypeface(typeface);
-
-
-        Typeface myFont = Typeface.createFromAsset(getAssets(), "fonts/eagle_light.otf");
-        low_att.setTypeface(myFont);
-
-
-
-
-
         //Button buttonActivity = (Button) findViewById(R.id.button); //to switch between pages
+
+        final EditText matchNumber = findViewById(R.id.match_number);
+        final EditText notes = findViewById(R.id.notes);
+
 
         final Context context = getApplicationContext();
 
-        //hides keyboard onCreate()
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
 
 
         button.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View v)
-            {
-
+            public void onClick(View v){
                 /*create Match Object and append data from scout sheet*/
-                Match match = new Match("The Hitchhikers, FRC 2059", 1, 45, 100, 2, true);
+
+                IrAuto auto = new IrAuto(switch1.isChecked(), Integer.parseInt(low_att.getText().toString()),
+                        Integer.parseInt(low_made.getText().toString()), Integer.parseInt(out_att.getText().toString()),
+                        Integer.parseInt(out_made.getText().toString()), Integer.parseInt(inn_made.getText().toString()));
+                IrControlPanel controlPanel = new IrControlPanel(switch2.isChecked(), switch3.isChecked());
+                IrTeleop teleop = new IrTeleop(Integer.parseInt(low_att2.getText().toString()), Integer.parseInt(low_made2.getText().toString()), Integer.parseInt(out_att2.getText().toString()), Integer.parseInt(out_made2.getText().toString()), Integer.parseInt(inn_made2.getText().toString()), controlPanel);
+                IrEndgame endgame = new IrEndgame(switch5.isChecked(), switch4.isChecked(), switch6.isChecked(), switch7.isChecked());
+
+                IrMatch irMatch = new IrMatch(spinner.getSelectedItem().toString(), Integer.parseInt(matchNumber.getText().toString()), 45,
+                        100, 2, "true", auto, teleop, endgame, notes.getText().toString());
+
+
+
+                //Match match = new Match("The Hitchhikers, FRC 2059", 1, 45, 100, 2, true);
                 try
-                {   FileManager.writeToJsonFile("TEST_JSON.json", match, context);
+                {
+                    FileManager.writeToJsonFile("TEST_JSON.json", irMatch, context);
                 }
                 catch (Exception e)
                 {
@@ -156,86 +202,87 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /*increment buttons*/
-        button1.setOnClickListener(new View.OnClickListener(){
+
+        button1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementUp(low_att);}
         });
-        button2.setOnClickListener(new View.OnClickListener(){
+        button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementDown(low_att);}
         });
-        button3.setOnClickListener(new View.OnClickListener(){
+        button3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementUp(low_made);}
         });
-        button4.setOnClickListener(new View.OnClickListener(){
+        button4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementDown(low_made);}
         });
-        button5.setOnClickListener(new View.OnClickListener(){
+        button5.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementUp(out_att);}
         });
-        button6.setOnClickListener(new View.OnClickListener(){
+        button6.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementDown(out_att);}
         });
-        button7.setOnClickListener(new View.OnClickListener(){
+        button7.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementUp(out_made);}
         });
-        button8.setOnClickListener(new View.OnClickListener(){
+        button8.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementDown(out_made);}
         });
-        button9.setOnClickListener(new View.OnClickListener(){
+        button9.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementUp(inn_made);}
         });
-        button10.setOnClickListener(new View.OnClickListener(){
+        button10.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementDown(inn_made);}
         });
 
 
 
-        button11.setOnClickListener(new View.OnClickListener(){
+        button11.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementUp(low_att2);}
         });
-        button12.setOnClickListener(new View.OnClickListener(){
+        button12.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementDown(low_att2);}
         });
-        button13.setOnClickListener(new View.OnClickListener(){
+        button13.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementUp(low_made2);}
         });
-        button14.setOnClickListener(new View.OnClickListener(){
+        button14.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementDown(low_made2);}
         });
-        button15.setOnClickListener(new View.OnClickListener(){
+        button15.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementUp(out_att2);}
         });
-        button16.setOnClickListener(new View.OnClickListener(){
+        button16.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementDown(out_att2);}
         });
-        button17.setOnClickListener(new View.OnClickListener(){
+        button17.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementUp(out_made2);}
         });
-        button18.setOnClickListener(new View.OnClickListener(){
+        button18.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementDown(out_made2);}
         });
-        button19.setOnClickListener(new View.OnClickListener(){
+        button19.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementUp(inn_made2);}
         });
-        button20.setOnClickListener(new View.OnClickListener(){
+        button20.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {incrementDown(inn_made2);}
         });
@@ -251,14 +298,13 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-    public void openMasterView()
-    {
+    public void openMasterView() {
         Intent intent = new Intent(this, MasterView.class);
         startActivity(intent);
     }
 
-    public void incrementUp(EditText editText)
-    {
+
+    public void incrementUp(EditText editText) {
         int val;
         if(!editText.getText().toString().equals(""))
         {val = Integer.parseInt(editText.getText().toString());}
@@ -268,8 +314,7 @@ public class MainActivity extends AppCompatActivity {
         String str = Integer.toString(val);
         editText.setText(str);
     }
-    public void incrementDown(EditText editText)
-    {
+    public void incrementDown(EditText editText) {
         int val;
         if(!editText.getText().toString().equals("") && Integer.parseInt(editText.getText().toString()) > 0)
         {val = Integer.parseInt(editText.getText().toString());}
@@ -278,5 +323,33 @@ public class MainActivity extends AppCompatActivity {
         val --;
         String str = Integer.toString(val);
         editText.setText(str);
+    }
+
+
+    public void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    public void setupUI(View view) {
+
+        // base case
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard(MainActivity.this);
+                    findViewById(R.id.parentView).requestFocus();
+                    return false;
+                }
+            });
+        }
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
     }
 }

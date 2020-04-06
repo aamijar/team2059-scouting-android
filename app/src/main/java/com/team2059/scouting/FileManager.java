@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 import java.io.File;
 
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -30,6 +31,9 @@ import android.media.MediaScannerConnection;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +41,7 @@ import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import org.team2059.scouting.frc2020.IrMatch;
 
 public class FileManager
 {
@@ -150,29 +155,52 @@ public class FileManager
      */
 
 
-    public static void writeToJsonFile(String fileName, Match match, Context context) throws IOException
+    public static void writeToJsonFile(String fileName, IrMatch match, Context context) throws IOException
     {
-        JSONArray jsonArr = new JSONArray();
-        JSONObject matchObject = new JSONObject();
-        JSONObject matchDetails = new JSONObject();
-
-        try
-        {
-            matchDetails.put("teamName", match.getTeamName());
-            matchDetails.put("matchNumber", match.getMatchNumber());
-            matchDetails.put("teamPoints", match.getTeamPoints());
-            matchDetails.put("alliancePoints", match.getAlliancePoints());
-            matchDetails.put("rankPoints", match.getRankPoints());
-            matchDetails.put("matchResult", match.getMatchResult());
-
-            matchObject.put("matchObject", matchDetails);
-            jsonArr.put(matchObject);
-        }
-        catch(JSONException e)
-        {
-            Log.e("JSON write error", "failed to write desc: " + e.toString());
-            Toast.makeText(context, "JSON write failed!", Toast.LENGTH_LONG).show();
-        }
+//        JSONArray jsonArr = new JSONArray();
+//        JSONObject matchObject = new JSONObject();
+//        JSONObject matchDetails = new JSONObject();
+//
+//
+//
+//        try
+//        {
+//            matchDetails.put("teamName", match.getTeamName());
+//            matchDetails.put("matchNumber", match.getMatchNumber());
+//            matchDetails.put("teamPoints", match.getTeamPoints());
+//            matchDetails.put("alliancePoints", match.getAlliancePoints());
+//            matchDetails.put("rankPoints", match.getRankPoints());
+//            matchDetails.put("matchResult", match.getMatchResult());
+//
+//            matchDetails.put("initLine", match.getAuto().getInitLine());
+//            matchDetails.put("autoLowerAttempt", match.getAuto().getLowerAttempt());
+//            matchDetails.put("autoLowerPort", match.getAuto().getLowerPort());
+//            matchDetails.put("autoUpperAttempt", match.getAuto().getUpperAttempt());
+//            matchDetails.put("autoOuterPort", match.getAuto().getOuterPort());
+//            matchDetails.put("autoInnerPort", match.getAuto().getInnerPort());
+//
+//            matchDetails.put("lowerAttempt", match.getTeleop().getLowerAttempt());
+//            matchDetails.put("lowerPort", match.getTeleop().getLowerPort());
+//            matchDetails.put("upperAttempt", match.getTeleop().getUpperAttempt());
+//            matchDetails.put("outerPort", match.getTeleop().getOuterPort());
+//            matchDetails.put("innerPort", match.getTeleop().getInnerPort());
+//            matchDetails.put("rotation", match.getTeleop().getControlPanel().getRotation());
+//            matchDetails.put("position", match.getTeleop().getControlPanel().getPosition());
+//
+//            matchDetails.put("park", match.getEndgame().getPark());
+//            matchDetails.put("climbAttempt", match.getEndgame().getClimbAttempt());
+//            matchDetails.put("climb", match.getEndgame().getClimb());
+//            matchDetails.put("level", match.getEndgame().getLevel());
+//            matchDetails.put("notes", match.getNotes());
+//
+//            matchObject.put("matchObject", matchDetails);
+//            jsonArr.put(matchObject);
+//        }
+//        catch(JSONException e)
+//        {
+//            Log.e("JSON write error", "failed to write desc: " + e.toString());
+//            Toast.makeText(context, "JSON write failed!", Toast.LENGTH_LONG).show();
+//        }
 
         //saves on internal storage (only visible in virtual device manager in Android Studio)
         //File jsonFile = new File(context.getFilesDir(), fileName);
@@ -182,12 +210,18 @@ public class FileManager
 
 
 
-
         if(!jsonFile.exists()) //make new file
         {
             FileWriter writer = new FileWriter(jsonFile);
-            writer.write(jsonArr.toString()); //JSON STRING ADDED
-            Toast.makeText(context, jsonArr.toString(), Toast.LENGTH_LONG).show();
+
+            ArrayList<IrMatch> gsonArr = new ArrayList<IrMatch>();
+            gsonArr.add(match);
+
+            Gson gson = new Gson();
+            String gsonStr = gson.toJson(gsonArr);
+
+            writer.write(gsonStr); //JSON STRING ADDED
+
             Toast.makeText(context, "Successful Write JSON: " + fileName, Toast.LENGTH_LONG).show();
 
             writer.close();
@@ -196,21 +230,26 @@ public class FileManager
         {
             try
             {
-                JSONParser jsonParser = new JSONParser();
 
                 //Read from internal storage (private, only visible in android studio virtual explorer)
                 //FileReader reader = new FileReader(context.getFilesDir().getAbsoluteFile() + "/" + fileName);
 
-
                 //Read from external storage (public, visible in phone file explorer)
                 FileReader reader = new FileReader(context.getExternalFilesDir(fileName));
 
+                JSONParser jsonParser = new JSONParser();
                 org.json.simple.JSONArray updateJsonArr = (org.json.simple.JSONArray) jsonParser.parse(reader);
-                updateJsonArr.add(matchObject);
 
+                Gson gson = new Gson();
+
+                Type irMatchType = new TypeToken<ArrayList<IrMatch>>(){}.getType();
+                ArrayList<IrMatch> irMatchArr = gson.fromJson(updateJsonArr.toJSONString(), irMatchType);
+
+                irMatchArr.add(match);
+                String gsonStr = gson.toJson(irMatchArr);
 
                 FileWriter writer = new FileWriter(jsonFile);
-                writer.write(updateJsonArr.toString()); //updated JSON String written
+                writer.write(gsonStr); //updated JSON String written
 
 
                 MediaScannerConnection.scanFile(context, new String[] {jsonFile.toString()}, null, null);
