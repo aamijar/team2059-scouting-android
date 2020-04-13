@@ -172,7 +172,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/header_1" />
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/spinner1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -181,11 +181,11 @@
                 android:entries="@array/auto_array_habLevel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/textView2"
+                app:layout_constraintStart_toEndOf="@+id/menu_text2"
                 app:layout_constraintTop_toBottomOf="@+id/header_1" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/menu_text2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

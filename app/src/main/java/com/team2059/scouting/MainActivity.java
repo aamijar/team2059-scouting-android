@@ -29,9 +29,6 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 
-import com.google.gson.Gson;
-
-import org.json.simple.JSONArray;
 import org.team2059.scouting.frc2020.IrAuto;
 import org.team2059.scouting.frc2020.IrControlPanel;
 import org.team2059.scouting.frc2020.IrEndgame;
@@ -78,9 +75,14 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         /*Initialize custom spinner with NC FRC teams list*/
-        final Spinner spinner = findViewById(R.id.spinner);
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.frc2020_teams, R.layout.spinner_item);
+        String [] teams = getIntent().getStringArrayExtra("com.team2059.scouting.teams");
+
+        final Spinner spinner = findViewById(R.id.spinner1);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, teams);
+
         spinner.setAdapter(adapter);
+
+
 
         /*Initialize editText number widgets with value of 0*/
         low_att = findViewById(R.id.low_att);

@@ -23,11 +23,6 @@
     <string name="comments_hint">IMPORTANT* Enter in any other information about the team performance (no show, poor driver, lost connection)</string>
 
 
-
-
-
-
-
     <!--Auto Entries-->
     <string name="popup">Info!</string>
 
@@ -52,6 +47,12 @@
     <string name="t_col_district">Home District</string>
     <string name="t_col_rank_points">Rank Points</string>
     <string name="t_col_scored_points">Total Points</string>
+
+    <!-- Menu   -->
+
+    <string name="title1">Competition Type:</string>
+    <string name="title2">District Name:</string>
+    <string name="title3">Event Name:</string>
 
 
 </resources>
