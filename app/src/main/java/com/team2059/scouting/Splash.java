@@ -17,10 +17,8 @@ import android.widget.TextView;
 public class Splash extends AppCompatActivity {
 
     private ImageView image;
-    private TextView text;
     private GestureDetectorCompat mDetector;
 
-    private final String versionCode = BuildConfig.VERSION_NAME;
     private boolean splashDone = false;
     private final static int SPLASH_TIMEOUT = 4000;
 
@@ -31,22 +29,24 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        mDetector = new GestureDetectorCompat(this, new MyGestureListener());
+        final String versionCode = "v" + BuildConfig.VERSION_NAME;
+        TextView text;
 
+        mDetector = new GestureDetectorCompat(this, new MyGestureListener());
         text= findViewById(R.id.textView);
         image = findViewById(R.id.imageView);
 
-        text.setText("v" + versionCode);
+        text.setText(versionCode);
 
-        Animation myanim = AnimationUtils.loadAnimation(this, R.anim.rotation_cw);
-        image.startAnimation(myanim);
+        Animation splashAnim = AnimationUtils.loadAnimation(this, R.anim.rotation_cw);
+        image.startAnimation(splashAnim);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run()
             {
-                Intent homeIntent = new Intent(Splash.this, MainActivity.class);
-                if(!splashDone) {startActivity(homeIntent);}
+                //Intent homeIntent = new Intent(Splash.this, MainActivity.class);
+                if(!splashDone) {openMainActivity();}
                 finish();
             }
         }, SPLASH_TIMEOUT);

@@ -1,12 +1,18 @@
 package com.team2059.scouting;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,13 +21,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerTextView;
+
 import org.json.simple.JSONArray;
 import org.team2059.scouting.frc_api_client.Competition;
 import org.team2059.scouting.frc_api_client.Event;
 import org.team2059.scouting.frc_api_client.HttpHandler;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 import okhttp3.Call;
@@ -36,7 +50,12 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
 
     TextView textView;
     HttpHandler hh = new HttpHandler();
-    ArrayList<Competition> comps;
+    //ArrayList<Competition> comps;
+
+    ArrayList<Competition> districtComps = new ArrayList<>();
+    ArrayList<Competition> regionalComps = new ArrayList<>();
+    ArrayList<Competition> champComps = new ArrayList<>();
+
     ArrayList<String> display = new ArrayList<>();
     ArrayList<String> display2 = new ArrayList<>();
     String [] teams;
@@ -45,7 +64,6 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
     String [] temp = {"-"};
     Event [] events;
 
-    Spinner spinner;
     Spinner spinner1;
     Spinner spinner2;
     Spinner spinner3;
@@ -57,7 +75,7 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
         setContentView(R.layout.activity_menu);
 
 
-        final String AUTHORIZATION_KEY = "YOUR KEY HERE";
+        final String AUTHORIZATION_KEY = "aamijar:E9B244D8-B9FF-4BD6-9BF7-AA763A72292B";
         final String HOST = "https://frc-api.firstinspires.org/v2.0/";
 
         final String [] CREDENTIALS = AUTHORIZATION_KEY.split(":");
@@ -68,13 +86,20 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
         hh.setToken(AUTHORIZATION_KEY);
 
 
-        //Log.e("HTTP", Integer.toString(hh.getStatus()));
-
-
         final SwipeRefreshLayout refreshLayout = findViewById(R.id.swipe);
 
         textView = findViewById(R.id.menu_text1);
+
         Button button = findViewById(R.id.menu_button);
+        TextView sync = findViewById(R.id.menu_sync);
+
+        Typeface eagleLight = Typeface.createFromAsset(getAssets(), "fonts/eagle_light.otf");
+        Typeface eagleBook = Typeface.createFromAsset(getAssets(), "fonts/eagle_book.otf");
+        Typeface eagleBold = Typeface.createFromAsset(getAssets(), "fonts/eagle_bold.otf");
+
+        button.setTypeface(eagleBook);
+        sync.setTypeface(eagleLight);
+
 
         final String[] array = {"District", "Regional", "Championship"};
 
@@ -82,19 +107,22 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
         spinner1 = findViewById(R.id.menu_spinner1);
         spinner2 =  findViewById(R.id.menu_spinner2);
         spinner3 = findViewById(R.id.menu_spinner3);
-        spinner = findViewById(R.id.spinner1); //main activity
 
         spinner1.setOnItemSelectedListener(this);
+        spinner2.setOnItemSelectedListener(this);
 
 
         ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, R.layout.spinner_item, array);
         ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, R.layout.spinner_item, temp);
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<>(this, R.layout.spinner_item, array);
-
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<>(this, R.layout.spinner_item, temp);
 
         spinner1.setAdapter(adapter1);
         spinner2.setAdapter(adapter2);
         spinner3.setAdapter(adapter3);
+
+
+        /*load comp data from user prefs*/
+        loadData();
 
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -111,7 +139,7 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
 
                 if(selected.equals("District")){
                     if(!selected2.equals("-")){
-                        String districtCode = comps.get(indexDistrict).getCode();
+                        String districtCode = districtComps.get(indexDistrict).getCode();
                         String query = "2020/events?districtCode=" + districtCode;
                         Request request = hh.getRequest(query);
                         startCall(request, "event");
@@ -148,14 +176,20 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
                 else{
                     index = spinner3.getSelectedItemPosition();
                     if(!spinner2.getSelectedItem().equals("-")){
-                        String eventCode = comps.get(indexDistrict).getEvents()[index].getCode();
+                        String eventCode = districtComps.get(indexDistrict).getEvents()[index].getCode();
                         String query = "2020/teams?eventCode=" + eventCode;
                         Request request = hh.getRequest(query);
                         startCall(request, "teamOfEvent");
 
                     }
                     else{
-                        String eventCode = comps.get(index).getCode();
+                        String eventCode;
+                        if(spinner1.getSelectedItem().toString().equals("Regional")){
+                            eventCode = regionalComps.get(index).getCode();
+                        }
+                        else{
+                            eventCode = champComps.get(index).getCode();
+                        }
                         String query = "2020/teams?eventCode=" + eventCode;
                         Request request = hh.getRequest(query);
                         startCall(request, "team");
@@ -179,19 +213,84 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Log.e("SPINNER", Integer.toString(parent.getSelectedItemPosition()));
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Menu.this, R.layout.spinner_item, temp);
-        if(!parent.getSelectedItem().toString().equals("District")){
-            spinner2.setAdapter(adapter);
+        ArrayAdapter<String> tempAdapter = new ArrayAdapter<String>(Menu.this, R.layout.spinner_item, temp);
+
+
+
+
+        if(parent.getSelectedItem().toString().equals("District")){
+            spinner3.setAdapter(tempAdapter);
+            display.clear();
+            for(Competition comp:districtComps)
+            {
+                display.add(comp.getName());
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(Menu.this, R.layout.spinner_item, display);
+            if(!display.isEmpty()){
+                Log.e("NULL", display.toString());
+                spinner2.setAdapter(adapter);
+            }
+
+
+            //showAsDialog((Spinner) parent);
+
+
         }
-        else{
-            spinner3.setAdapter(adapter);
+        else if(parent.getSelectedItem().toString().equals("Regional")){
+            spinner2.setAdapter(tempAdapter);
+            display2.clear();
+            for(Competition comp:regionalComps)
+            {
+                display2.add(comp.getName());
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(Menu.this, R.layout.spinner_item, display2);
+            if(!display2.isEmpty()){
+                spinner3.setAdapter(adapter);
+            }
         }
+        else if(parent.getSelectedItem().toString().equals("Championship")){
+            spinner2.setAdapter(tempAdapter);
+            display2.clear();
+            for(Competition comp:champComps)
+            {
+                display2.add(comp.getName());
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(Menu.this, R.layout.spinner_item, display2);
+            if(!display2.isEmpty()){
+                spinner3.setAdapter(adapter);
+            }
+        }
+        else if(parent.getId() == R.id.menu_spinner2 && !spinner2.getSelectedItem().equals("-")){
+            indexDistrict = spinner2.getSelectedItemPosition();
+
+
+            if(!districtComps.isEmpty() && districtComps.get(indexDistrict).getEvents() != null)
+            {
+                display2.clear();
+                for(Event e :districtComps.get(indexDistrict).getEvents()){
+                    display2.add(e.getName());
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(Menu.this, R.layout.spinner_item, display2);
+                if(!display2.isEmpty()){
+                    spinner3.setAdapter(adapter);
+                }
+            }
+            else{
+                spinner3.setAdapter(tempAdapter);
+            }
+
+        }
+
+
+
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
     /*first events api server call*/
     public void startCall(final Request request, final String key)
     {
@@ -223,43 +322,56 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
                         if(key.equals("district")){
                             display.clear();
                             JSONArray jsonArray = hh.fetchAsJsonArr(myresponse, "districts");
-                            comps = hh.getDistricts(jsonArray);
+                            districtComps = hh.getDistricts(jsonArray);
+
                         }
                         else if(key.equals("regional")){
                             display2.clear();
                             JSONArray jsonArray = hh.fetchAsJsonArr(myresponse, "Events");
-                            comps = hh.getRegionals(jsonArray);
+                            regionalComps = hh.getRegionals(jsonArray);
                         }
                         else if(key.equals("championship")){
                             display2.clear();
                             JSONArray jsonArray = hh.fetchAsJsonArr(myresponse, "Events");
-                            comps = hh.getChampionships(jsonArray);
+                            champComps = hh.getChampionships(jsonArray);
                         }
                         else if(key.equals("team")){
                             JSONArray jsonArray = hh.fetchAsJsonArr(myresponse, "teams");
-                            teams = hh.getTeams(comps.get(index), jsonArray);
+
+                            if(spinner1.getSelectedItem().equals("Regional")){
+                                teams = hh.getTeams(regionalComps.get(index), jsonArray);
+                            }
+                            else{
+                                teams = hh.getTeams(champComps.get(index), jsonArray);
+                            }
                         }
                         else if(key.equals("event")){
                             display2.clear();
                             JSONArray jsonArray = hh.fetchAsJsonArr(myresponse, "Events");
-                            events = hh.getEvents(comps.get(indexDistrict), jsonArray);
+                            events = hh.getEvents(districtComps.get(indexDistrict), jsonArray);
                         }
                         else{
                             JSONArray jsonArray = hh.fetchAsJsonArr(myresponse, "teams");
-                            teams = hh.getTeams(comps.get(indexDistrict).getEvents()[index], jsonArray);
+                            teams = hh.getTeams(districtComps.get(indexDistrict).getEvents()[index], jsonArray);
                         }
-                        if(!key.equals("team") && !key.equals("event")){
-                            for(Competition comp : comps){
-                                if(key.equals("district")){
-                                    display.add(comp.getName());
-                                }
-                                else{
-                                    display2.add(comp.getName());
-                                }
+
+                        if(key.equals("district")){
+                            for(Competition comp : districtComps){
+                                display.add(comp.getName());
+                            }
+                        }
+                        else if(key.equals("regional")){
+                            for(Competition comp : regionalComps){
+                                display2.add(comp.getName());
+                            }
+                        }
+                        else if(key.equals("championship")){
+                            for(Competition comp : champComps){
+                                display2.add(comp.getName());
                             }
                         }
                         else if(key.equals("event")){
-                            for(Event e : events){
+                            for(Event e : districtComps.get(indexDistrict).getEvents()){
                                 display2.add(e.getName());
                             }
                         }
@@ -271,7 +383,7 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
                     }
 
 
-
+                    /*Run on main thread*/
                     Menu.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -305,9 +417,93 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
                     });
 
                 }
+                /*save comp data in user prefs*/
+                saveData();
             }
         });
     }
+
+
+    public void saveData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        Gson gson = new Gson();
+        String districtCompsJson = gson.toJson(districtComps);
+        String regionalCompsJson = gson.toJson(regionalComps);
+        String champCompsJson = gson.toJson(champComps);
+
+        editor.putString("districtCompsJson", districtCompsJson);
+        editor.putString("regionalCompsJson", regionalCompsJson);
+        editor.putString("champCompsJson", champCompsJson);
+        editor.apply();
+    }
+
+    public void loadData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String districtCompsJson = sharedPreferences.getString("districtCompsJson", null);
+        String regionalCompsJson = sharedPreferences.getString("regionalCompsJson", null);
+        String champCompsJson = sharedPreferences.getString("champCompsJson", null);
+
+        Type type = new TypeToken<ArrayList<Competition>>(){}.getType();
+
+        districtComps = gson.fromJson(districtCompsJson, type);
+        regionalComps = gson.fromJson(regionalCompsJson, type);
+        champComps = gson.fromJson(champCompsJson, type);
+
+        if(districtComps == null) {
+            districtComps = new ArrayList<>();
+        }
+        if(regionalComps == null){
+            regionalComps = new ArrayList<>();
+        }
+        if(champComps == null){
+            champComps = new ArrayList<>();
+        }
+
+    }
+
+
+
+    /*for spinner dialog box
+    * not in use*/
+    public void showAsDialog(final Spinner spinner){
+
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setTitle("Select an Option");
+
+//        LayoutInflater layoutInflater = this.getLayoutInflater();
+//
+//        View view = layoutInflater.inflate(R.layout.spinner_item_test, null);
+//
+//
+//        b.setView(view);
+//
+//        Spinner mSpinner = view.findViewById(R.id.dia_spinner);
+//
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, types);
+//
+//        mSpinner.setAdapter(adapter);
+
+        String [] items = new String[spinner.getAdapter().getCount()];
+
+        for(int i = 0; i < spinner.getAdapter().getCount(); i ++){
+            items[i] = (String) spinner.getAdapter().getItem(i);
+        }
+
+
+        b.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                spinner.setSelection(which);
+            }
+        });
+
+        b.show();
+    }
+
 
 
 }

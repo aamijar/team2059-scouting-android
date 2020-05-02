@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import org.team2059.scouting.frc2020.IrAuto;
 import org.team2059.scouting.frc2020.IrControlPanel;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*Initialize custom spinner with NC FRC teams list*/
         String [] teams = getIntent().getStringArrayExtra("com.team2059.scouting.teams");
+
 
         final Spinner spinner = findViewById(R.id.spinner1);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, teams);
@@ -186,20 +188,23 @@ public class MainActivity extends AppCompatActivity {
                 IrTeleop teleop = new IrTeleop(Integer.parseInt(low_att2.getText().toString()), Integer.parseInt(low_made2.getText().toString()), Integer.parseInt(out_att2.getText().toString()), Integer.parseInt(out_made2.getText().toString()), Integer.parseInt(inn_made2.getText().toString()), controlPanel);
                 IrEndgame endgame = new IrEndgame(switch5.isChecked(), switch4.isChecked(), switch6.isChecked(), switch7.isChecked());
 
-                IrMatch irMatch = new IrMatch(spinner.getSelectedItem().toString(), Integer.parseInt(matchNumber.getText().toString()), 45,
-                        100, 2, "true", auto, teleop, endgame, notes.getText().toString());
-
-
-
-                //Match match = new Match("The Hitchhikers, FRC 2059", 1, 45, 100, 2, true);
-                try
+                if(!matchNumber.getText().toString().equals(""))
                 {
-                    FileManager.writeToJsonFile("TEST_JSON.json", irMatch, context);
+                    IrMatch irMatch = new IrMatch(spinner.getSelectedItem().toString(), Integer.parseInt(matchNumber.getText().toString()), 45,
+                            100, 2, "true", auto, teleop, endgame, notes.getText().toString());
+                    try
+                    {
+                        FileManager.writeToJsonFile("TEST_JSON.json", irMatch, context);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e("fileManager class error", "MainActivity started error");
+                    }
                 }
-                catch (Exception e)
-                {
-                    Log.e("fileManager class error", "MainActivity started error");
+                else{
+                    Toast.makeText(MainActivity.this, "Match Number Missing", Toast.LENGTH_LONG).show();
                 }
+
             }
         });
 
@@ -331,8 +336,11 @@ public class MainActivity extends AppCompatActivity {
     public void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(
-                activity.getCurrentFocus().getWindowToken(), 0);
+
+        View focusedView = activity.getCurrentFocus();
+        if(focusedView!=null){
+            inputMethodManager.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+        }
     }
 
     public void setupUI(View view) {

@@ -54,5 +54,7 @@
     <string name="title2">District Name:</string>
     <string name="title3">Event Name:</string>
 
+    <string name="sync">Sync</string>
+
 
 </resources>
