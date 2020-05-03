@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_new"
+            android:icon="@drawable/ic_add_circle_outline_black"
+            android:title="@string/nav_new" />
+        <item
+            android:id="@+id/nav_open"
+            android:icon="@drawable/ic_folder_black"
+            android:title="@string/nav_open" />
+        <item
+            android:id="@+id/nav_message"
+            android:title="@string/app_name" />
+    </group>
+
+    <item
+        android:id="@+id/nav_other"
+        android:title="@string/nav_other">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_info_black"
+                android:title="@string/nav_about" />
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings_black"
+                android:title="@string/nav_settings" />
+        </menu>
+    </item>
+</menu>

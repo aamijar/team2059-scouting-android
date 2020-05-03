@@ -75,7 +75,7 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
         setContentView(R.layout.activity_menu);
 
 
-        final String AUTHORIZATION_KEY = "aamijar:E9B244D8-B9FF-4BD6-9BF7-AA763A72292B";
+        final String AUTHORIZATION_KEY = "YOUR TOKEN HERE";
         final String HOST = "https://frc-api.firstinspires.org/v2.0/";
 
         final String [] CREDENTIALS = AUTHORIZATION_KEY.split(":");

@@ -8,7 +8,11 @@
 
 package com.team2059.scouting;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Activity;
 import android.content.Context;
@@ -59,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private Switch switch6;
     private Switch switch7;
 
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,21 @@ public class MainActivity extends AppCompatActivity {
 
         //hides keyboard onCreate()
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //getSupportActionBar().setTitle(R.string.logo_title);
+        //getSupportActionBar().setLogo(R.mipmap.hh_launcher_round);
+        //getSupportActionBar().setDisplayUseLogoEnabled(true);
+
+        drawer = findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.nav_drawer_open, R.string.nav_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+
 
         /*Initialize custom spinner with NC FRC teams list*/
         String [] teams = getIntent().getStringArrayExtra("com.team2059.scouting.teams");
@@ -304,6 +324,17 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
     }
+
+    @Override
+    public void onBackPressed(){
+        if(drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else{
+            super.onBackPressed();
+        }
+    }
+
 
     public void openMasterView() {
         Intent intent = new Intent(this, MasterView.class);

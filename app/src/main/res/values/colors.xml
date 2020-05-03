@@ -13,6 +13,8 @@
 
     <color name="lighter_blue">#88ACD3</color>
 
+    <color name="black">#000000</color>
+    <color name="black2">#000000</color>
 
 
 </resources>
