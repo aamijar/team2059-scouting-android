@@ -13,8 +13,14 @@
             android:icon="@drawable/ic_folder_black"
             android:title="@string/nav_open" />
         <item
-            android:id="@+id/nav_message"
-            android:title="@string/app_name" />
+            android:id="@+id/nav_templates"
+            android:icon="@drawable/ic_description_black"
+            android:title="@string/nav_templates" />
+        <item
+            android:id="@+id/nav_bluetooth"
+            android:icon="@drawable/ic_bluetooth_black"
+            android:title="@string/nav_bluetooth" />
+
     </group>
 
     <item

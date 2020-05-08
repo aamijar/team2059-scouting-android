@@ -62,7 +62,7 @@ public class Splash extends AppCompatActivity {
 
     public void openMainActivity()
     {
-        Intent intent = new Intent(this, Menu.class);
+        Intent intent = new Intent(this, NavigationDrawer.class);
         startActivity(intent);
     }
 

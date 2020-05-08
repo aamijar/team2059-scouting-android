@@ -6,6 +6,7 @@
     <string name="letterhead_info">Hitchhikers Logo</string>
     <string name="first_logo">FIRST Logo</string>
     <string name="email">business@team2059.org</string>
+    <string name="website">team2059.org</string>
     <string name="title_bar">The Hitchhikers | FRC Team 2059</string>
 
     <string name="scout_header">Scout Sheet</string>
@@ -61,6 +62,9 @@
     <!--Nav Drawer -->
     <string name="nav_new">New</string>
     <string name="nav_open">Open</string>
+    <string name="nav_bluetooth">Bluetooth</string>
+    <string name="nav_templates">Templates</string>
+
 
     <string name="nav_other">Other</string>
     <string name="nav_about">About</string>
@@ -68,8 +72,6 @@
 
     <string name="nav_drawer_open">Open Navigation Drawer</string>
     <string name="nav_drawer_close">Close Navigation Drawer</string>
-
-    <string name="navvy">nv</string>
 
 
 </resources>

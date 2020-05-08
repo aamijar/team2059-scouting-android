@@ -4,10 +4,12 @@
  * user interface implementation
  *
  * @author Anupam
+ *
  */
 
 package com.team2059.scouting;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,6 +22,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +36,8 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
+
+import com.google.android.material.navigation.NavigationView;
 
 import org.team2059.scouting.frc2020.IrAuto;
 import org.team2059.scouting.frc2020.IrControlPanel;
@@ -65,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawer;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -86,7 +93,11 @@ public class MainActivity extends AppCompatActivity {
         //getSupportActionBar().setLogo(R.mipmap.hh_launcher_round);
         //getSupportActionBar().setDisplayUseLogoEnabled(true);
 
+
         drawer = findViewById(R.id.drawer_layout);
+        //NavigationView navigationView = findViewById(R.id.nav_view);
+        //navigationView.setNavigationItemSelectedListener(this);
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.nav_drawer_open, R.string.nav_drawer_close);
@@ -100,9 +111,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         final Spinner spinner = findViewById(R.id.spinner1);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, teams);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, teams);
 
-        spinner.setAdapter(adapter);
+        //spinner.setAdapter(adapter);
 
 
 
@@ -186,6 +197,8 @@ public class MainActivity extends AppCompatActivity {
 
         Button button = (Button)findViewById(R.id.submit); //submit button
         //Button buttonActivity = (Button) findViewById(R.id.button); //to switch between pages
+        button.setTypeface(eagleBook);
+
 
         final EditText matchNumber = findViewById(R.id.match_number);
         final EditText notes = findViewById(R.id.notes);
@@ -324,6 +337,16 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
     }
+
+//    @Override
+//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//        switch (item.getItemId()){
+//            case R.id.nav_new:
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fra)
+//        }
+//
+//        return true;
+//    }
 
     @Override
     public void onBackPressed(){
