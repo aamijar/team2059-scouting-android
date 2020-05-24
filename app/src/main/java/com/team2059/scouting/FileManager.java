@@ -269,6 +269,19 @@ public class FileManager
 
     }
 
+    public static void makeDir(String dirName, Context context){
+
+        String root = context.getExternalFilesDir(null).getAbsolutePath();
+        File compDir = new File(root + "/" + dirName);
+
+        if(!compDir.exists()){
+            boolean success = compDir.mkdirs();
+            Toast.makeText(context, Boolean.toString(success), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
 
 }
 

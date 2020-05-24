@@ -19,8 +19,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -33,6 +36,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -87,33 +91,52 @@ public class MainActivity extends AppCompatActivity {
         //hides keyboard onCreate()
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
         //getSupportActionBar().setTitle(R.string.logo_title);
         //getSupportActionBar().setLogo(R.mipmap.hh_launcher_round);
         //getSupportActionBar().setDisplayUseLogoEnabled(true);
 
 
-        drawer = findViewById(R.id.drawer_layout);
-        //NavigationView navigationView = findViewById(R.id.nav_view);
-        //navigationView.setNavigationItemSelectedListener(this);
-
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.nav_drawer_open, R.string.nav_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+//        drawer = findViewById(R.id.drawer_layout);
+//        //NavigationView navigationView = findViewById(R.id.nav_view);
+//        //navigationView.setNavigationItemSelectedListener(this);
+//
+//
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+//                R.string.nav_drawer_open, R.string.nav_drawer_close);
+//        drawer.addDrawerListener(toggle);
+//        toggle.syncState();
 
 
 
         /*Initialize custom spinner with NC FRC teams list*/
         String [] teams = getIntent().getStringArrayExtra("com.team2059.scouting.teams");
 
+        String [] teamNames = new String[teams.length];
+
+        for (int i = 0; i < teams.length; i ++){
+            String [] pieces = teams[i].split(",");
+            teamNames[i] = pieces[0] + ", " + pieces[1];
+        }
+
+
+
+
+        ImageView imageView = findViewById(R.id.testimage);
+        //ImageView imageView1 = new ImageView();
+
+        String [] parts = teams[0].split(",");
+
+        byte [] bytes = Base64.decode(parts[2], Base64.DEFAULT);
+
+        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        imageView.setImageBitmap(bmp);
 
         final Spinner spinner = findViewById(R.id.spinner1);
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, teams);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, teamNames);
 
-        //spinner.setAdapter(adapter);
+        spinner.setAdapter(adapter);
 
 
 
@@ -170,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
         Typeface eagleLight = Typeface.createFromAsset(getAssets(), "fonts/eagle_light.otf");
         Typeface eagleBook = Typeface.createFromAsset(getAssets(), "fonts/eagle_book.otf");
         Typeface eagleBold = Typeface.createFromAsset(getAssets(), "fonts/eagle_bold.otf");
+
 
         /*set fonts for switch widgets
         * minSdk < 26 and android:fontFamily gives warning
@@ -338,25 +362,16 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.nav_new:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fra)
-//        }
-//
-//        return true;
-//    }
 
-    @Override
-    public void onBackPressed(){
-        if(drawer.isDrawerOpen(GravityCompat.START)){
-            drawer.closeDrawer(GravityCompat.START);
-        }
-        else{
-            super.onBackPressed();
-        }
-    }
+//    @Override
+//    public void onBackPressed(){
+//        if(drawer.isDrawerOpen(GravityCompat.START)){
+//            drawer.closeDrawer(GravityCompat.START);
+//        }
+//        else{
+//            super.onBackPressed();
+//        }
+//    }
 
 
     public void openMasterView() {

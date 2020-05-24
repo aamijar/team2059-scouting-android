@@ -1,1146 +1,1078 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/hh_blue"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:contentInsetStart="0dp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetStartWithNavigation="0dp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:contentDescription="@string/description"
-                    android:src="@mipmap/hh_launcher"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/title_bar"
-                    android:textColor="@color/text_primary_light"
-                    app:fontFamily="@font/eagle_bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/imageView4"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-        </androidx.appcompat.widget.Toolbar>
-
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0">
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/parentView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                tools:context=".MainActivity">
-
-                <!--            <include layout="@layout/toolbar"/>-->
-
-
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/team_name"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/match_number"
-                    app:layout_constraintTop_toBottomOf="@+id/simple_divider" />
-
-                <View
-                    android:id="@+id/simple_divider4"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="70dp"
-                    android:background="?android:attr/listDivider"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/switch3" />
-
-                <View
-                    android:id="@+id/simple_divider3"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="70dp"
-                    android:background="?android:attr/listDivider"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
-                <View
-                    android:id="@+id/simple_divider2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="50dp"
-                    android:background="?android:attr/listDivider"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/spinner1" />
-
-                <Button
-                    android:id="@+id/submit"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="96dp"
-                    android:layout_marginLeft="96dp"
-                    android:layout_marginEnd="96dp"
-                    android:layout_marginRight="96dp"
-                    android:layout_marginBottom="16dp"
-                    android:text="@string/submit"
-                    android:textAllCaps="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.498"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/app_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/description"
-                    android:textColor="@color/text_primary_dark"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <View
-                    android:id="@+id/simple_divider"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
-                    android:background="?android:attr/listDivider"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/app_desc" />
-
-                <TextView
-                    android:id="@+id/header_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="1dp"
-                    android:text="@string/sheet_auto_header"
-                    android:textSize="16sp"
-                    app:fontFamily="@font/eagle_bold"
-                    app:layout_constraintBottom_toTopOf="@+id/simple_divider2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/header_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="1dp"
-                    android:text="@string/sheet_teleop_header"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_bold"
-                    app:layout_constraintBottom_toTopOf="@+id/simple_divider3"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/header_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="1dp"
-                    android:text="@string/sheet_endgame_header"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_bold"
-                    app:layout_constraintBottom_toTopOf="@+id/simple_divider4"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <EditText
-                    android:id="@+id/notes"
-                    android:layout_width="0dp"
-                    android:layout_height="75dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="150dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginBottom="50dp"
-                    android:autofillHints=""
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:hint="@string/comments_hint"
-                    android:inputType="textMultiLine"
-                    android:textColorHighlight="@color/hh_blue"
-                    android:textColorLink="@color/hh_blue"
-                    android:textCursorDrawable="@color/hh_blue"
-                    android:textSize="12sp"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintBottom_toTopOf="@+id/submit"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/header_3"
-                    app:layout_constraintVertical_bias="0.0"
-                    tools:targetApi="o" />
-
-                <Switch
-                    android:id="@+id/switch1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="25dp"
-
-                    android:switchPadding="7dp"
-                    android:text="@string/init_line"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/simple_divider2" />
-
-                <Switch
-                    android:id="@+id/switch2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="35dp"
-                    android:text="@string/position_control"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-                <Switch
-                    android:id="@+id/switch7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="25dp"
-                    android:text="@string/level"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:theme="@style/Switch"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/increment_up10"
-                    app:layout_constraintTop_toBottomOf="@+id/switch5" />
-
-                <Switch
-                    android:id="@+id/switch5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="25dp"
-                    android:switchPadding="3dp"
-                    android:text="@string/park"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:theme="@style/Switch"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/increment_up10"
-                    app:layout_constraintTop_toBottomOf="@+id/simple_divider4" />
-
-                <Switch
-                    android:id="@+id/switch4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="25dp"
-                    android:switchPadding="3dp"
-                    android:text="@string/climb_att"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/simple_divider4" />
-
-                <Switch
-                    android:id="@+id/switch6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="25dp"
-                    android:text="@string/climb"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/switch4" />
-
-                <Switch
-                    android:id="@+id/switch3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="35dp"
-                    android:text="@string/rotation_control"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:theme="@style/Switch"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/increment_up10"
-                    app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-                <Spinner
-                    android:id="@+id/spinner1"
-                    android:layout_width="175dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginRight="12dp"
-                    android:entries="@array/frc2020_teams"
-                    android:spinnerMode="dialog"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/textView4"
-                    app:layout_constraintTop_toBottomOf="@+id/simple_divider" />
-
-                <EditText
-                    android:id="@+id/match_number"
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="5dp"
-                    android:ems="10"
-                    android:hint="@string/hint_number"
-                    android:importantForAutofill="no"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:paddingBottom="7dp"
-                    android:singleLine="true"
-                    android:textSize="14sp"
-                    app:fontFamily="@font/eagle_book"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/textView3"
-                    app:layout_constraintTop_toBottomOf="@+id/simple_divider" />
-
-                <EditText
-                    android:id="@+id/low_att"
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@android:drawable/editbox_background"
-                    android:ems="10"
-                    android:hint="@string/hint_number"
-                    android:importantForAutofill="no"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:singleLine="true"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/textView9"
-                    app:layout_constraintTop_toBottomOf="@+id/switch1" />
-
-                <EditText
-                    android:id="@+id/low_att2"
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@android:drawable/editbox_background"
-                    android:ems="10"
-                    android:hint="@string/hint_number"
-                    android:importantForAutofill="no"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:singleLine="true"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/textView16"
-                    app:layout_constraintTop_toBottomOf="@+id/simple_divider3" />
-
-                <EditText
-                    android:id="@+id/inn_made2"
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@android:drawable/editbox_background"
-                    android:ems="10"
-                    android:hint="@string/hint_number"
-                    android:importantForAutofill="no"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:singleLine="true"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/textView16"
-                    app:layout_constraintTop_toTopOf="@+id/out_made2" />
-
-                <EditText
-                    android:id="@+id/low_made2"
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@android:drawable/editbox_background"
-                    android:ems="10"
-                    android:hint="@string/hint_number"
-                    android:importantForAutofill="no"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:singleLine="true"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/textView16"
-                    app:layout_constraintTop_toTopOf="@+id/low_att2" />
-
-                <EditText
-                    android:id="@+id/out_att2"
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@android:drawable/editbox_background"
-                    android:ems="10"
-                    android:hint="@string/hint_number"
-                    android:importantForAutofill="no"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:singleLine="true"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/textView16"
-                    app:layout_constraintTop_toTopOf="@+id/low_made2" />
-
-                <EditText
-                    android:id="@+id/out_made2"
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@android:drawable/editbox_background"
-                    android:ems="10"
-                    android:hint="@string/hint_number"
-                    android:importantForAutofill="no"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:singleLine="true"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/textView16"
-                    app:layout_constraintTop_toTopOf="@+id/out_att2" />
-
-                <EditText
-                    android:id="@+id/low_made"
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@android:drawable/editbox_background"
-                    android:ems="10"
-                    android:hint="@string/hint_number"
-                    android:importantForAutofill="no"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:singleLine="true"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/textView9"
-                    app:layout_constraintTop_toTopOf="@+id/low_att" />
-
-                <EditText
-                    android:id="@+id/out_att"
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@android:drawable/editbox_background"
-                    android:ems="10"
-                    android:hint="@string/hint_number"
-                    android:importantForAutofill="no"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:singleLine="true"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/textView9"
-                    app:layout_constraintTop_toTopOf="@+id/low_made" />
-
-                <EditText
-                    android:id="@+id/out_made"
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@android:drawable/editbox_background"
-                    android:ems="10"
-                    android:hint="@string/hint_number"
-                    android:importantForAutofill="no"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:singleLine="true"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/textView9"
-                    app:layout_constraintTop_toTopOf="@+id/out_att" />
-
-                <EditText
-                    android:id="@+id/inn_made"
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@android:drawable/editbox_background"
-                    android:ems="10"
-                    android:hint="@string/hint_number"
-                    android:importantForAutofill="no"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:singleLine="true"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/textView9"
-                    app:layout_constraintTop_toTopOf="@+id/out_made" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/match_number"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/simple_divider" />
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/lower_att"
-                    android:textColor="@color/text_primary_dark"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintBottom_toBottomOf="@+id/low_att"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/lower_att"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintBottom_toBottomOf="@+id/low_att2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/lower_made"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintBottom_toBottomOf="@+id/low_made"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/lower_made"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintBottom_toBottomOf="@+id/low_made2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/outer_att"
-                    android:textColor="@color/text_primary_dark"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintBottom_toBottomOf="@+id/out_att"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/outer_att"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintBottom_toBottomOf="@+id/out_att2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/outer_made"
-                    android:textColor="@color/text_primary_dark"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintBottom_toBottomOf="@+id/out_made"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView17"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/outer_made"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintBottom_toBottomOf="@+id/out_made2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/inner_made"
-                    android:textColor="@color/text_primary_dark"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintBottom_toBottomOf="@+id/inn_made"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView19"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/inner_made"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/eagle_light"
-                    app:layout_constraintBottom_toBottomOf="@+id/inn_made2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/increment_up"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="23dp"
-                    android:background="@drawable/ic_add_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    android:theme="@style/AppTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/low_att"
-                    app:layout_constraintTop_toBottomOf="@+id/switch1" />
-
-                <ImageButton
-                    android:id="@+id/increment_up6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="23dp"
-                    android:background="@drawable/ic_add_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    android:theme="@style/AppTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/low_att2"
-                    app:layout_constraintTop_toBottomOf="@+id/simple_divider3" />
-
-                <ImageButton
-                    android:id="@+id/increment_up7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_add_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    android:theme="@style/AppTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/low_att2"
-                    app:layout_constraintTop_toTopOf="@+id/increment_up6" />
-
-                <ImageButton
-                    android:id="@+id/increment_up8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_add_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    android:theme="@style/AppTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/low_att2"
-                    app:layout_constraintTop_toTopOf="@+id/increment_up7" />
-
-                <ImageButton
-                    android:id="@+id/increment_up9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_add_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    android:theme="@style/AppTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/low_att2"
-                    app:layout_constraintTop_toTopOf="@+id/increment_up8" />
-
-                <ImageButton
-                    android:id="@+id/increment_up10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_add_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    android:theme="@style/AppTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/low_att2"
-                    app:layout_constraintTop_toTopOf="@+id/increment_up9" />
-
-                <ImageButton
-                    android:id="@+id/increment_up2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_add_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/low_att"
-                    app:layout_constraintTop_toTopOf="@+id/increment_up" />
-
-                <ImageButton
-                    android:id="@+id/increment_up3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_add_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/low_att"
-                    app:layout_constraintTop_toTopOf="@+id/increment_up2" />
-
-                <ImageButton
-                    android:id="@+id/increment_up4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_add_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/low_att"
-                    app:layout_constraintTop_toTopOf="@+id/increment_up3" />
-
-                <ImageButton
-                    android:id="@+id/increment_up5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_add_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/low_att"
-                    app:layout_constraintTop_toTopOf="@+id/increment_up4" />
-
-                <ImageButton
-                    android:id="@+id/increment_down"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="23dp"
-                    android:background="@drawable/ic_remove_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/increment_up"
-                    app:layout_constraintTop_toBottomOf="@+id/switch1" />
-
-                <ImageButton
-                    android:id="@+id/increment_down6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="23dp"
-                    android:background="@drawable/ic_remove_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/increment_up6"
-                    app:layout_constraintTop_toBottomOf="@+id/simple_divider3" />
-
-                <ImageButton
-                    android:id="@+id/increment_down7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_remove_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/increment_up6"
-                    app:layout_constraintTop_toTopOf="@+id/increment_down6" />
-
-                <ImageButton
-                    android:id="@+id/increment_down8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_remove_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/increment_up6"
-                    app:layout_constraintTop_toTopOf="@+id/increment_down7" />
-
-                <ImageButton
-                    android:id="@+id/increment_down9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_remove_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/increment_up6"
-                    app:layout_constraintTop_toTopOf="@+id/increment_down8" />
-
-                <ImageButton
-                    android:id="@+id/increment_down10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_remove_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/increment_up6"
-                    app:layout_constraintTop_toTopOf="@+id/increment_down9" />
-
-                <ImageButton
-                    android:id="@+id/increment_down2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_remove_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/increment_up"
-                    app:layout_constraintTop_toTopOf="@+id/increment_down" />
-
-                <ImageButton
-                    android:id="@+id/increment_down3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_remove_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/increment_up"
-                    app:layout_constraintTop_toTopOf="@+id/increment_down2" />
-
-                <ImageButton
-                    android:id="@+id/increment_down4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_remove_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/increment_up"
-                    app:layout_constraintTop_toTopOf="@+id/increment_down3" />
-
-                <ImageButton
-                    android:id="@+id/increment_down5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@drawable/ic_remove_circle_outline_black_24dp"
-                    android:contentDescription="@string/description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/increment_up"
-                    app:layout_constraintTop_toTopOf="@+id/increment_down4" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </ScrollView>
-
-        <!--        <FrameLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:id="@+id/fragment_container">-->
-
-        <!--        </FrameLayout>-->
-
-
-    </LinearLayout>
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
+    <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/nav_header"
-        app:itemIconTint="@color/black"
-        app:itemTextColor="@color/black"
-        app:menu="@menu/drawer_menu" />
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
-</androidx.drawerlayout.widget.DrawerLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/parentView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            tools:context=".MainActivity">
+
+            <!--            <include layout="@layout/toolbar"/>-->
+
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="45dp"
+                android:layout_marginLeft="45dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/team_name"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/match_number"
+                app:layout_constraintTop_toBottomOf="@+id/simple_divider" />
+
+            <View
+                android:id="@+id/simple_divider4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="70dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/switch3" />
+
+            <View
+                android:id="@+id/simple_divider3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="70dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+            <View
+                android:id="@+id/simple_divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="50dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinner1" />
+
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="96dp"
+                android:layout_marginLeft="96dp"
+                android:layout_marginEnd="96dp"
+                android:layout_marginRight="96dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/submit"
+                android:textAllCaps="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/app_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/description"
+                android:textColor="@color/text_primary_dark"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/simple_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/app_desc" />
+
+            <TextView
+                android:id="@+id/header_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="1dp"
+                android:text="@string/sheet_auto_header"
+                android:textSize="16sp"
+                app:fontFamily="@font/eagle_bold"
+                app:layout_constraintBottom_toTopOf="@+id/simple_divider2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/header_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="1dp"
+                android:text="@string/sheet_teleop_header"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_bold"
+                app:layout_constraintBottom_toTopOf="@+id/simple_divider3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/header_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="1dp"
+                android:text="@string/sheet_endgame_header"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_bold"
+                app:layout_constraintBottom_toTopOf="@+id/simple_divider4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/notes"
+                android:layout_width="0dp"
+                android:layout_height="75dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="150dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="50dp"
+                android:autofillHints=""
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="@string/comments_hint"
+                android:inputType="textMultiLine"
+                android:textColorHighlight="@color/hh_blue"
+                android:textColorLink="@color/hh_blue"
+                android:textCursorDrawable="@color/hh_blue"
+                android:textSize="12sp"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintBottom_toTopOf="@+id/submit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/header_3"
+                app:layout_constraintVertical_bias="0.0"
+                tools:targetApi="o" />
+
+            <Switch
+                android:id="@+id/switch1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="25dp"
+
+                android:switchPadding="7dp"
+                android:text="@string/init_line"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/simple_divider2" />
+
+            <Switch
+                android:id="@+id/switch2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="35dp"
+                android:text="@string/position_control"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+            <Switch
+                android:id="@+id/switch7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:text="@string/level"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:theme="@style/Switch"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/increment_up10"
+                app:layout_constraintTop_toBottomOf="@+id/switch5" />
+
+            <Switch
+                android:id="@+id/switch5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:switchPadding="3dp"
+                android:text="@string/park"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:theme="@style/Switch"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/increment_up10"
+                app:layout_constraintTop_toBottomOf="@+id/simple_divider4" />
+
+            <Switch
+                android:id="@+id/switch4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="25dp"
+                android:switchPadding="3dp"
+                android:text="@string/climb_att"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/simple_divider4" />
+
+            <Switch
+                android:id="@+id/switch6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="25dp"
+                android:text="@string/climb"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/switch4" />
+
+            <Switch
+                android:id="@+id/switch3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="35dp"
+                android:text="@string/rotation_control"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:theme="@style/Switch"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/increment_up10"
+                app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="175dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:entries="@array/frc2020_teams"
+                android:spinnerMode="dialog"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView4"
+                app:layout_constraintTop_toBottomOf="@+id/simple_divider" />
+
+            <EditText
+                android:id="@+id/match_number"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="5dp"
+                android:ems="10"
+                android:hint="@string/hint_number"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="3"
+                android:paddingBottom="7dp"
+                android:singleLine="true"
+                android:textSize="14sp"
+                app:fontFamily="@font/eagle_book"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView3"
+                app:layout_constraintTop_toBottomOf="@+id/simple_divider" />
+
+            <EditText
+                android:id="@+id/low_att"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="20dp"
+                android:background="@android:drawable/editbox_background"
+                android:ems="10"
+                android:hint="@string/hint_number"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="3"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:singleLine="true"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView9"
+                app:layout_constraintTop_toBottomOf="@+id/switch1" />
+
+            <EditText
+                android:id="@+id/low_att2"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="20dp"
+                android:background="@android:drawable/editbox_background"
+                android:ems="10"
+                android:hint="@string/hint_number"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="3"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:singleLine="true"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView16"
+                app:layout_constraintTop_toBottomOf="@+id/simple_divider3" />
+
+            <EditText
+                android:id="@+id/inn_made2"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="44dp"
+                android:background="@android:drawable/editbox_background"
+                android:ems="10"
+                android:hint="@string/hint_number"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="3"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:singleLine="true"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView16"
+                app:layout_constraintTop_toTopOf="@+id/out_made2" />
+
+            <EditText
+                android:id="@+id/low_made2"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="44dp"
+                android:background="@android:drawable/editbox_background"
+                android:ems="10"
+                android:hint="@string/hint_number"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="3"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:singleLine="true"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView16"
+                app:layout_constraintTop_toTopOf="@+id/low_att2" />
+
+            <EditText
+                android:id="@+id/out_att2"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="44dp"
+                android:background="@android:drawable/editbox_background"
+                android:ems="10"
+                android:hint="@string/hint_number"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="3"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:singleLine="true"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView16"
+                app:layout_constraintTop_toTopOf="@+id/low_made2" />
+
+            <EditText
+                android:id="@+id/out_made2"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="44dp"
+                android:background="@android:drawable/editbox_background"
+                android:ems="10"
+                android:hint="@string/hint_number"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="3"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:singleLine="true"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView16"
+                app:layout_constraintTop_toTopOf="@+id/out_att2" />
+
+            <EditText
+                android:id="@+id/low_made"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="44dp"
+                android:background="@android:drawable/editbox_background"
+                android:ems="10"
+                android:hint="@string/hint_number"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="3"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:singleLine="true"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView9"
+                app:layout_constraintTop_toTopOf="@+id/low_att" />
+
+            <EditText
+                android:id="@+id/out_att"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="44dp"
+                android:background="@android:drawable/editbox_background"
+                android:ems="10"
+                android:hint="@string/hint_number"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="3"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:singleLine="true"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView9"
+                app:layout_constraintTop_toTopOf="@+id/low_made" />
+
+            <EditText
+                android:id="@+id/out_made"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="44dp"
+                android:background="@android:drawable/editbox_background"
+                android:ems="10"
+                android:hint="@string/hint_number"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="3"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:singleLine="true"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView9"
+                app:layout_constraintTop_toTopOf="@+id/out_att" />
+
+            <EditText
+                android:id="@+id/inn_made"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="44dp"
+                android:background="@android:drawable/editbox_background"
+                android:ems="10"
+                android:hint="@string/hint_number"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="3"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:singleLine="true"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView9"
+                app:layout_constraintTop_toTopOf="@+id/out_made" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/match_number"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/simple_divider" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/lower_att"
+                android:textColor="@color/text_primary_dark"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintBottom_toBottomOf="@+id/low_att"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/lower_att"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintBottom_toBottomOf="@+id/low_att2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/lower_made"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintBottom_toBottomOf="@+id/low_made"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/lower_made"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintBottom_toBottomOf="@+id/low_made2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/outer_att"
+                android:textColor="@color/text_primary_dark"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintBottom_toBottomOf="@+id/out_att"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/outer_att"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintBottom_toBottomOf="@+id/out_att2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/outer_made"
+                android:textColor="@color/text_primary_dark"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintBottom_toBottomOf="@+id/out_made"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/outer_made"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintBottom_toBottomOf="@+id/out_made2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/inner_made"
+                android:textColor="@color/text_primary_dark"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintBottom_toBottomOf="@+id/inn_made"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/inner_made"
+                android:textStyle="bold"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintBottom_toBottomOf="@+id/inn_made2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageButton
+                android:id="@+id/increment_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="23dp"
+                android:background="@drawable/ic_add_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                android:theme="@style/AppTheme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/low_att"
+                app:layout_constraintTop_toBottomOf="@+id/switch1" />
+
+            <ImageButton
+                android:id="@+id/increment_up6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="23dp"
+                android:background="@drawable/ic_add_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                android:theme="@style/AppTheme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/low_att2"
+                app:layout_constraintTop_toBottomOf="@+id/simple_divider3" />
+
+            <ImageButton
+                android:id="@+id/increment_up7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_add_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                android:theme="@style/AppTheme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/low_att2"
+                app:layout_constraintTop_toTopOf="@+id/increment_up6" />
+
+            <ImageButton
+                android:id="@+id/increment_up8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_add_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                android:theme="@style/AppTheme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/low_att2"
+                app:layout_constraintTop_toTopOf="@+id/increment_up7" />
+
+            <ImageButton
+                android:id="@+id/increment_up9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_add_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                android:theme="@style/AppTheme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/low_att2"
+                app:layout_constraintTop_toTopOf="@+id/increment_up8" />
+
+            <ImageButton
+                android:id="@+id/increment_up10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_add_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                android:theme="@style/AppTheme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/low_att2"
+                app:layout_constraintTop_toTopOf="@+id/increment_up9" />
+
+            <ImageButton
+                android:id="@+id/increment_up2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_add_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/low_att"
+                app:layout_constraintTop_toTopOf="@+id/increment_up" />
+
+            <ImageButton
+                android:id="@+id/increment_up3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_add_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/low_att"
+                app:layout_constraintTop_toTopOf="@+id/increment_up2" />
+
+            <ImageButton
+                android:id="@+id/increment_up4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_add_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/low_att"
+                app:layout_constraintTop_toTopOf="@+id/increment_up3" />
+
+            <ImageButton
+                android:id="@+id/increment_up5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_add_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/low_att"
+                app:layout_constraintTop_toTopOf="@+id/increment_up4" />
+
+            <ImageButton
+                android:id="@+id/increment_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="23dp"
+                android:background="@drawable/ic_remove_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/increment_up"
+                app:layout_constraintTop_toBottomOf="@+id/switch1" />
+
+            <ImageButton
+                android:id="@+id/increment_down6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="23dp"
+                android:background="@drawable/ic_remove_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/increment_up6"
+                app:layout_constraintTop_toBottomOf="@+id/simple_divider3" />
+
+            <ImageButton
+                android:id="@+id/increment_down7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_remove_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/increment_up6"
+                app:layout_constraintTop_toTopOf="@+id/increment_down6" />
+
+            <ImageButton
+                android:id="@+id/increment_down8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_remove_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/increment_up6"
+                app:layout_constraintTop_toTopOf="@+id/increment_down7" />
+
+            <ImageButton
+                android:id="@+id/increment_down9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_remove_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/increment_up6"
+                app:layout_constraintTop_toTopOf="@+id/increment_down8" />
+
+            <ImageButton
+                android:id="@+id/increment_down10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_remove_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/increment_up6"
+                app:layout_constraintTop_toTopOf="@+id/increment_down9" />
+
+            <ImageButton
+                android:id="@+id/increment_down2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_remove_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/increment_up"
+                app:layout_constraintTop_toTopOf="@+id/increment_down" />
+
+            <ImageButton
+                android:id="@+id/increment_down3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_remove_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/increment_up"
+                app:layout_constraintTop_toTopOf="@+id/increment_down2" />
+
+            <ImageButton
+                android:id="@+id/increment_down4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_remove_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/increment_up"
+                app:layout_constraintTop_toTopOf="@+id/increment_down3" />
+
+            <ImageButton
+                android:id="@+id/increment_down5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/ic_remove_circle_outline_black_24dp"
+                android:contentDescription="@string/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/increment_up"
+                app:layout_constraintTop_toTopOf="@+id/increment_down4" />
+
+            <ImageView
+                android:id="@+id/testimage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:layout_constraintBottom_toTopOf="@+id/switch3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@mipmap/hh_launcher"
+                android:scaleType="fitXY"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
