@@ -22,12 +22,17 @@ import java.io.File;
 
 
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 import android.content.Context;
 
 import android.media.MediaScannerConnection;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -45,6 +50,7 @@ import org.team2059.scouting.frc2020.IrMatch;
 
 public class FileManager
 {
+    private static final String TAG = "FileManager";
     //not in use, works on desktop os
     public static void writeFile(ArrayList<String> stats) throws IOException
     {
@@ -278,7 +284,32 @@ public class FileManager
             boolean success = compDir.mkdirs();
             Toast.makeText(context, Boolean.toString(success), Toast.LENGTH_SHORT).show();
         }
+        else{
+            Toast.makeText(context, "Directory already exists", Toast.LENGTH_SHORT).show();
+        }
 
+
+
+    }
+
+    public static ArrayList<String> getDirs(Context context){
+        String root = context.getExternalFilesDir(null).getAbsolutePath();
+
+
+        File [] files = new File(root).listFiles();
+
+        ArrayList<String> names = new ArrayList<>();
+
+        for(File file : files){
+
+
+            Date date = new Date(file.lastModified());
+
+
+            names.add(file.getName() + ", " + date.toString());
+            //Toast.makeText(context, date.toString(), Toast.LENGTH_SHORT).show();
+        }
+        return names;
     }
 
 

@@ -34,12 +34,12 @@ public class NewFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//
-//                ft.replace(R.id.fragment_container, new OpenFragment(), "Open Fragment TAG");
-//                ft.commit();
-//                ft.addToBackStack(null);
-                FileManager.makeDir(editText.getText().toString(), getContext());
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+
+                ft.replace(R.id.fragment_container, new MenuFragment(), "Open Fragment TAG");
+                ft.commit();
+                ft.addToBackStack(null);
+                //FileManager.makeDir(editText.getText().toString(), getContext());
                 //openMainActivity();
             }
         });

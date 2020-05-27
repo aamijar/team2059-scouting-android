@@ -72,6 +72,7 @@ public class BluetoothActivity extends AppCompatActivity{
     private ArrayAdapter<String> arrayAdapter;
 
     private Typeface eagleLight;
+
     private Typeface eagleBook;
 
     @Override
