@@ -2,18 +2,22 @@ package com.team2059.scouting;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -28,10 +32,13 @@ import org.team2059.scouting.frc2020.IrEndgame;
 import org.team2059.scouting.frc2020.IrMatch;
 import org.team2059.scouting.frc2020.IrTeleop;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 public class MainFragment extends Fragment {
 
-    private Activity a_activity;
-    private View a_view;
+    private Activity activity;
+    private View view;
 
     private EditText low_att;
     private EditText low_made;
@@ -45,13 +52,54 @@ public class MainFragment extends Fragment {
     private EditText out_made2;
     private EditText inn_made2;
 
+    private String [] teams;
+    private String dirName;
+
+    private static final String ARG_TEAMS = "arg_teams";
+    private static final String ARG_DIRNAME = "arg_dirName";
+    private static  final String ARG_HANDLERS = "arg_handlers";
+
+
+    private Spinner spinner;
+
+    private ArrayList<BluetoothHandler> bluetoothHandlers;
+
+
+    static MainFragment newInstance(String[] teams, String dirName, ArrayList<BluetoothHandler> bluetoothHandlers) {
+        MainFragment mainFragment = new MainFragment();
+        Bundle args = new Bundle();
+        args.putStringArray(ARG_TEAMS, teams);
+        args.putString(ARG_DIRNAME, dirName);
+        //args.putSerializable(ARG_HANDLERS, bluetoothHandlers);
+
+        args.putParcelableArrayList(ARG_HANDLERS, bluetoothHandlers);
+
+        mainFragment.setArguments(args);
+        return mainFragment;
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_main, container, false);
-        a_view = v;
+        view = v;
+
         setupUI(v.findViewById(R.id.parentView));
-        final Spinner spinner = v.findViewById(R.id.spinner1);
+
+        spinner = v.findViewById(R.id.spinner1);
+
+        if(getArguments() != null){
+            teams = getArguments().getStringArray(ARG_TEAMS);
+            dirName = getArguments().getString(ARG_DIRNAME);
+            if(teams != null && teams.length != 0){
+                updateTeams();
+            }
+
+            //bluetoothHandlers = (ArrayList<BluetoothHandler>) getArguments().getSerializable(ARG_HANDLERS);
+            bluetoothHandlers = getArguments().getParcelableArrayList(ARG_HANDLERS);
+        }
+
 
         /*Initialize editText number widgets with value of 0*/
         low_att = v.findViewById(R.id.low_att);
@@ -99,11 +147,10 @@ public class MainFragment extends Fragment {
         ImageButton button19 = v.findViewById(R.id.increment_up10);
         ImageButton button20 = v.findViewById(R.id.increment_down10);
 
-
         /*Define Fonts from assets folder NOT from /res/font */
-        Typeface eagleLight = Typeface.createFromAsset(getActivity().getAssets(), "fonts/eagle_light.otf");
-        Typeface eagleBook = Typeface.createFromAsset(getActivity().getAssets(), "fonts/eagle_book.otf");
-        Typeface eagleBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/eagle_bold.otf");
+        Typeface eagleLight = Typeface.createFromAsset(activity.getAssets(), "fonts/eagle_light.otf");
+        Typeface eagleBook = Typeface.createFromAsset(activity.getAssets(), "fonts/eagle_book.otf");
+        //Typeface eagleBold = Typeface.createFromAsset(activity.getAssets(), "fonts/eagle_bold.otf");
 
 
         final Switch switch1 = v.findViewById(R.id.switch1);
@@ -132,7 +179,7 @@ public class MainFragment extends Fragment {
         final EditText notes = v.findViewById(R.id.notes);
 
 
-        final Context context = getActivity();
+
 
 
 
@@ -155,7 +202,7 @@ public class MainFragment extends Fragment {
                             100, 2, "true", auto, teleop, endgame, notes.getText().toString());
                     try
                     {
-                        FileManager.writeToJsonFile("TEST_JSON.json", irMatch, context);
+                        FileManager.writeToJsonFile(dirName + "/Competition.json", irMatch, activity);
                     }
                     catch (Exception e)
                     {
@@ -173,11 +220,25 @@ public class MainFragment extends Fragment {
 
         button1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementUp(low_att);}
+            {
+                incrementUp(low_att);
+                if(bluetoothHandlers.size() != 0){
+                    bluetoothHandlers.get(0).write("hello");
+                }
+
+
+            }
         });
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementDown(low_att);}
+            {
+                incrementDown(low_att);
+                if(bluetoothHandlers.size() != 0){
+                    bluetoothHandlers.get(1).write("hello");
+                }
+
+
+            }
         });
         button3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
@@ -256,12 +317,10 @@ public class MainFragment extends Fragment {
         });
 
 
-
-
         return v;
     }
 
-    public void incrementUp(EditText editText) {
+    private void incrementUp(EditText editText) {
         int val;
         if(!editText.getText().toString().equals(""))
         {val = Integer.parseInt(editText.getText().toString());}
@@ -271,7 +330,7 @@ public class MainFragment extends Fragment {
         String str = Integer.toString(val);
         editText.setText(str);
     }
-    public void incrementDown(EditText editText) {
+    private void incrementDown(EditText editText) {
         int val;
         if(!editText.getText().toString().equals("") && Integer.parseInt(editText.getText().toString()) > 0)
         {val = Integer.parseInt(editText.getText().toString());}
@@ -283,7 +342,7 @@ public class MainFragment extends Fragment {
     }
 
 
-    public void hideSoftKeyboard(Activity activity) {
+    private void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
 
@@ -293,14 +352,14 @@ public class MainFragment extends Fragment {
         }
     }
 
-    public void setupUI(View view) {
+    private void setupUI(View view) {
 
         // base case
         if (!(view instanceof EditText)) {
             view.setOnTouchListener(new View.OnTouchListener() {
                 public boolean onTouch(View v, MotionEvent event) {
-                    hideSoftKeyboard(getActivity());
-                    a_view.findViewById(R.id.parentView).requestFocus();
+                    hideSoftKeyboard(activity);
+                    MainFragment.this.view.findViewById(R.id.parentView).requestFocus();
                     return false;
                 }
             });
@@ -320,7 +379,42 @@ public class MainFragment extends Fragment {
         super.onAttach(context);
 
         if(context instanceof Activity){
-            a_activity = (Activity) context;
+            activity = (Activity) context;
         }
     }
+
+    private void updateTeams(){
+        String [] teamNames = new String[teams.length];
+
+        for (int i = 0; i < teams.length; i ++){
+            String [] pieces = teams[i].split(",");
+            teamNames[i] = pieces[0] + ", " + pieces[1];
+        }
+
+        ImageView imageView = view.findViewById(R.id.testimage);
+
+        String [] parts = teams[0].split(",");
+
+        byte [] bytes = Base64.decode(parts[2], Base64.DEFAULT);
+
+        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        imageView.setImageBitmap(bmp);
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spinner_item, teamNames);
+
+        spinner.setAdapter(adapter);
+    }
+
+    public void setBluetoothHandlers(ArrayList<BluetoothHandler> bluetoothHandlers){
+        this.bluetoothHandlers = bluetoothHandlers;
+        //Toast.makeText(activity, "worked", Toast.LENGTH_SHORT).show();
+        Log.e("Bluetooth", "Handler is here");
+
+        String msg = "Test Message From MainFragment Class";
+
+        this.bluetoothHandlers.get(0).write(msg);
+    }
+
+
 }

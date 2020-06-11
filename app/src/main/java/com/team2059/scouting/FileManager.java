@@ -282,19 +282,16 @@ public class FileManager
 
         if(!compDir.exists()){
             boolean success = compDir.mkdirs();
-            Toast.makeText(context, Boolean.toString(success), Toast.LENGTH_SHORT).show();
+            Log.e(TAG, Boolean.toString(success));
         }
         else{
             Toast.makeText(context, "Directory already exists", Toast.LENGTH_SHORT).show();
         }
 
-
-
     }
 
     public static ArrayList<String> getDirs(Context context){
         String root = context.getExternalFilesDir(null).getAbsolutePath();
-
 
         File [] files = new File(root).listFiles();
 
@@ -307,8 +304,8 @@ public class FileManager
 
 
             names.add(file.getName() + ", " + date.toString());
-            //Toast.makeText(context, date.toString(), Toast.LENGTH_SHORT).show();
         }
+
         return names;
     }
 

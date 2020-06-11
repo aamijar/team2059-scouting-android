@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,12 +21,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
 import org.team2059.scouting.frc_api_client.Competition;
 import org.team2059.scouting.frc_api_client.Event;
@@ -36,6 +35,9 @@ import org.team2059.scouting.frc_api_client.HttpHandler;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -46,31 +48,32 @@ import okhttp3.Response;
 
 public class MenuFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
-    Context context;
+    private Context context;
+
+    private HttpHandler hh = new HttpHandler();
+
+    private ArrayList<Competition> districtComps = new ArrayList<>();
+    private ArrayList<Competition> regionalComps = new ArrayList<>();
+    private ArrayList<Competition> champComps = new ArrayList<>();
+
+    private ArrayList<String> display = new ArrayList<>();
+    private ArrayList<String> display2 = new ArrayList<>();
+    private String [] teams;
+    private int index;
+    private int indexDistrict;
+    private String [] temp = {"-"};
+    private Event[] events;
+
+    private Spinner spinner1;
+    private Spinner spinner2;
+    private Spinner spinner3;
 
 
-    TextView textView;
-    HttpHandler hh = new HttpHandler();
-    //ArrayList<Competition> comps;
+    private MenuFragmentListener listener;
 
-    ArrayList<Competition> districtComps = new ArrayList<>();
-    ArrayList<Competition> regionalComps = new ArrayList<>();
-    ArrayList<Competition> champComps = new ArrayList<>();
-
-    ArrayList<String> display = new ArrayList<>();
-    ArrayList<String> display2 = new ArrayList<>();
-    String [] teams;
-    int index;
-    int indexDistrict;
-    String [] temp = {"-"};
-    Event[] events;
-
-    Spinner spinner1;
-    Spinner spinner2;
-    Spinner spinner3;
-
-
-
+    public interface MenuFragmentListener{
+        void onInputSend(String [] input, String dirName);
+    }
 
     @Nullable
     @Override
@@ -93,14 +96,12 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
 
         final SwipeRefreshLayout refreshLayout = view.findViewById(R.id.swipe);
 
-        textView = view.findViewById(R.id.menu_text1);
-
         Button button = view.findViewById(R.id.menu_button);
         TextView sync = view.findViewById(R.id.menu_sync);
 
         Typeface eagleLight = Typeface.createFromAsset(getActivity().getAssets(), "fonts/eagle_light.otf");
         Typeface eagleBook = Typeface.createFromAsset(getActivity().getAssets(), "fonts/eagle_book.otf");
-        Typeface eagleBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/eagle_bold.otf");
+        //Typeface eagleBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/eagle_bold.otf");
 
         button.setTypeface(eagleBook);
         sync.setTypeface(eagleLight);
@@ -215,27 +216,46 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
         return view;
 
     }
-    public void openMainActivity(String [] teams){
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra("com.team2059.scouting.teams", teams);
-        startActivity(intent);
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
 
-//        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//
-//        ft.replace(R.id.fragment_container, new MenuFragment(), "Open Fragment TAG");
-//
-//        ft.commit();
-//        ft.addToBackStack(null);
+        if(context instanceof MenuFragmentListener){
+            listener = (MenuFragmentListener) context;
+        }else {
+            throw new RuntimeException(context.toString() + "must implement MenuFragmentListener");
+        }
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
 
+    private void openMainActivity(String[] teams){
+
+        String dirName = spinner3.getSelectedItem().toString();
+        FileManager.makeDir(dirName, context);
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        Gson gson = new Gson();
+
+        String jsonTeamsArr = gson.toJson(teams);
+        editor.putString("com.team2059.scouting." + dirName, jsonTeamsArr);
+        editor.apply();
+
+        listener.onInputSend(teams, dirName);
     }
 
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Log.e("SPINNER", Integer.toString(parent.getSelectedItemPosition()));
-        ArrayAdapter<String> tempAdapter = new ArrayAdapter<String>(context, R.layout.spinner_item, temp);
+        ArrayAdapter<String> tempAdapter = new ArrayAdapter<>(context, R.layout.spinner_item, temp);
 
 
 
@@ -248,7 +268,7 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
                 display.add(comp.getName());
             }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.spinner_item, display);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, display);
             if(!display.isEmpty()){
                 Log.e("NULL", display.toString());
                 spinner2.setAdapter(adapter);
@@ -266,9 +286,12 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
             {
                 display2.add(comp.getName());
             }
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.spinner_item, display2);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, display2);
             if(!display2.isEmpty()){
                 spinner3.setAdapter(adapter);
+            }
+            else{
+                spinner3.setAdapter(tempAdapter);
             }
         }
         else if(parent.getSelectedItem().toString().equals("Championship")){
@@ -278,9 +301,12 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
             {
                 display2.add(comp.getName());
             }
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.spinner_item, display2);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, display2);
             if(!display2.isEmpty()){
                 spinner3.setAdapter(adapter);
+            }
+            else{
+                spinner3.setAdapter(tempAdapter);
             }
         }
         else if(parent.getId() == R.id.menu_spinner2 && !spinner2.getSelectedItem().equals("-")){
@@ -293,7 +319,7 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
                 for(Event e :districtComps.get(indexDistrict).getEvents()){
                     display2.add(e.getName());
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.spinner_item, display2);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, display2);
                 if(!display2.isEmpty()){
                     spinner3.setAdapter(adapter);
                 }
@@ -438,25 +464,27 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
                             hh.putAvatars(districtComps.get(indexDistrict).getEvents()[index], jsonArray);
                         }
 
-                        if(key.equals("district")){
-                            for(Competition comp : districtComps){
-                                display.add(comp.getName());
-                            }
-                        }
-                        else if(key.equals("regional")){
-                            for(Competition comp : regionalComps){
-                                display2.add(comp.getName());
-                            }
-                        }
-                        else if(key.equals("championship")){
-                            for(Competition comp : champComps){
-                                display2.add(comp.getName());
-                            }
-                        }
-                        else if(key.equals("event")){
-                            for(Event e : districtComps.get(indexDistrict).getEvents()){
-                                display2.add(e.getName());
-                            }
+                        switch (key) {
+                            case "district":
+                                for (Competition comp : districtComps) {
+                                    display.add(comp.getName());
+                                }
+                                break;
+                            case "regional":
+                                for (Competition comp : regionalComps) {
+                                    display2.add(comp.getName());
+                                }
+                                break;
+                            case "championship":
+                                for (Competition comp : champComps) {
+                                    display2.add(comp.getName());
+                                }
+                                break;
+                            case "event":
+                                for (Event e : districtComps.get(indexDistrict).getEvents()) {
+                                    display2.add(e.getName());
+                                }
+                                break;
                         }
 
                     }
@@ -471,26 +499,31 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
                         @Override
                         public void run() {
 
-                            if(key.equals("district")){
-                                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, display);
-                                spinner2.setAdapter(adapter);
-                            }
-                            else if(key.equals("regional") || key.equals("championship") || key.equals("event")){
-                                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, display2);
-                                spinner3.setAdapter(adapter);
-                            }
-                            else if(key.equals("avatar") || key.equals("avatarOfEvent")){
-                                if(spinner1.getSelectedItem().equals("Regional")){
-                                    openMainActivity(regionalComps.get(index).getTeams());
+                            switch (key) {
+                                case "district": {
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, display);
+                                    spinner2.setAdapter(adapter);
+                                    break;
                                 }
-                                else if(spinner1.getSelectedItem().equals("Championship")){
-                                    openMainActivity(champComps.get(index).getTeams());
+                                case "regional":
+                                case "championship":
+                                case "event": {
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, display2);
+                                    spinner3.setAdapter(adapter);
+                                    break;
                                 }
-                                else{
-                                    openMainActivity(districtComps.get(indexDistrict).getEvents()[index].getTeams());
-                                }
+                                case "avatar":
+                                case "avatarOfEvent":
+                                    if (spinner1.getSelectedItem().equals("Regional")) {
+                                        openMainActivity(regionalComps.get(index).getTeams());
+                                    } else if (spinner1.getSelectedItem().equals("Championship")) {
+                                        openMainActivity(champComps.get(index).getTeams());
+                                    } else {
+                                        openMainActivity(districtComps.get(indexDistrict).getEvents()[index].getTeams());
+                                    }
 
-                                //openMainActivity(teams);
+                                    //openMainActivity(teams);
+                                    break;
                             }
 
                         }
@@ -517,7 +550,7 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
     }
 
 
-    public void saveData(){
+    private void saveData(){
         SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -532,7 +565,7 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
         editor.apply();
     }
 
-    public void loadData(){
+    private void loadData(){
         SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String districtCompsJson = sharedPreferences.getString("districtCompsJson", null);

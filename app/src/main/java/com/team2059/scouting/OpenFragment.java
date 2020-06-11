@@ -1,5 +1,7 @@
 package com.team2059.scouting;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
+import android.widget.ImageButton;
 
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,10 +19,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.google.gson.Gson;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -29,17 +34,20 @@ import java.util.Locale;
 
 public class OpenFragment extends Fragment {
 
-    private ListView listView;
-
-    private androidx.gridlayout.widget.GridLayout gridLayout;
-
-    private RecyclerView recyclerView;
     private List<String> fileNames;
     private List<Integer> images;
     private RecyclerViewAdapter adapter;
 
     private ArrayList<String> titles;
     private ArrayList<String> dates;
+
+    private Context context;
+
+    private OpenFragmentListener listener;
+
+    public interface OpenFragmentListener{
+        void onInputOpenSend(String [] input, String dirName);
+    }
 
 
     @Nullable
@@ -48,16 +56,14 @@ public class OpenFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_open, container, false);
 
 
-        Typeface eagleLight = Typeface.createFromAsset(getContext().getAssets(), "fonts/eagle_light.otf");
-        Typeface eagleBook = Typeface.createFromAsset(getContext().getAssets(), "fonts/eagle_book.otf");
+        //Typeface eagleLight = Typeface.createFromAsset(getContext().getAssets(), "fonts/eagle_light.otf");
+        Typeface eagleBook = Typeface.createFromAsset(context.getAssets(), "fonts/eagle_book.otf");
         //Typeface eagleBold = Typeface.createFromAsset(getContext().getAssets(), "fonts/eagle_bold.otf");
 
 
+        RecyclerView recyclerView = view.findViewById(R.id.fragment_open_recylerView);
 
-
-        recyclerView = view.findViewById(R.id.fragment_open_recylerView);
-
-        fileNames = FileManager.getDirs(getContext());
+        fileNames = FileManager.getDirs(context);
         images = new ArrayList<>();
 
         titles = new ArrayList<>();
@@ -74,9 +80,26 @@ public class OpenFragment extends Fragment {
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
 
+        adapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
 
-        Button button = view.findViewById(R.id.fragment_open_sortABC);
-        button.setTypeface(eagleBook);
+                String dirName = titles.get(position);
+                SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+
+                Gson gson = new Gson();
+
+                String jsonTeamsArr = sharedPreferences.getString("com.team2059.scouting." + dirName, null);
+                String [] teams = gson.fromJson(jsonTeamsArr, String[].class);
+
+                listener.onInputOpenSend(teams, dirName);
+            }
+        });
+
+
+
+        ImageButton button = view.findViewById(R.id.fragment_open_sortABC);
+        //button.setTypeface(eagleBook);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,24 +107,25 @@ public class OpenFragment extends Fragment {
             }
         });
 
-        Button button2 = view.findViewById(R.id.fragment_open_sortDate);
-        button2.setTypeface(eagleBook);
+        ImageButton button2 = view.findViewById(R.id.fragment_open_sortDate);
+        //button2.setTypeface(eagleBook);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sortByDateModified();
+
             }
         });
 
         return view;
     }
 
-    public void sortAlphabetical(){
+    private void sortAlphabetical(){
         Collections.sort(fileNames, String.CASE_INSENSITIVE_ORDER);
         parseFileAttrs();
         adapter.notifyDataSetChanged();
     }
-    public void sortByDateModified(){
+    private void sortByDateModified(){
         Collections.sort(fileNames, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
@@ -126,7 +150,7 @@ public class OpenFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    public void parseFileAttrs(){
+    private void parseFileAttrs(){
         images.clear();
         titles.clear();
         dates.clear();
@@ -147,5 +171,22 @@ public class OpenFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
 
+        if(context instanceof OpenFragmentListener){
+            listener = (OpenFragmentListener) context;
+            this.context = context;
+        }else {
+            throw new RuntimeException(context.toString() + "must implement OpenFragmentListener");
+        }
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
 }

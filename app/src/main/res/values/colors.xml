@@ -16,5 +16,6 @@
     <color name="black">#000000</color>
     <color name="black2">#000000</color>
 
-
+    <color name="green_indicator">#3CD511</color>
+    <color name="red_indicator">#E33131</color>
 </resources>
