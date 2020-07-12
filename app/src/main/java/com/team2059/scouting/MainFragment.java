@@ -59,6 +59,7 @@ public class MainFragment extends Fragment {
     private static final String ARG_DIRNAME = "arg_dirName";
     private static  final String ARG_HANDLERS = "arg_handlers";
 
+    private static final String TAG = "MainFragment";
 
     private Spinner spinner;
 

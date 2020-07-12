@@ -167,6 +167,9 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         ft.addToBackStack(null);
     }
 
+
+
+    //not needed, use bluetoothfragment tag to get handlers instead of passing them as params.
     @Override
     public void onBluetoothHandlerAttached(ArrayList<BluetoothHandler> bluetoothHandlers) {
         this.bluetoothHandlers = bluetoothHandlers;

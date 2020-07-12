@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import static android.bluetooth.BluetoothClass.Device.*;
-import static android.bluetooth.BluetoothClass.Device.Major.*;
 
 public class MyExpandableAdapter extends BaseExpandableListAdapter {
 
@@ -24,18 +24,21 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
     private List<String> topics;
     private Map<String, List<BluetoothDevice>> map;
     private ArrayList<BluetoothHandler> bluetoothHandlers;
-
+    private List<Boolean> checkBoxStates;
 
     private static final int GROUP_TYPE_1 = 0;
     private static final int CHILD_TYPE_1 = 0;
     private static final int CHILD_TYPE_2 = 1;
+    private static final int CHILD_TYPE_3 = 2;
 
 
-    public MyExpandableAdapter(Context context, List<String> topics, Map<String, List<BluetoothDevice>> map, ArrayList<BluetoothHandler> bluetoothHandlers){
+    public MyExpandableAdapter(Context context, List<String> topics, Map<String,
+            List<BluetoothDevice>> map, ArrayList<BluetoothHandler> bluetoothHandlers, List<Boolean> checkBoxStates){
         this.context = context;
         this.topics = topics;
         this.map = map;
         this.bluetoothHandlers = bluetoothHandlers;
+        this.checkBoxStates = checkBoxStates;
     }
 
 
@@ -46,6 +49,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
+        //Log.e("TAG", Integer.toString(groupPosition));
         return map.get(topics.get(groupPosition)).size();
     }
 
@@ -56,6 +60,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
+        //Log.e("TAG", groupPosition + "|" + childPosition);
         return map.get(topics.get(groupPosition)).get(childPosition);
     }
 
@@ -113,6 +118,10 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
                     convertView.setTag(childType);
                     break;
                 case CHILD_TYPE_2:
+                    convertView = inflater.inflate(R.layout.listview_subtopic_paired, null);
+                    convertView.setTag(childType);
+                    break;
+                case CHILD_TYPE_3:
                     convertView = inflater.inflate(R.layout.listview_subtopic_connected, null);
                     convertView.setTag(childType);
                     break;
@@ -133,28 +142,42 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
                 ImageView imageView = convertView.findViewById(R.id.subtopic_formatted_imageview);
                 setBluetoothIcon(imageView, device);
 
+                CheckBox checkBox = convertView.findViewById(R.id.checkBox);
+                checkBox.setChecked(checkBoxStates.get(childPosition));
+
                 break;
             case CHILD_TYPE_2:
-                TextView textView1 = convertView.findViewById(R.id.subtopic_connected_textview);
+                TextView textView1 = convertView.findViewById(R.id.subtopic_paired_textview);
                 if(title != null){
                     textView1.setText(title);
                 }
                 else{
                     textView1.setText("Unknown @ " + device.getAddress());
                 }
-                ImageView imageView1 = convertView.findViewById(R.id.subtopic_connected_imageviewdevice);
+                ImageView imageView1 = convertView.findViewById(R.id.subtopic_paired_imageview);
                 setBluetoothIcon(imageView1, device);
+                break;
+            case CHILD_TYPE_3:
+                TextView textView2 = convertView.findViewById(R.id.subtopic_connected_textview);
+                if(title != null){
+                    textView2.setText(title);
+                }
+                else{
+                    textView2.setText("Unknown @ " + device.getAddress());
+                }
+                ImageView imageView2 = convertView.findViewById(R.id.subtopic_connected_imageviewdevice);
+                setBluetoothIcon(imageView2, device);
 
-                ImageView imageView2 = convertView.findViewById(R.id.subtopic_connected_imageview_shimmer);
+                ImageView imageView3 = convertView.findViewById(R.id.subtopic_connected_imageview_shimmer);
 
 
                 boolean connectionStatus = bluetoothHandlers.get(childPosition).getConnectionStatus();
 
                 if(connectionStatus){
-                    imageView2.setColorFilter(context.getResources().getColor(R.color.green_indicator));
+                    imageView3.setColorFilter(context.getResources().getColor(R.color.green_indicator));
                 }
                 else{
-                    imageView2.setColorFilter(context.getResources().getColor(R.color.red_indicator));
+                    imageView3.setColorFilter(context.getResources().getColor(R.color.red_indicator));
                 }
                 break;
         }
@@ -171,11 +194,14 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildType(int groupPosition, int childPosition) {
-        if(groupPosition == 2){
+        if(groupPosition == 0){
+            return CHILD_TYPE_1;
+        }
+        else if(groupPosition == 1){
             return CHILD_TYPE_2;
         }
         else{
-            return CHILD_TYPE_1;
+            return CHILD_TYPE_3;
         }
     }
 
@@ -187,7 +213,8 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildTypeCount() {
-        return 2; // two child types are defined, one with status light, one without
+        return 3; // three child types are defined, one with checkbox,
+        // one without, and one with connection light
     }
 
 

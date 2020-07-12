@@ -11,7 +11,7 @@
         android:id="@+id/bluetooth_listViewPaired"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="35dp"
         android:divider="@null"
         android:groupIndicator="@null"
         android:indicatorLeft="0dip"
@@ -19,59 +19,51 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bluetooth_linearbuttons" />
+        app:layout_constraintTop_toBottomOf="@+id/bluetooth_connect" />
 
-    <LinearLayout
-        android:id="@+id/bluetooth_linearbuttons"
-        android:layout_width="0dp"
+    <Button
+        android:id="@+id/bluetooth_connect"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
-        android:orientation="horizontal"
-        android:weightSum="3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_weight="1"
+        android:background="@drawable/button_outline"
+        android:minHeight="35dp"
+        android:text="Connect"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/bluetooth_scan" />
 
-        <Button
-            android:id="@+id/bluetooth_connect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/custom_button"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="Scan"
-            android:textColor="@color/text_primary_light"
-            android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/bluetooth_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="15dp"
+        android:layout_weight="1"
+        android:background="@drawable/button_outline"
+        android:minHeight="35dp"
+        android:text="Scan"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/bluetooth_start_connection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/custom_button"
-            android:text="Connect"
-            android:textAllCaps="false"
-            android:textColor="@color/text_primary_light" />
-
-        <Button
-            android:id="@+id/bluetooth_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/custom_button"
-            android:text="Send"
-            android:textAllCaps="false"
-            android:textColor="@color/text_primary_light" />
-    </LinearLayout>
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/ic_info_black"
+        android:backgroundTint="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

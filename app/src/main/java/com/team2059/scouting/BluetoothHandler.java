@@ -3,6 +3,7 @@ package com.team2059.scouting;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.os.Parcel;
@@ -19,11 +20,10 @@ import java.util.UUID;
 
 class BluetoothHandler implements Parcelable {
 
-    private final UUID MY_UUID = UUID.fromString("YOUR_UUID_HERE");
+    private final UUID MY_UUID = UUID.fromString("ad9c9615-f9fc-4bf8-8314-2894e4568ad7");
     private String TAG = "BluetoothProtocol";
 
     private Activity activity;
-
 
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothDevice bluetoothDevice;
@@ -34,6 +34,8 @@ class BluetoothHandler implements Parcelable {
 
 
     private boolean connectionStatus = false;
+    private boolean initAttemptDone = false;
+    private boolean delete = false;
 
     private BluetoothHandlerCallback callback;
 
@@ -66,26 +68,16 @@ class BluetoothHandler implements Parcelable {
     }
 
     public interface BluetoothHandlerCallback{
-        void onBluetoothHandlerCallback();
+        void onBluetoothHandlerCallback(BluetoothHandler bluetoothHandler);
+        void onConnectionCallback();
     }
 
 
 
-    BluetoothHandler(Activity activity, BluetoothDevice device, BluetoothHandlerCallback callback){
-        this.activity = activity;
+    BluetoothHandler(Activity activity, BluetoothHandlerCallback callback){
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        //start();
-        this.bluetoothDevice = device;
+        this.activity = activity;
         this.callback = callback;
-//        if(activity instanceof BluetoothHandlerCallback){
-//            this.callback = (BluetoothHandlerCallback) activity;
-//
-//        }
-//        else{
-//            throw new RuntimeException(activity.toString() + " must implement BluetoothHandlerCallback");
-//        }
-
-
     }
 
 
@@ -100,6 +92,7 @@ class BluetoothHandler implements Parcelable {
             try{
                 String APP_NAME = "frc2059 Scouting";
                 tmp = bluetoothAdapter.listenUsingRfcommWithServiceRecord(APP_NAME, MY_UUID);
+
             }
             catch (IOException e){
                 Log.e("Blue", "Socket's listen method failed", e);
@@ -108,7 +101,7 @@ class BluetoothHandler implements Parcelable {
         }
 
         public void run(){
-            BluetoothSocket socket;
+            BluetoothSocket socket = null;
 
             while (true){
                 try{
@@ -120,20 +113,16 @@ class BluetoothHandler implements Parcelable {
                 }
                 if(socket != null){
                     //TODO connection accepted, perform work on separate thread
+                    bluetoothDevice = socket.getRemoteDevice();
                     connected(socket);
                     Log.e(TAG, "CONNECTION ACCEPTED");
-//                    try {
-//                        serverSocket.close();
-//
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
+                    writeMessage(bluetoothDevice.getName() + " has established a bluetooth connection your device");
                     cancel();
                     connectionStatus = true;
-                    callback.onBluetoothHandlerCallback();
+                    callback.onBluetoothHandlerCallback(BluetoothHandler.this);
+                    callback.onConnectionCallback();
                     break;
                 }
-
             }
 
         }
@@ -153,25 +142,29 @@ class BluetoothHandler implements Parcelable {
     /*client side*/
     private class ConnectThread extends Thread {
         private final BluetoothSocket mmSocket;
+
         //private final BluetoothDevice mmDevice;
 
-        ConnectThread(){
+        ConnectThread(BluetoothDevice device){
+            bluetoothDevice = device;
             BluetoothSocket tmp = null;
 
             try{
                 tmp = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID);
+
             } catch (IOException e) {
                 Log.e("Blue", "Socket's create method failed");
             }
             mmSocket = tmp;
-
         }
 
         public void run(){
             bluetoothAdapter.cancelDiscovery();
 
+            Log.e("Blue", Boolean.toString(mmSocket.isConnected()));
             try {
                 mmSocket.connect();
+
             } catch (IOException e) {
                 try{
                     mmSocket.close();
@@ -179,18 +172,23 @@ class BluetoothHandler implements Parcelable {
                     Log.e("Blue", "Could not close the client socket", ex);
                     //progressBar.setVisibility(View.INVISIBLE);
                 }
+                Log.e("Blue", "before stacktrace");
+                e.printStackTrace();
                 Log.e("Blue", "Could not connect to UUID" + MY_UUID);
                 writeMessage("Could not connect to " + bluetoothDevice.getName());
                 //progressBar.setVisibility(View.INVISIBLE);
-                callback.onBluetoothHandlerCallback();
+                callback.onBluetoothHandlerCallback(BluetoothHandler.this);
                 return;
             }
+
             Log.e(TAG, "CLIENT CONNECTION SUCCEEDED");
             connected(mmSocket);
             writeMessage("Successfully connected to " + bluetoothDevice.getName());
             connectionStatus = true;
-            callback.onBluetoothHandlerCallback();
+            callback.onBluetoothHandlerCallback(BluetoothHandler.this);
+            callback.onConnectionCallback();
             //TODO connection succeeded, attempt work in separate thread
+
         }
 
         void cancel(){
@@ -203,9 +201,7 @@ class BluetoothHandler implements Parcelable {
 
     }
 
-
     synchronized void start(){
-
         if(connectThread != null){
             connectThread.cancel();
             connectThread = null;
@@ -214,16 +210,23 @@ class BluetoothHandler implements Parcelable {
             acceptThread = new AcceptThread();
             acceptThread.start();
         }
-
     }
 
-    void startClient(){
+    void startClient(BluetoothDevice device){
         Log.e(TAG, "started Client");
-        connectThread = new ConnectThread();
+
+        if(acceptThread != null){
+            acceptThread.cancel();
+        }
+        if(connectThread != null){
+            connectThread.cancel();
+            connectThread = null;
+        }
+        connectThread = new ConnectThread(device);
         connectThread.start();
     }
 
-    private class ConnectedThread extends Thread{
+    public class ConnectedThread extends Thread{
 
         private final BluetoothSocket mmSocket;
         private final InputStream mmInStream;
@@ -235,13 +238,6 @@ class BluetoothHandler implements Parcelable {
             mmSocket = socket;
             InputStream tmpIn = null;
             OutputStream tmpOut = null;
-
-//            try {
-//                progressBar.setVisibility(View.INVISIBLE);
-//            }catch (Exception e){
-//                e.printStackTrace();
-//            }
-
 
             try{
                 tmpIn = mmSocket.getInputStream();
@@ -276,7 +272,7 @@ class BluetoothHandler implements Parcelable {
                     Log.e("Blue", "Unable to read from input stream", e);
                     cancel(); //TODO confirm socket closes
                     connectionStatus = false;
-                    callback.onBluetoothHandlerCallback();
+                    callback.onBluetoothHandlerCallback(BluetoothHandler.this);
                     break;
                 }
             }
@@ -343,6 +339,19 @@ class BluetoothHandler implements Parcelable {
         return bluetoothDevice;
     }
 
+    public boolean getInitAttemptDone(){
+        return initAttemptDone;
+    }
+    public void setInitAttemptDone(){
+        initAttemptDone = true;
+    }
+
+    public void setDelete(){
+        delete = true;
+    }
+    public boolean getDelete(){
+        return delete;
+    }
 
 
 }

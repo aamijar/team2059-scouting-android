@@ -10,15 +10,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +39,7 @@ import java.util.Map;
 import java.util.Set;
 import android.util.Log;
 
-public class BluetoothFragment extends Fragment {
+public class BluetoothFragment extends Fragment implements ConnectionDialog.ConnectionDialogCallback {
 
     private Activity activity;
     private View v;
@@ -49,26 +53,28 @@ public class BluetoothFragment extends Fragment {
 
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothDevice bluetoothDevice;
+    private ArrayList<BluetoothDevice> bluetoothDevices = new ArrayList<>();
 
     private BluetoothHandler bluetoothHandler;
-
+    private BluetoothHandler currentBluetoothHandler;
 
     private ArrayList<BluetoothHandler> bluetoothHandlers;
     private List<BluetoothDevice> connectedDevices;
 
 
 
-    private ArrayList<BluetoothDevice> deviceList;
+    private List<BluetoothDevice> deviceList;
     private List<BluetoothDevice> pairedDeviceList;
 
     private List<String> deviceIds;
 
     private List<String> topics;
-    private List<String> pairedDevices;
+    //private List<String> pairedDevices;
 
     private Map<String, List<BluetoothDevice>> map;
     private ExpandableListView expandableListView;
     private MyExpandableAdapter expandableListAdapter;
+    private List<Boolean> checkBoxStates = new ArrayList<>();
 
 
     private Typeface eagleLight;
@@ -77,11 +83,42 @@ public class BluetoothFragment extends Fragment {
     private BluetoothFragmentListener listener;
 
 
+    @Override
+    public void onRetryConnection() {
+
+        //since we are retrying getbluetoothdevice should not be null
+        bluetoothHandler.startClient(bluetoothHandler.getBluetoothDevice());
+    }
+    @Override
+    public void onPair() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+            bluetoothDevice.createBond();
+            Toast.makeText(activity, "trying to pair", Toast.LENGTH_SHORT).show();
+
+            IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+            activity.registerReceiver(bondStateReceiver, filter);
+
+            //show paired device in new paired device list
+
+        }
+    }
+    @Override
+    public void onDelete() {
+        if(bluetoothHandler.getConnectedThread() != null){
+            bluetoothHandler.getConnectedThread().cancel();
+        }
+        bluetoothHandler.setDelete();
+
+        bluetoothHandlers.remove(bluetoothHandler);
+        Log.e(TAG, Integer.toString(bluetoothHandlers.size()));
+
+        showConnectionStatus();
+    }
 
     public interface BluetoothFragmentListener{
         void onBluetoothHandlerAttached(ArrayList<BluetoothHandler> bluetoothHandlers);
     }
-
 
 
 
@@ -116,71 +153,88 @@ public class BluetoothFragment extends Fragment {
         topics.add("Available");
         topics.add("Connection Status");
 
-        pairedDevices = new ArrayList<>();
+        //pairedDevices = new ArrayList<>();
         map = new HashMap<>();
         initExListView();
-        expandableListAdapter = new MyExpandableAdapter(activity, topics, map, bluetoothHandlers);
-        showConnectionStatus();
+        expandableListAdapter = new MyExpandableAdapter(activity, topics, map, bluetoothHandlers, checkBoxStates);
+        initBluetoothHandler();
+        //in case of orientation change or screen change
+        if(bluetoothHandlers.size() > 0){
+            showConnectionStatus();
+        }
 
         expandableListView.setAdapter(expandableListAdapter);
+
+        final Button button_connect = view.findViewById(R.id.bluetooth_connect);
+        button_connect.setTypeface(eagleBook);
+
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(final ExpandableListView parent, View v, final int groupPosition, long id) {
+
+                //checks the state before the click is registered to expand or collapse
+                //thus, if groupExpanded is true then user is currently closing the group
+//                if(parent.isGroupExpanded(groupPosition) && topics.get(groupPosition).equals("Paired")){
+//                    bluetoothDevices.clear();
+//                    button_connect.setText("Connect");
+//                }
+                return false;
+            }
+        });
+
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                if(topics.get(groupPosition).equals("Available") && !isDuplicateConnection(deviceList.get(childPosition))){
+
+                if(topics.get(groupPosition).equals("Available")){
                     bluetoothAdapter.cancelDiscovery();
 
                     if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){
-                        deviceList.get(childPosition).createBond();
                         bluetoothDevice = deviceList.get(childPosition);
-
-                        bluetoothHandlers.add(new BluetoothHandler(activity, bluetoothDevice, new BluetoothHandler.BluetoothHandlerCallback() {
-                            @Override
-                            public void onBluetoothHandlerCallback() {
-                                showConnectionStatus();
-                            }
-                        }));
-                        bluetoothHandler = bluetoothHandlers.get(bluetoothHandlers.size() - 1);
-
-                        bluetoothHandler.start();
+                        openDialog(bluetoothDevice);
                     }
                 }
-                else if(topics.get(groupPosition).equals("Paired") && !isDuplicateConnection(pairedDeviceList.get(childPosition))){
+                else if(topics.get(groupPosition).equals("Paired")){
                     bluetoothAdapter.cancelDiscovery();
+                    bluetoothDevice = pairedDeviceList.get(childPosition);
 
-                    if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){
-                        pairedDeviceList.get(childPosition).createBond();
-                        bluetoothDevice = pairedDeviceList.get(childPosition);
+                    CheckBox checkBox = v.findViewById(R.id.checkBox);
+                    checkBox.toggle();
 
-                        bluetoothHandlers.add(new BluetoothHandler(activity, bluetoothDevice, new BluetoothHandler.BluetoothHandlerCallback() {
-                            @Override
-                            public void onBluetoothHandlerCallback() {
-                                showConnectionStatus();
-                            }
-                        }));
-                        bluetoothHandler = bluetoothHandlers.get(bluetoothHandlers.size() - 1);
+                    if(!bluetoothDevices.contains(bluetoothDevice)){
+                        bluetoothDevices.add(bluetoothDevice);
 
-                        bluetoothHandler.start();
                     }
+                    else {
+                        bluetoothDevices.remove(bluetoothDevice);
+                    }
+
+                    if(bluetoothDevices.size() < 1){
+                        button_connect.setText("Connect");
+                    }
+                    else{
+                        button_connect.setText("Connect (" + bluetoothDevices.size() + ")");
+                    }
+
+                    checkBoxStates.set(childPosition, checkBox.isChecked());
+
+
+
+                }
+                else if(topics.get(groupPosition).equals("Connection Status")){
+                    bluetoothHandler = bluetoothHandlers.get(childPosition);
+                    openDialog(bluetoothHandler);
                 }
                 return false;
             }
         });
 
 
-//        arrayAdapter = new ArrayAdapter<>(activity, R.layout.spinner_item, deviceIds);
-//        listView.setAdapter(arrayAdapter);
+        Button button_scan = view.findViewById(R.id.bluetooth_scan);
+        button_scan.setTypeface(eagleBook);
 
 
-        Button button = view.findViewById(R.id.bluetooth_connect);
-        button.setTypeface(eagleBook);
-
-        Button button_connect = view.findViewById(R.id.bluetooth_start_connection);
-        button_connect.setTypeface(eagleBook);
-
-        Button button_send = view.findViewById(R.id.bluetooth_send);
-        button_send.setTypeface(eagleBook);
-
-        button.setOnClickListener(new View.OnClickListener() {
+        button_scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 enableBluetooth();
@@ -191,20 +245,7 @@ public class BluetoothFragment extends Fragment {
         button_connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(bluetoothHandler.getAcceptThread() != null){
-                    startBTConnection();
-                }
-            }
-        });
-
-        button_send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(bluetoothHandler.getConnectedThread() != null){
-                    String input = "Hello"; //hardcoded message
-                    bluetoothHandler.write(input);
-                    listener.onBluetoothHandlerAttached(bluetoothHandlers);
-                }
+                startBTConnection();
             }
         });
 
@@ -226,8 +267,51 @@ public class BluetoothFragment extends Fragment {
 
 
     public void startBTConnection(){
-        Log.e(TAG, "startBTConnection:");
-        bluetoothHandler.startClient();
+//        if(bluetoothDevice != null && isDuplicateConnection(bluetoothDevice) < 0){
+//            Log.e(TAG, "startBTConnection:");
+//            currentBluetoothHandler.startClient(bluetoothDevice);
+//        }
+        if(bluetoothDevices.size() > 0){
+            for(int i = 0; i < bluetoothDevices.size(); i ++){
+
+                if(isDuplicateConnection(bluetoothDevices.get(i)) < 0){
+                    BluetoothHandler bluetoothHandler = new BluetoothHandler(activity, new BluetoothHandler.BluetoothHandlerCallback() {
+                        @Override
+                        public void onBluetoothHandlerCallback(BluetoothHandler bluetoothHandler) {
+                            if(!bluetoothHandlers.contains(bluetoothHandler) && !bluetoothHandler.getDelete()){
+
+//                                int index = isDuplicateConnection(bluetoothHandler.getBluetoothDevice());
+//                                if(index >= 0){
+//                                    bluetoothHandlers.remove(index);
+//                                }
+                                bluetoothHandlers.add(bluetoothHandler);
+                                Log.e("TAG", "moving " + bluetoothHandler.getBluetoothDevice() + "to permanent");
+                            }
+                            showConnectionStatus();
+                        }
+
+                        @Override
+                        public void onConnectionCallback() {
+
+                        }
+                    });
+                    bluetoothHandler.startClient(bluetoothDevices.get(i));
+                }
+                else{
+                    Toast.makeText(activity,
+                            bluetoothDevices.get(i).getName() + " is already connected or attempted to connect", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        else{
+            Toast.makeText(activity, "No device(s) selected", Toast.LENGTH_SHORT).show();
+        }
+//        else if(bluetoothDevice == null){
+//            Toast.makeText(activity, "No device(s) selected", Toast.LENGTH_SHORT).show();
+//        }
+//        else{
+//            Toast.makeText(activity, "Device(s) already connected or attempted to connect", Toast.LENGTH_SHORT).show();
+//        }
     }
 
 
@@ -258,21 +342,26 @@ public class BluetoothFragment extends Fragment {
 
         IntentFilter filterMode = new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
         activity.registerReceiver(receiver, filterMode);
+
     }
 
     public void showPairedDevices(){
-
+        pairedDeviceList.clear();
+        checkBoxStates.clear();
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         if(pairedDevices.size() > 0){
             for(BluetoothDevice device : pairedDevices){
 
-                String str = device.getName() + " " + device.getAddress();
+                //String str = device.getName() + " " + device.getAddress();
 
                 pairedDeviceList.add(device);
-                this.pairedDevices.add(str);
+                //this.pairedDevices.add(str);
+                checkBoxStates.add(false);
+
                 expandableListAdapter.notifyDataSetChanged();
             }
         }
+
     }
 
 
@@ -336,6 +425,34 @@ public class BluetoothFragment extends Fragment {
         }
     };
 
+    private final BroadcastReceiver bondStateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            Log.e(TAG, action);
+
+            if(BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)){
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+                final int state = device.getBondState();
+
+                switch (state){
+                    case BluetoothDevice.BOND_NONE:
+                        break;
+                    case BluetoothDevice.BOND_BONDING:
+                        break;
+                    case BluetoothDevice.BOND_BONDED:
+                        pairedDeviceList.add(device);
+                        expandableListAdapter.notifyDataSetChanged();
+                }
+
+            }
+        }
+    };
+
+
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -362,6 +479,39 @@ public class BluetoothFragment extends Fragment {
         listener = null;
     }
 
+    public void initBluetoothHandler(){
+
+        currentBluetoothHandler = new BluetoothHandler(activity, new BluetoothHandler.BluetoothHandlerCallback() {
+            @Override
+            public void onBluetoothHandlerCallback(BluetoothHandler bluetoothHandler) {
+                if(!bluetoothHandlers.contains(bluetoothHandler) && !bluetoothHandler.getDelete()){
+
+                    int index = isDuplicateConnection(bluetoothHandler.getBluetoothDevice());
+                    if(index >= 0){
+                        bluetoothHandlers.remove(index);
+                    }
+                    bluetoothHandlers.add(bluetoothHandler);
+                    Log.e("TAG", "moving " + bluetoothHandler.getBluetoothDevice() + "to permanent");
+                }
+                showConnectionStatus();
+                if(!bluetoothHandler.getInitAttemptDone()){
+                    bluetoothHandler.setInitAttemptDone();
+                    initBluetoothHandler();
+
+                }
+            }
+
+            @Override
+            public void onConnectionCallback() {
+
+            }
+        });
+
+        currentBluetoothHandler.start();
+    }
+
+
+
 
     public void initExListView(){
         connectedDevices = new ArrayList<>();
@@ -377,6 +527,7 @@ public class BluetoothFragment extends Fragment {
             BluetoothDevice device = bh.getBluetoothDevice();
 
             connectedDevices.add(device);
+            Log.e("BEST", device.toString());
         }
 
         //must be run on correct thread, since showConnectionStatus can be run from
@@ -397,12 +548,28 @@ public class BluetoothFragment extends Fragment {
         outState.putParcelableArrayList(ARG_HANDLERS, bluetoothHandlers);
     }
 
-    public boolean isDuplicateConnection(BluetoothDevice bluetoothDevice){
-        for(BluetoothHandler bh : bluetoothHandlers){
-            if(bh.getBluetoothDevice().equals(bluetoothDevice)){
-                return true;
+    public int isDuplicateConnection(BluetoothDevice bluetoothDevice){
+        for(int i = 0; i < bluetoothHandlers.size(); i ++){
+            if(bluetoothHandlers.get(i).getBluetoothDevice().equals(bluetoothDevice)){
+                return i;
             }
         }
-        return false;
+        return -1;
     }
+
+
+
+
+
+    public void openDialog(BluetoothHandler bluetoothHandler){
+        ConnectionDialog dialog = ConnectionDialog.newInstance(bluetoothHandler);
+        dialog.show(getActivity().getSupportFragmentManager(), "dialog");
+
+    }
+
+    public void openDialog(BluetoothDevice device){
+        ConnectionDialog dialog = ConnectionDialog.newInstance(device);
+        dialog.show(getActivity().getSupportFragmentManager(), "dialog");
+    }
+
 }
