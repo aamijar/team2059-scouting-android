@@ -1,12 +1,18 @@
 package com.team2059.scouting;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -59,7 +65,18 @@ public class TabFragment extends Fragment {
         TabLayout tabLayout = view.findViewById(R.id.tabLayout2);
         tabLayout.setupWithViewPager(viewPager);
 
-
+//        tabLayout.getTabAt(2).setIcon(R.drawable.ic_bluetooth_black);
+//
+//        tabLayout.getTabAt(2).getIcon().setColorFilter(getResources().getColor(R.color.text_primary_dark), PorterDuff.Mode.SRC_IN);
+//
+//
+//
+//
+//        LinearLayout layout = ((LinearLayout) ((LinearLayout) tabLayout.getChildAt(0)).getChildAt(2));
+//        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layout.getLayoutParams();
+//        layoutParams.weight = 0f;
+//        layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+//        layout.setLayoutParams(layoutParams);
 
         return view;
     }

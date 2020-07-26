@@ -1072,6 +1072,28 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@mipmap/hh_launcher" />
 
+            <ImageButton
+                android:id="@+id/mainfrag_bluetooth"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="8dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/button_round"
+                android:scaleType="center"
+                android:tint="@color/text_primary_light"
+                app:layout_constraintBottom_toBottomOf="@+id/submit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/submit"
+                app:layout_constraintTop_toTopOf="@+id/submit"
+                app:srcCompat="@drawable/ic_bluetooth_black"
+                android:elevation="3dp"/>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

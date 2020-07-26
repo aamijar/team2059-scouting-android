@@ -9,20 +9,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 
-import android.os.Handler;
+import android.provider.Settings;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +81,7 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
     private MyExpandableAdapter expandableListAdapter;
     private List<Boolean> checkBoxStates = new ArrayList<>();
 
+    private Button button_connect;
 
     private Typeface eagleLight;
     private Typeface eagleBook;
@@ -125,7 +131,7 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_bluetooth, container, false);
+        final View view = inflater.inflate(R.layout.activity_bluetooth, container, false);
         v = view;
 
 
@@ -165,7 +171,7 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
 
         expandableListView.setAdapter(expandableListAdapter);
 
-        final Button button_connect = view.findViewById(R.id.bluetooth_connect);
+        button_connect = view.findViewById(R.id.bluetooth_connect);
         button_connect.setTypeface(eagleBook);
 
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -249,6 +255,43 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
             }
         });
 
+        final LinearLayout linearLayout = view.findViewById(R.id.bluetooth_linear);
+
+        final ImageButton info = view.findViewById(R.id.bluetooth_info);
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(linearLayout.getVisibility() == View.INVISIBLE){
+                    //linearLayout.setAlpha(0f);
+                    linearLayout.setVisibility(View.VISIBLE);
+
+                    Animation scaleUp = AnimationUtils.loadAnimation(activity, R.anim.scaleup);
+
+                    linearLayout.startAnimation(scaleUp);
+
+                    //info.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                    info.setBackgroundTintList(activity.getResources().getColorStateList(R.color.colorPrimaryDark));
+                    info.setColorFilter(ContextCompat.getColor(activity, R.color.text_primary_light), android.graphics.PorterDuff.Mode.SRC_IN);
+
+                    TextView name = view.findViewById(R.id.bluetooth_devname);
+                    SpannableString nickname = new SpannableString("Your Device Nickname: " + Settings.Secure.getString(activity.getContentResolver(), "bluetooth_name"));
+                    nickname.setSpan(new UnderlineSpan(), 22, nickname.length(), 0);
+                    name.setText(nickname);
+                    TextView address = view.findViewById(R.id.bluetooth_devaddress);
+                    address.setText("You can rename your device in the settings menu");
+                }
+                else{
+                    Animation scaleDown = AnimationUtils.loadAnimation(activity, R.anim.scaledown);
+                    linearLayout.startAnimation(scaleDown);
+                    linearLayout.setVisibility(View.INVISIBLE);
+
+                    info.setBackgroundTintList(activity.getResources().getColorStateList(R.color.text_primary_light));
+                    info.setColorFilter(ContextCompat.getColor(activity, R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.SRC_IN);
+                }
+
+            }
+        });
+
         return view;
     }
 
@@ -328,6 +371,7 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
             startActivityForResult(discoverableIntent, REQUEST_ENABLE_BT);
         }
         else{
+
             showPairedDevices();
             bluetoothAdapter.startDiscovery();
         }
@@ -346,8 +390,11 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
     }
 
     public void showPairedDevices(){
+
         pairedDeviceList.clear();
+        bluetoothDevices.clear();
         checkBoxStates.clear();
+        button_connect.setText("Connect");
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         if(pairedDevices.size() > 0){
             for(BluetoothDevice device : pairedDevices){
@@ -564,6 +611,7 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
     public void openDialog(BluetoothHandler bluetoothHandler){
         ConnectionDialog dialog = ConnectionDialog.newInstance(bluetoothHandler);
         dialog.show(getActivity().getSupportFragmentManager(), "dialog");
+
 
     }
 

@@ -29,8 +29,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 
+import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
 import android.os.Environment;
 import android.util.Log;
@@ -64,19 +67,19 @@ public class FileManager
         writer.close();
     }
     //not in use, works on desktop os
-    public static ArrayList<String> readFile(String path) throws IOException
-    {
-        File sampleFile = new File(path);
-
-        Scanner sc = new Scanner(sampleFile);
-        ArrayList<String> strList = new ArrayList<String>();
-        while(sc.hasNextLine())
-        {
-            strList.add(sc.nextLine());
-        }
-        sc.close();
-        return strList;
-    }
+//    public static ArrayList<String> readFile(String path) throws IOException
+//    {
+//        File sampleFile = new File(path);
+//
+//        Scanner sc = new Scanner(sampleFile);
+//        ArrayList<String> strList = new ArrayList<String>();
+//        while(sc.hasNextLine())
+//        {
+//            strList.add(sc.nextLine());
+//        }
+//        sc.close();
+//        return strList;
+//    }
 
     /**
      *
@@ -275,19 +278,15 @@ public class FileManager
 
     }
 
-    public static void makeDir(String dirName, Context context){
+    public static boolean makeDir(String dirName, Context context){
 
         String root = context.getExternalFilesDir(null).getAbsolutePath();
         File compDir = new File(root + "/" + dirName);
 
         if(!compDir.exists()){
-            boolean success = compDir.mkdirs();
-            Log.e(TAG, Boolean.toString(success));
+            return compDir.mkdirs();
         }
-        else{
-            Toast.makeText(context, "Directory already exists", Toast.LENGTH_SHORT).show();
-        }
-
+        return false;
     }
 
     public static ArrayList<String> getDirs(Context context){
@@ -307,6 +306,100 @@ public class FileManager
         }
 
         return names;
+    }
+
+
+    /**
+     *
+     * @param filepath path of file excluding root
+     * @param context context of application
+     * @return json formatted string, default null
+     */
+    public static String readFile(String filepath, Context context){
+
+        try{
+            FileReader reader = new FileReader(context.getExternalFilesDir(filepath));
+
+            JSONParser jsonParser = new JSONParser();
+            org.json.simple.JSONArray updateJsonArr = (org.json.simple.JSONArray) jsonParser.parse(reader);
+
+            Gson gson = new Gson();
+
+            Type irMatchType = new TypeToken<ArrayList<IrMatch>>(){}.getType();
+            ArrayList<IrMatch> irMatchArr = gson.fromJson(updateJsonArr.toJSONString(), irMatchType);
+
+            return gson.toJson(irMatchArr);
+        }
+        catch (ParseException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    /**
+     * will overwrite any existing file
+     *
+     * @param filePath path of file excluding root
+     * @param jsonString json formatted string
+     * @param context context of application
+     * @throws IOException ex: filePath does not exist, or file cannot be opened
+     */
+    public static void writeToJsonFile(String filePath, String jsonString, Context context) throws IOException{
+        File jsonFile = new File(context.getExternalFilesDir(null), filePath);
+        FileWriter writer = new FileWriter(jsonFile);
+        writer.write(jsonString);
+        writer.close();
+    }
+
+    public static void writeFromBluetoothResponse(String incomingMessage, final BluetoothDevice bluetoothDevice, final Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        final Activity activity = (Activity) context;
+        final String root = incomingMessage.split(",", 2)[0];
+        String jsonString = incomingMessage.split(",", 2)[1];
+        String dirName = sharedPreferences.getString(bluetoothDevice.getAddress(), null);
+        if(dirName == null){
+            boolean dirCreated = false;
+            int count = 0;
+
+
+            while(!dirCreated){
+
+                if(count == 0){
+                    dirName = bluetoothDevice.getName() + "-data";
+                }
+                else {
+                    dirName = bluetoothDevice.getName() + "(" + count + ")-data";
+                }
+                Log.e(TAG, dirName);
+                dirCreated = FileManager.makeDir(root + "/" + dirName, context);
+                count ++;
+            }
+            editor.putString(bluetoothDevice.getAddress(), dirName);
+            editor.apply();
+        }
+        try {
+            FileManager.writeToJsonFile(root + "/" + dirName + "/shared-copy.json", jsonString, context);
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(activity, "Data received from " + bluetoothDevice.getName() + " and placed in > " + root, Toast.LENGTH_LONG).show();
+                }
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context, "Could not generate file from received data", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
 

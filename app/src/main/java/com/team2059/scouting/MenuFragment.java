@@ -237,7 +237,11 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
     private void openMainActivity(String[] teams){
 
         String dirName = spinner3.getSelectedItem().toString();
+
+        //make default directories
         FileManager.makeDir(dirName, context);
+        FileManager.makeDir(dirName + "/my-data", context);
+        FileManager.makeDir(dirName + "/checkpoints", context);
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

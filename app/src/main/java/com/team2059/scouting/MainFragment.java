@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -35,7 +36,7 @@ import org.team2059.scouting.frc2020.IrTeleop;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements BluetoothHandler.BluetoothHandlerCallback {
 
     private Activity activity;
     private View view;
@@ -79,6 +80,15 @@ public class MainFragment extends Fragment {
         return mainFragment;
     }
 
+    @Override
+    public void onBluetoothHandlerCallback(BluetoothHandler bluetoothHandler) {
+
+    }
+
+    @Override
+    public void onConnectionCallback() {
+
+    }
 
     @Nullable
     @Override
@@ -176,6 +186,16 @@ public class MainFragment extends Fragment {
         button.setTypeface(eagleBook);
 
 
+        ImageButton bluetooth_button = v.findViewById(R.id.mainfrag_bluetooth);
+        bluetooth_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO
+
+            }
+        });
+
+
         final EditText matchNumber = v.findViewById(R.id.match_number);
         final EditText notes = v.findViewById(R.id.notes);
 
@@ -203,11 +223,12 @@ public class MainFragment extends Fragment {
                             100, 2, "true", auto, teleop, endgame, notes.getText().toString());
                     try
                     {
-                        FileManager.writeToJsonFile(dirName + "/Competition.json", irMatch, activity);
+                        FileManager.writeToJsonFile(dirName + "/my-data/Competition.json", irMatch, activity);
                     }
                     catch (Exception e)
                     {
                         Log.e("fileManager class error", "MainActivity started error");
+                        Toast.makeText(getActivity(), "File could not be written", Toast.LENGTH_SHORT).show();
                     }
                 }
                 else{

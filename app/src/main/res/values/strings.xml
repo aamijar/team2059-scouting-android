@@ -73,5 +73,6 @@
     <string name="nav_drawer_open">Open Navigation Drawer</string>
     <string name="nav_drawer_close">Close Navigation Drawer</string>
 
-
+    <!--Dialog Box -->
+    <string name="dialog_instructions">Select the competition data to share to this device:</string>
 </resources>

@@ -24,5 +24,12 @@
         <item name="colorAccent">@color/hh_orange</item>
     </style>
 
+    <style name="tab_text" parent="TextAppearance.Design.Tab">
+        <item name="fontFamily">@font/eagle_book</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+
+
 
 </resources>

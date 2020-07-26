@@ -6,11 +6,15 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -232,6 +236,9 @@ class BluetoothHandler implements Parcelable {
         private final InputStream mmInStream;
         private final OutputStream mmOutStream;
 
+        private String completeMessage = null;
+        private int dataSize = 0;
+
         ConnectedThread(BluetoothSocket socket){
 
             Log.e("Blue", "Connected Thread : Starting");
@@ -265,9 +272,45 @@ class BluetoothHandler implements Parcelable {
             while(true){
                 try{
                     bytes = mmInStream.read(mmBuffer);
+                    //bytes = mmInStream.read();
                     final String incomingMessage = new String(mmBuffer, 0, bytes);
-                    Log.e("MESSAGE", "Input Stream: " + incomingMessage);
-                    writeMessage(incomingMessage);
+
+                    if(dataSize == 0){
+//                        if(completeMessage != null){
+//                            Log.e("FINAL MESSAGE", completeMessage);
+//                        }
+                        dataSize = Integer.parseInt(incomingMessage.split(",", 3)[0]);
+                        Log.e("Initial Size", "" + dataSize);
+                        int digits = incomingMessage.split(",", 3)[0].length();
+                        //subtract current bytes from this packet and exclude header digits and comma
+                        dataSize -= bytes - digits - 1;
+                        completeMessage = incomingMessage.substring(digits + 1);
+                        Log.e("MESSAGE", incomingMessage);
+                        Log.e("Modisize", "" + dataSize);
+
+                    }
+                    else{
+                        dataSize -= bytes;
+                        completeMessage += incomingMessage;
+                        Log.e("MESSAGE", incomingMessage);
+                        Log.e("Modisize", "" + dataSize);
+                        if(dataSize == 0){
+                            Log.e("FINAL MESSAGE", completeMessage.substring(completeMessage.length() - 10));
+                            FileManager.writeFromBluetoothResponse(completeMessage, bluetoothDevice, activity);
+                        }
+                    }
+
+
+                    //Log.e("MESSAGE", Integer.toString(bytes));
+                    //Log.e("MESSAGE", Integer.toString(incomingMessage.length()));
+                    //Log.e("MESSAGE", "Input Stream: " + incomingMessage);
+                    //writeMessage(incomingMessage);
+
+                    //writeMessage("received data " + incomingMessage.split(",",3)[0]);
+
+
+
+
                 } catch (IOException e) {
                     Log.e("Blue", "Unable to read from input stream", e);
                     cancel(); //TODO confirm socket closes
@@ -280,10 +323,12 @@ class BluetoothHandler implements Parcelable {
 
         void write(byte[] bytes){
             String text = new String(bytes, Charset.defaultCharset());
-            Log.e("Blue", "writing to output stream" + text);
+            Log.e("Blue", "writing to output stream: " + text);
 
             try {
                 mmOutStream.write(bytes);
+
+
             } catch (IOException e) {
                 Log.e("Blue", "write: Error writing to output stream " + e.getMessage());
             }
@@ -306,9 +351,16 @@ class BluetoothHandler implements Parcelable {
 
     void write(String input){
         byte [] bytes = input.getBytes(Charset.defaultCharset());
+        Log.e("write", Integer.toString(bytes.length));
+        int size = bytes.length;
+        input = size + "," + input;
+
+        bytes = input.getBytes(Charset.defaultCharset());
         Log.e("Blue", "write called");
         connectedThread.write(bytes);
     }
+
+
 
     private void writeMessage(final String msg){
         activity.runOnUiThread(new Runnable() {

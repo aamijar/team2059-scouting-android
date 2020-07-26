@@ -40,9 +40,13 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         if(position == 0){
             return "Scout Sheet";
-        }else {
+        }else if(position == 1){
             return "Analyze";
         }
+        else{
+            return null;
+        }
+
     }
 
 

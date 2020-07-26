@@ -137,7 +137,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
                     textView.setText(title);
                 }
                 else{
-                    textView.setText("Unknown @ " + device.getAddress());
+                    textView.setText("Unknown, Pair to See Device Name");
                 }
                 ImageView imageView = convertView.findViewById(R.id.subtopic_formatted_imageview);
                 setBluetoothIcon(imageView, device);
@@ -152,7 +152,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
                     textView1.setText(title);
                 }
                 else{
-                    textView1.setText("Unknown @ " + device.getAddress());
+                    textView1.setText("Unknown, Pair to See Device Name");
                 }
                 ImageView imageView1 = convertView.findViewById(R.id.subtopic_paired_imageview);
                 setBluetoothIcon(imageView1, device);
@@ -163,7 +163,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
                     textView2.setText(title);
                 }
                 else{
-                    textView2.setText("Unknown @ " + device.getAddress());
+                    textView2.setText("Unknown, Pair to See Device Name");
                 }
                 ImageView imageView2 = convertView.findViewById(R.id.subtopic_connected_imageviewdevice);
                 setBluetoothIcon(imageView2, device);

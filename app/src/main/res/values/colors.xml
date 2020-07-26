@@ -18,4 +18,6 @@
 
     <color name="green_indicator">#3CD511</color>
     <color name="red_indicator">#E33131</color>
+    
+    <color name="transparent">#80FFFFFF</color>
 </resources>
