@@ -15,7 +15,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.0">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -76,6 +76,14 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinner1" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="70dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintTop_toBottomOf="@+id/switch7" />
 
             <Button
                 android:id="@+id/submit"
@@ -148,7 +156,7 @@
                 android:layout_height="75dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginLeft="12dp"
-                android:layout_marginTop="150dp"
+                android:layout_marginTop="50dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginRight="12dp"
                 android:layout_marginBottom="50dp"
@@ -165,7 +173,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/submit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/header_3"
+                app:layout_constraintTop_toBottomOf="@+id/main_radiogroup"
                 app:layout_constraintVertical_bias="0.0"
                 tools:targetApi="o" />
 
@@ -324,7 +332,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:layout_marginLeft="2dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginRight="12dp"
                 android:entries="@array/frc2020_teams"
@@ -1064,8 +1072,8 @@
 
             <ImageView
                 android:id="@+id/testimage"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:scaleType="fitXY"
                 app:layout_constraintBottom_toTopOf="@+id/switch3"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -1084,14 +1092,108 @@
                 android:layout_marginBottom="8dp"
                 android:adjustViewBounds="true"
                 android:background="@drawable/button_round"
+                android:elevation="3dp"
                 android:scaleType="center"
                 android:tint="@color/text_primary_light"
                 app:layout_constraintBottom_toBottomOf="@+id/submit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/submit"
                 app:layout_constraintTop_toTopOf="@+id/submit"
-                app:srcCompat="@drawable/ic_bluetooth_black"
-                android:elevation="3dp"/>
+                app:srcCompat="@drawable/ic_bluetooth_black" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="1dp"
+                android:text="Post Game"
+                android:textSize="16sp"
+                app:fontFamily="@font/eagle_bold"
+                app:layout_constraintBottom_toTopOf="@+id/divider2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Switch
+                android:id="@+id/switch8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="48dp"
+                android:switchPadding="7dp"
+                android:text="Stage 3 Complete:"
+                android:textColor="@color/text_primary_dark"
+                android:textStyle="bold"
+                android:thumb="@drawable/thumb"
+                android:track="@drawable/track"
+                app:fontFamily="@font/eagle_light"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+            <RadioGroup
+                android:id="@+id/main_radiogroup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/switch8"
+                app:layout_constraintTop_toBottomOf="@+id/divider2">
+
+                <RadioButton
+                    android:id="@+id/radioButtonWin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:button="@null"
+                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Win"
+                    android:textColor="@color/text_primary_dark"
+                    android:textStyle="bold"
+                    app:fontFamily="@font/eagle_light" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonTie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:button="@null"
+                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Tie"
+                    android:textColor="@color/text_primary_dark"
+                    android:textStyle="bold"
+                    app:fontFamily="@font/eagle_light" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonLoss"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:button="@null"
+                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Loss"
+                    android:textColor="@color/text_primary_dark"
+                    android:textStyle="bold"
+                    app:fontFamily="@font/eagle_light" />
+
+            </RadioGroup>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

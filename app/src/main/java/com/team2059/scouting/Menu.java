@@ -28,9 +28,9 @@ import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
 
 import org.json.simple.JSONArray;
-import org.team2059.scouting.frc_api_client.Competition;
-import org.team2059.scouting.frc_api_client.Event;
-import org.team2059.scouting.frc_api_client.HttpHandler;
+import org.team2059.scouting.core.frcapiclient.Competition;
+import org.team2059.scouting.core.frcapiclient.Event;
+import org.team2059.scouting.core.frcapiclient.HttpHandler;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -44,7 +44,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-
+@Deprecated
 public class Menu extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
 
@@ -311,15 +311,15 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
                 JSONArray jsonArray = hh.fetchAsJsonArr(myResponse, "teams");
 
                 if(spinner1.getSelectedItem().equals("Regional")){
-                    teams = hh.getTeams(regionalComps.get(index), jsonArray);
+                    //teams = hh.getTeams(regionalComps.get(index), jsonArray);
                 }
                 else{
-                    teams = hh.getTeams(champComps.get(index), jsonArray);
+                    //teams = hh.getTeams(champComps.get(index), jsonArray);
                 }
             }
             else{
                 JSONArray jsonArray = hh.fetchAsJsonArr(myResponse, "teams");
-                teams = hh.getTeams(districtComps.get(indexDistrict).getEvents()[index], jsonArray);
+                //teams = hh.getTeams(districtComps.get(indexDistrict).getEvents()[index], jsonArray);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -378,10 +378,10 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
                             JSONArray jsonArray = hh.fetchAsJsonArr(myresponse, "teams");
 
                             if(spinner1.getSelectedItem().equals("Regional")){
-                                teams = hh.getTeams(regionalComps.get(index), jsonArray);
+                                //teams = hh.getTeams(regionalComps.get(index), jsonArray);
                             }
                             else{
-                                teams = hh.getTeams(champComps.get(index), jsonArray);
+                                //teams = hh.getTeams(champComps.get(index), jsonArray);
                             }
                             String [] code = key.split(":");
                             String query2 = "2020/avatars?eventCode=" + code[1];
@@ -396,7 +396,7 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
                         }
                         else if(key.contains("teamOfEvent:")){
                             JSONArray jsonArray = hh.fetchAsJsonArr(myresponse, "teams");
-                            teams = hh.getTeams(districtComps.get(indexDistrict).getEvents()[index], jsonArray);
+                            //teams = hh.getTeams(districtComps.get(indexDistrict).getEvents()[index], jsonArray);
 
                             String [] code = key.split(":");
                             Log.e("HTTP here", code[1]);
@@ -408,16 +408,16 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
                         else if(key.equals("avatar")){
                             JSONArray jsonArray = hh.fetchAsJsonArr(myresponse, "teams");
                             if(spinner1.getSelectedItem().equals("Regional")){
-                                hh.putAvatars(regionalComps.get(index), jsonArray);
+                                //hh.putAvatars(regionalComps.get(index), jsonArray);
                             }
                             else{
-                                hh.putAvatars(champComps.get(index), jsonArray);
+                                //hh.putAvatars(champComps.get(index), jsonArray);
                             }
                         }
                         else{
                             JSONArray jsonArray = hh.fetchAsJsonArr(myresponse, "teams");
                             Log.e("HTTP here", jsonArray.toString());
-                            hh.putAvatars(districtComps.get(indexDistrict).getEvents()[index], jsonArray);
+                            //hh.putAvatars(districtComps.get(indexDistrict).getEvents()[index], jsonArray);
                         }
 
                         if(key.equals("district")){
@@ -463,13 +463,13 @@ public class Menu extends AppCompatActivity implements AdapterView.OnItemSelecte
                             }
                             else if(key.equals("avatar") || key.equals("avatarOfEvent")){
                                 if(spinner1.getSelectedItem().equals("Regional")){
-                                    openMainActivity(regionalComps.get(index).getTeams());
+                                    //openMainActivity(regionalComps.get(index).getTeams());
                                 }
                                 else if(spinner1.getSelectedItem().equals("Championship")){
-                                    openMainActivity(champComps.get(index).getTeams());
+                                    //openMainActivity(champComps.get(index).getTeams());
                                 }
                                 else{
-                                    openMainActivity(districtComps.get(indexDistrict).getEvents()[index].getTeams());
+                                    //openMainActivity(districtComps.get(indexDistrict).getEvents()[index].getTeams());
                                 }
 
                                 //openMainActivity(teams);

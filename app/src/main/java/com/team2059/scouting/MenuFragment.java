@@ -2,7 +2,6 @@ package com.team2059.scouting;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -26,18 +25,16 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
-import org.team2059.scouting.frc_api_client.Competition;
-import org.team2059.scouting.frc_api_client.Event;
-import org.team2059.scouting.frc_api_client.HttpHandler;
+import org.team2059.scouting.core.Team;
+import org.team2059.scouting.core.frcapiclient.Competition;
+import org.team2059.scouting.core.frcapiclient.Event;
+import org.team2059.scouting.core.frcapiclient.HttpHandler;
+
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -68,11 +65,12 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
     private Spinner spinner2;
     private Spinner spinner3;
 
+    private JSONArray teamJsonArray;
 
     private MenuFragmentListener listener;
 
     public interface MenuFragmentListener{
-        void onInputSend(String [] input, String dirName);
+        void onInputSend(Team [] input, String dirName);
     }
 
     @Nullable
@@ -234,7 +232,7 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
         listener = null;
     }
 
-    private void openMainActivity(String[] teams){
+    private void openMainActivity(Team [] teams){
 
         String dirName = spinner3.getSelectedItem().toString();
 
@@ -343,36 +341,36 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
 
     }
 
-    public void startSyncCall(final Request request, final String key){
-        OkHttpClient client = new OkHttpClient();
-
-        Response response;
-        String myResponse = "";
-        try {
-            response = client.newCall(request).execute();
-            myResponse = response.body().string();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try{
-            if(key.equals("team")){
-                JSONArray jsonArray = hh.fetchAsJsonArr(myResponse, "teams");
-
-                if(spinner1.getSelectedItem().equals("Regional")){
-                    teams = hh.getTeams(regionalComps.get(index), jsonArray);
-                }
-                else{
-                    teams = hh.getTeams(champComps.get(index), jsonArray);
-                }
-            }
-            else{
-                JSONArray jsonArray = hh.fetchAsJsonArr(myResponse, "teams");
-                teams = hh.getTeams(districtComps.get(indexDistrict).getEvents()[index], jsonArray);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+//    public void startSyncCall(final Request request, final String key){
+//        OkHttpClient client = new OkHttpClient();
+//
+//        Response response;
+//        String myResponse = "";
+//        try {
+//            response = client.newCall(request).execute();
+//            myResponse = response.body().string();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try{
+//            if(key.equals("team")){
+//                JSONArray jsonArray = hh.fetchAsJsonArr(myResponse, "teams");
+//
+//                if(spinner1.getSelectedItem().equals("Regional")){
+//                    teams = hh.getTeams(regionalComps.get(index), jsonArray);
+//                }
+//                else{
+//                    teams = hh.getTeams(champComps.get(index), jsonArray);
+//                }
+//            }
+//            else{
+//                JSONArray jsonArray = hh.fetchAsJsonArr(myResponse, "teams");
+//                teams = hh.getTeams(districtComps.get(indexDistrict).getEvents()[index], jsonArray);
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 
 
 
@@ -423,13 +421,13 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
                             champComps = hh.getChampionships(jsonArray);
                         }
                         else if(key.contains("team:")){
-                            JSONArray jsonArray = hh.fetchAsJsonArr(myresponse, "teams");
+                            teamJsonArray = hh.fetchAsJsonArr(myresponse, "teams");
 
                             if(spinner1.getSelectedItem().equals("Regional")){
-                                teams = hh.getTeams(regionalComps.get(index), jsonArray);
+                                //teams = hh.getTeams(regionalComps.get(index), jsonArray);
                             }
                             else{
-                                teams = hh.getTeams(champComps.get(index), jsonArray);
+                                //teams = hh.getTeams(champComps.get(index), jsonArray);
                             }
                             String [] code = key.split(":");
                             String query2 = "2020/avatars?eventCode=" + code[1];
@@ -443,8 +441,8 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
                             events = hh.getEvents(districtComps.get(indexDistrict), jsonArray);
                         }
                         else if(key.contains("teamOfEvent:")){
-                            JSONArray jsonArray = hh.fetchAsJsonArr(myresponse, "teams");
-                            teams = hh.getTeams(districtComps.get(indexDistrict).getEvents()[index], jsonArray);
+                            teamJsonArray = hh.fetchAsJsonArr(myresponse, "teams");
+                            //teams = hh.getTeams(districtComps.get(indexDistrict).getEvents()[index], jsonArray);
 
                             String [] code = key.split(":");
                             Log.e("HTTP here", code[1]);
@@ -456,16 +454,16 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
                         else if(key.equals("avatar")){
                             JSONArray jsonArray = hh.fetchAsJsonArr(myresponse, "teams");
                             if(spinner1.getSelectedItem().equals("Regional")){
-                                hh.putAvatars(regionalComps.get(index), jsonArray);
+                                hh.setTeams(regionalComps.get(index), teamJsonArray, jsonArray);
                             }
                             else{
-                                hh.putAvatars(champComps.get(index), jsonArray);
+                                hh.setTeams(champComps.get(index), teamJsonArray, jsonArray);
                             }
                         }
                         else{
                             JSONArray jsonArray = hh.fetchAsJsonArr(myresponse, "teams");
                             Log.e("HTTP here", jsonArray.toString());
-                            hh.putAvatars(districtComps.get(indexDistrict).getEvents()[index], jsonArray);
+                            hh.setTeams(districtComps.get(indexDistrict).getEvents()[index], teamJsonArray, jsonArray);
                         }
 
                         switch (key) {

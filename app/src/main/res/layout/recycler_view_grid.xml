@@ -6,7 +6,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="12dp"
@@ -23,33 +23,51 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="8">
 
-            <ImageView
-                android:id="@+id/grid_folder_image"
+            <RelativeLayout
+                android:id="@+id/grid_folder_relative"
                 android:layout_width="match_parent"
-                android:layout_height="95dp"
-                android:contentDescription="@string/description"
-                app:srcCompat="@drawable/ic_folder_blue" />
+                android:layout_height="85dp">
+
+                <ImageView
+                    android:id="@+id/grid_folder_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="85dp"
+
+                    android:contentDescription="@string/description"
+                    app:srcCompat="@drawable/ic_folder_blue_outline" />
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/grid_folder_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
                 android:gravity="center"
+                android:maxLines="2"
                 android:text="@string/app_name"
                 android:textColor="@color/text_primary_dark"
-                app:fontFamily="@font/eagle_book" />
+                app:fontFamily="@font/eagle_book"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMaxTextSize="14sp"
+                app:autoSizeStepGranularity="2sp"
+                app:autoSizeMinTextSize="10sp"/>
 
             <TextView
                 android:id="@+id/grid_folder_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/app_name"
                 android:textColor="@color/text_primary_dark"
                 app:fontFamily="@font/eagle_light" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

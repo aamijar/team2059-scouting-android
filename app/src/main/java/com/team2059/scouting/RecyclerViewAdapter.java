@@ -1,10 +1,14 @@
 package com.team2059.scouting;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,7 +73,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private TextView dateModified;
         private ImageView image;
 
-        public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
+        public ViewHolder(@NonNull final View itemView, final OnItemClickListener listener) {
             super(itemView);
             title = itemView.findViewById(R.id.grid_folder_name);
             dateModified = itemView.findViewById(R.id.grid_folder_date);
@@ -80,9 +84,29 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 public void onClick(View v) {
                     //Toast.makeText(v.getContext(), titles.get(getAdapterPosition()), Toast.LENGTH_SHORT).show();
                     if(listener != null){
-                        int position = getAdapterPosition();
+                        final int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION){
-                            listener.onItemClick(position);
+
+                            final ImageView imageView = new ImageView(itemView.getContext());
+                            imageView.setImageDrawable(itemView.getContext().getResources().getDrawable(R.drawable.ic_folder_blue));
+
+                            float scale = itemView.getResources().getDisplayMetrics().density;
+                            int dpAsPixels = (int) (85*scale + 0.5f);
+                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dpAsPixels);
+                            RelativeLayout relativeLayout = itemView.findViewById(R.id.grid_folder_relative);
+                            relativeLayout.addView(imageView, params);
+                            Animation fillup = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.fillup);
+                            imageView.startAnimation(fillup);
+
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    listener.onItemClick(position);
+                                }
+                            }, 300);
+
                         }
                     }
                 }

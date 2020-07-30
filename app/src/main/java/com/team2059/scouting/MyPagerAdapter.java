@@ -11,11 +11,12 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 public class MyPagerAdapter extends FragmentStatePagerAdapter {
 
     private MainFragment mainFragment;
+    private AnalyzeFragment analyzeFragment;
 
-
-    public MyPagerAdapter(FragmentManager fm, MainFragment mainFragment){
+    public MyPagerAdapter(FragmentManager fm, MainFragment mainFragment, AnalyzeFragment analyzeFragment){
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.mainFragment = mainFragment;
+        this.analyzeFragment = analyzeFragment;
     }
 
 
@@ -26,7 +27,7 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
             return mainFragment;
         }
         else{
-            return new BluetoothFragment();
+            return analyzeFragment;
         }
     }
 

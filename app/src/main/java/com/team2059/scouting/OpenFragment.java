@@ -21,6 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 
+import org.team2059.scouting.core.Team;
+//import org.team2059.scouting.core.Team;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,7 +49,7 @@ public class OpenFragment extends Fragment {
     private OpenFragmentListener listener;
 
     public interface OpenFragmentListener{
-        void onInputOpenSend(String [] input, String dirName);
+        void onInputOpenSend(Team[] input, String dirName);
     }
 
 
@@ -90,7 +93,7 @@ public class OpenFragment extends Fragment {
                 Gson gson = new Gson();
 
                 String jsonTeamsArr = sharedPreferences.getString("com.team2059.scouting." + dirName, null);
-                String [] teams = gson.fromJson(jsonTeamsArr, String[].class);
+                Team [] teams = gson.fromJson(jsonTeamsArr, Team[].class);
 
                 listener.onInputOpenSend(teams, dirName);
             }
@@ -158,7 +161,7 @@ public class OpenFragment extends Fragment {
         for(String fileName : fileNames){
 
             //same image for every grid card
-            images.add(R.drawable.ic_folder_blue);
+            images.add(R.drawable.ic_folder_blue_outline);
 
             //parse fileDesc from FileManager with format filename + date modified
             String [] fileDesc = fileName.split(",");

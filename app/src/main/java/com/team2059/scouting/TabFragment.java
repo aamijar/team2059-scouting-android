@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -28,10 +29,15 @@ public class TabFragment extends Fragment {
     private static final String ARG_DIRNAME = "arg_dirName";
     private static final String ARG_HANDLERS = "arg_handlers";
 
-    static TabFragment newInstance(String [] teams, String dirName, ArrayList<BluetoothHandler> bluetoothHandlers){
+    static TabFragment newInstance(Team[] teams, String dirName, ArrayList<BluetoothHandler> bluetoothHandlers){
         TabFragment tabFragment = new TabFragment();
         Bundle args = new Bundle();
-        args.putStringArray(ARG_TEAMS, teams);
+
+        //Gson gson = new Gson();
+        //String jsonTeamsArr = gson.toJson(teams);
+
+        //args.putString(ARG_TEAMS, jsonTeamsArr);
+        args.putParcelableArray(ARG_TEAMS, teams);
         args.putString(ARG_DIRNAME, dirName);
         args.putParcelableArrayList(ARG_HANDLERS, bluetoothHandlers);
         tabFragment.setArguments(args);
@@ -48,17 +54,18 @@ public class TabFragment extends Fragment {
         ViewPager viewPager = view.findViewById(R.id.viewPager);
 
         MainFragment mainFragment;
-
+        AnalyzeFragment analyzeFragment;
         if(getArguments() != null){
-            mainFragment = MainFragment.newInstance(getArguments().getStringArray(ARG_TEAMS), getArguments().getString(ARG_DIRNAME),
+            mainFragment = MainFragment.newInstance((Team[]) getArguments().getParcelableArray(ARG_TEAMS), getArguments().getString(ARG_DIRNAME),
                     getArguments().<BluetoothHandler>getParcelableArrayList(ARG_HANDLERS));
-
+            analyzeFragment = AnalyzeFragment.newInstance((Team[]) getArguments().getParcelableArray(ARG_TEAMS), getArguments().getString(ARG_DIRNAME));
         }
         else{
             mainFragment = new MainFragment();
+            analyzeFragment = new AnalyzeFragment();
         }
 
-        MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getActivity().getSupportFragmentManager(), mainFragment);
+        MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getActivity().getSupportFragmentManager(), mainFragment, analyzeFragment);
 
         viewPager.setAdapter(myPagerAdapter);
 

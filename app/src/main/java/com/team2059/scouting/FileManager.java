@@ -26,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -49,7 +50,10 @@ import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import org.team2059.scouting.frc2020.IrMatch;
+import org.team2059.scouting.core.Match;
+import org.team2059.scouting.core.Team;
+import org.team2059.scouting.core.frc2020.IrMatch;
+import org.team2059.scouting.core.frc2020.IrTeam;
 
 public class FileManager
 {
@@ -317,6 +321,11 @@ public class FileManager
      */
     public static String readFile(String filepath, Context context){
 
+        File file = new File(context.getExternalFilesDir(null), filepath);
+        if(!file.exists()){
+            return null;
+        }
+
         try{
             FileReader reader = new FileReader(context.getExternalFilesDir(filepath));
 
@@ -400,7 +409,68 @@ public class FileManager
                 }
             });
         }
+
+        //----
+//        Gson gson = new Gson();
+//        String gsonStr = readFile(root  + "/" + dirName + "/shared-copy.json", context);
+//        Type irMatchType = new TypeToken<ArrayList<IrMatch>>(){}.getType();
+//        ArrayList<IrMatch> irMatchArr = gson.fromJson(gsonStr, irMatchType);
+//        ArrayList<Team> teamsList = createTeamsArr(irMatchArr);
+//
+//        for(Team team : teamsList){
+//            Log.e("TEAM", "team name: " + team.getTeamName());
+//            Log.e("TEAM", "team number: " + team.getTeamNumber());
+//            Log.e("TEAM", "total points: " + team.getTotalPoints());
+//            for (IrMatch irMatch : team.getIrMatches()){
+//                Log.e("MATCH", "match number: " + irMatch.getMatchNumber());
+//            }
+//        }
+
+
     }
+
+    public static ArrayList<Team> createTeamsArr(ArrayList<? extends Match> mlist)
+    {
+
+        ArrayList<Team> teamList = new ArrayList<>();
+        ArrayList<String> usedTeams = new ArrayList<>();
+        boolean teamDone;
+        for(int i = 0; i < mlist.size(); i ++)
+        {
+            ArrayList<Match> currentMatchList = new ArrayList<>();
+
+            String defHomeDistrict = "NC";
+
+            teamDone = false;
+            for(String t : usedTeams)
+            {
+                if(mlist.get(i).getTeamName().equals(t))
+                {
+                    teamDone = true;
+                }
+            }
+
+            if(!teamDone)
+            {
+
+                for(int j = i; j < mlist.size(); j ++)
+                {
+                    if(mlist.get(i).getTeamName().equals(mlist.get(j).getTeamName()))
+                    {
+                        currentMatchList.add(mlist.get(j));
+                    }
+                }
+                usedTeams.add(mlist.get(i).getTeamName());
+                String [] teamNameSplit = mlist.get(i).getTeamName().split("\\s*,\\s*");
+
+                teamList.add(new IrTeam(teamNameSplit[0], teamNameSplit[1], defHomeDistrict, currentMatchList));
+            }
+        }
+
+        return teamList;
+    }
+
+
 
 
 

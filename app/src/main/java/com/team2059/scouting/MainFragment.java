@@ -5,7 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.media.Image;
+
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -27,13 +29,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.team2059.scouting.frc2020.IrAuto;
-import org.team2059.scouting.frc2020.IrControlPanel;
-import org.team2059.scouting.frc2020.IrEndgame;
-import org.team2059.scouting.frc2020.IrMatch;
-import org.team2059.scouting.frc2020.IrTeleop;
+import com.google.gson.Gson;
 
-import java.io.Serializable;
+import org.team2059.scouting.core.frc2020.IrAuto;
+import org.team2059.scouting.core.frc2020.IrControlPanel;
+import org.team2059.scouting.core.frc2020.IrEndgame;
+import org.team2059.scouting.core.frc2020.IrMatch;
+import org.team2059.scouting.core.frc2020.IrPostGame;
+import org.team2059.scouting.core.frc2020.IrTeleop;
+
+
 import java.util.ArrayList;
 
 public class MainFragment extends Fragment implements BluetoothHandler.BluetoothHandlerCallback {
@@ -53,7 +58,7 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
     private EditText out_made2;
     private EditText inn_made2;
 
-    private String [] teams;
+    private Team[] teams;
     private String dirName;
 
     private static final String ARG_TEAMS = "arg_teams";
@@ -67,13 +72,12 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
     private ArrayList<BluetoothHandler> bluetoothHandlers;
 
 
-    static MainFragment newInstance(String[] teams, String dirName, ArrayList<BluetoothHandler> bluetoothHandlers) {
+    static MainFragment newInstance(com.team2059.scouting.Team[] teams, String dirName, ArrayList<BluetoothHandler> bluetoothHandlers) {
         MainFragment mainFragment = new MainFragment();
         Bundle args = new Bundle();
-        args.putStringArray(ARG_TEAMS, teams);
-        args.putString(ARG_DIRNAME, dirName);
-        //args.putSerializable(ARG_HANDLERS, bluetoothHandlers);
 
+        args.putParcelableArray(ARG_TEAMS, teams);
+        args.putString(ARG_DIRNAME, dirName);
         args.putParcelableArrayList(ARG_HANDLERS, bluetoothHandlers);
 
         mainFragment.setArguments(args);
@@ -101,7 +105,12 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
         spinner = v.findViewById(R.id.spinner1);
 
         if(getArguments() != null){
-            teams = getArguments().getStringArray(ARG_TEAMS);
+            //String jsonTeamsArr = getArguments().getString(ARG_TEAMS);
+            teams = (Team[]) getArguments().getParcelableArray(ARG_TEAMS);
+            //Gson gson = new Gson();
+            //teams = gson.fromJson(jsonTeamsArr, Team[].class);
+
+            //teams = getArguments().getStringArray(ARG_TEAMS);
             dirName = getArguments().getString(ARG_DIRNAME);
             if(teams != null && teams.length != 0){
                 updateTeams();
@@ -171,7 +180,7 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
         final Switch switch5 = v.findViewById(R.id.switch5);
         final Switch switch6 = v.findViewById(R.id.switch6);
         final Switch switch7 = v.findViewById(R.id.switch7);
-
+        final Switch switch8 = v.findViewById(R.id.switch8);
 
         switch1.setTypeface(eagleLight, Typeface.BOLD);
         switch2.setTypeface(eagleLight, Typeface.BOLD);
@@ -180,6 +189,8 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
         switch5.setTypeface(eagleLight, Typeface.BOLD);
         switch6.setTypeface(eagleLight, Typeface.BOLD);
         switch7.setTypeface(eagleLight, Typeface.BOLD);
+        switch8.setTypeface(eagleLight, Typeface.BOLD);
+
 
         Button button = v.findViewById(R.id.submit); //submit button
         //Button buttonActivity = (Button) findViewById(R.id.button); //to switch between pages
@@ -198,8 +209,14 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
 
         final EditText matchNumber = v.findViewById(R.id.match_number);
         final EditText notes = v.findViewById(R.id.notes);
-
-
+        final RadioGroup radioGroup = v.findViewById(R.id.main_radiogroup);
+//        Log.e(TAG, "" + radioGroup.getId());
+//        RadioButton radioButton = v.findViewById(R.id.radioButtonWin);
+//        Log.e(TAG, radioButton.getText() + "");
+//        RadioButton radioButton1 = v.findViewById(R.id.radioButtonTie);
+//        Log.e(TAG, radioButton1.getText() + "");
+//        RadioButton radioButton2 = v.findViewById(R.id.radioButtonLoss);
+//        Log.e(TAG, radioButton2.getText() + "");
 
 
 
@@ -217,24 +234,31 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
                 IrTeleop teleop = new IrTeleop(Integer.parseInt(low_att2.getText().toString()), Integer.parseInt(low_made2.getText().toString()), Integer.parseInt(out_att2.getText().toString()), Integer.parseInt(out_made2.getText().toString()), Integer.parseInt(inn_made2.getText().toString()), controlPanel);
                 IrEndgame endgame = new IrEndgame(switch5.isChecked(), switch4.isChecked(), switch6.isChecked(), switch7.isChecked());
 
+
                 if(!matchNumber.getText().toString().equals(""))
                 {
-                    IrMatch irMatch = new IrMatch(spinner.getSelectedItem().toString(), Integer.parseInt(matchNumber.getText().toString()), 45,
-                            100, 2, "true", auto, teleop, endgame, notes.getText().toString());
-                    try
-                    {
-                        FileManager.writeToJsonFile(dirName + "/my-data/Competition.json", irMatch, activity);
+                    RadioButton radioButton = view.findViewById(radioGroup.getCheckedRadioButtonId());
+                    if(radioButton != null){
+                        IrPostGame postGame = new IrPostGame(radioButton.getText().toString().toLowerCase(), switch8.isActivated(), notes.getText().toString());
+
+                        IrMatch irMatch = new IrMatch(spinner.getSelectedItem().toString(), Integer.parseInt(matchNumber.getText().toString()), auto, teleop, endgame, postGame);
+                        try
+                        {
+                            FileManager.writeToJsonFile(dirName + "/my-data/Competition.json", irMatch, activity);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.e(TAG, "write to json file exception");
+                            Toast.makeText(getActivity(), "File could not be written", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        Log.e("fileManager class error", "MainActivity started error");
-                        Toast.makeText(getActivity(), "File could not be written", Toast.LENGTH_SHORT).show();
+                    else{
+                        Toast.makeText(activity, "Match Result Missing!", Toast.LENGTH_SHORT).show();
                     }
                 }
                 else{
-                    Toast.makeText(getActivity(), "Match Number Missing", Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, "Match Number Missing!", Toast.LENGTH_LONG).show();
                 }
-
             }
         });
 
@@ -409,22 +433,15 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
         String [] teamNames = new String[teams.length];
 
         for (int i = 0; i < teams.length; i ++){
-            String [] pieces = teams[i].split(",");
-            teamNames[i] = pieces[0] + ", " + pieces[1];
+            teamNames[i] = teams[i].getTeamName() + ", " + teams[i].getTeamNumber();
         }
 
         ImageView imageView = view.findViewById(R.id.testimage);
-
-        String [] parts = teams[0].split(",");
-
-        byte [] bytes = Base64.decode(parts[2], Base64.DEFAULT);
-
+        byte [] bytes = Base64.decode(teams[0].getByteMapArr(), Base64.DEFAULT);
         Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         imageView.setImageBitmap(bmp);
 
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spinner_item, teamNames);
-
         spinner.setAdapter(adapter);
     }
 

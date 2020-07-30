@@ -43,12 +43,13 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
-import org.team2059.scouting.frc2020.IrAuto;
-import org.team2059.scouting.frc2020.IrControlPanel;
-import org.team2059.scouting.frc2020.IrEndgame;
-import org.team2059.scouting.frc2020.IrMatch;
-import org.team2059.scouting.frc2020.IrTeleop;
+import org.team2059.scouting.core.frc2020.IrAuto;
+import org.team2059.scouting.core.frc2020.IrControlPanel;
+import org.team2059.scouting.core.frc2020.IrEndgame;
+import org.team2059.scouting.core.frc2020.IrMatch;
+import org.team2059.scouting.core.frc2020.IrTeleop;
 
+@Deprecated
 public class MainActivity extends AppCompatActivity {
 
 
@@ -247,11 +248,11 @@ public class MainActivity extends AppCompatActivity {
 
                 if(!matchNumber.getText().toString().equals(""))
                 {
-                    IrMatch irMatch = new IrMatch(spinner.getSelectedItem().toString(), Integer.parseInt(matchNumber.getText().toString()), 45,
-                            100, 2, "true", auto, teleop, endgame, notes.getText().toString());
+                    //IrMatch irMatch = new IrMatch(spinner.getSelectedItem().toString(), Integer.parseInt(matchNumber.getText().toString()), 45,
+                    //        100, 2, "true", auto, teleop, endgame, notes.getText().toString());
                     try
                     {
-                        FileManager.writeToJsonFile("TEST_JSON.json", irMatch, context);
+                        //FileManager.writeToJsonFile("TEST_JSON.json", irMatch, context);
                     }
                     catch (Exception e)
                     {

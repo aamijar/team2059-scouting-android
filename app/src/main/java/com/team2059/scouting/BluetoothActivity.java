@@ -37,7 +37,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.team2059.scouting.Main;
+//import org.team2059.scouting.Main;
 import org.w3c.dom.Text;
 
 import java.io.IOException;

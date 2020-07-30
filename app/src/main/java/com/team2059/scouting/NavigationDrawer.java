@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import org.team2059.scouting.core.Team;
+
 import java.util.ArrayList;
 
 public class NavigationDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
@@ -152,16 +154,26 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
     }
 
     @Override
-    public void onInputSend(String[] input, String dirName) {
-        TabFragment tabFragment = TabFragment.newInstance(input, dirName, bluetoothHandlers);
+    public void onInputSend(Team [] input, String dirName) {
+        com.team2059.scouting.Team [] teams = new com.team2059.scouting.Team[input.length];
+        for(int i = 0; i < teams.length; i ++){
+            teams[i] = new com.team2059.scouting.Team(input[i].getTeamName(), input[i].getTeamNumber(), input[i].getbyteMapString());
+        }
+
+        TabFragment tabFragment = TabFragment.newInstance(teams, dirName, bluetoothHandlers);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, tabFragment);
         ft.commit();
         ft.addToBackStack(null);
     }
 
     @Override
-    public void onInputOpenSend(String[] input, String dirName) {
-        TabFragment tabFragment = TabFragment.newInstance(input, dirName, bluetoothHandlers);
+    public void onInputOpenSend(Team [] input, String dirName) {
+        com.team2059.scouting.Team [] teams = new com.team2059.scouting.Team[input.length];
+        for(int i = 0; i < teams.length; i ++){
+            teams[i] = new com.team2059.scouting.Team(input[i].getTeamName(), input[i].getTeamNumber(), input[i].getbyteMapString());
+        }
+
+        TabFragment tabFragment = TabFragment.newInstance(teams, dirName, bluetoothHandlers);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, tabFragment);
         ft.commit();
         ft.addToBackStack(null);

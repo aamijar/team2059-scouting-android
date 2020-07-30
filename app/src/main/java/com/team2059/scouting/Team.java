@@ -10,26 +10,41 @@
 
 package com.team2059.scouting;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
-public class Team {
+public class Team implements Parcelable {
 
     private String teamNumber;
     private String teamName;
-    private String homeDistrict;
-    private ArrayList<Match> matches;
-    private int [] teamStats;
+    private String byteMapArr;
 
-    Team(String name, String number, String district, ArrayList<Match> mList, int [] stats)
-    {
+    Team(String name, String number, String byteMapArr){
         teamName = name;
         teamNumber = number;
-        homeDistrict = district;
-        matches = mList;
-        teamStats = stats;
+        this.byteMapArr = byteMapArr;
     }
 
 
+    protected Team(Parcel in) {
+        teamNumber = in.readString();
+        teamName = in.readString();
+        byteMapArr = in.readString();
+    }
+
+    public static final Creator<Team> CREATOR = new Creator<Team>() {
+        @Override
+        public Team createFromParcel(Parcel in) {
+            return new Team(in);
+        }
+
+        @Override
+        public Team[] newArray(int size) {
+            return new Team[size];
+        }
+    };
 
     public String getTeamNumber()
     {
@@ -39,27 +54,17 @@ public class Team {
     {
         return teamName;
     }
-    public String getHomeDistrict()
-    {
-        return homeDistrict;
-    }
-    public ArrayList<Match> getMatches()
-    {
-        return matches;
-    }
-    public int [] getStats()
-    {
-        return teamStats;
-    }
-    public double getRankPointAvg()
-    {
-        double avg = 0;
-        for(int i = 0; i < matches.size(); i ++)
-        {
-            avg += matches.get(i).getRankPoints();
+    public String getByteMapArr(){return byteMapArr;}
 
-        }
-        avg = avg/matches.size();
-        return avg;
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(teamNumber);
+        dest.writeString(teamName);
+        dest.writeString(byteMapArr);
     }
 }
