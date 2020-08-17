@@ -41,7 +41,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         setContentView(R.layout.activity_navigation_drawer);
 
         //hides status bar
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         Toolbar toolbar = findViewById(R.id.navigation_toolbar);
         setSupportActionBar(toolbar);
@@ -157,13 +157,14 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
     public void onInputSend(Team [] input, String dirName) {
         com.team2059.scouting.Team [] teams = new com.team2059.scouting.Team[input.length];
         for(int i = 0; i < teams.length; i ++){
+
             teams[i] = new com.team2059.scouting.Team(input[i].getTeamName(), input[i].getTeamNumber(), input[i].getbyteMapString());
         }
 
         TabFragment tabFragment = TabFragment.newInstance(teams, dirName, bluetoothHandlers);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, tabFragment);
-        ft.commit();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.addToBackStack(null);
+        ft.replace(R.id.fragment_container, tabFragment).commit();
     }
 
     @Override
@@ -174,9 +175,9 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         }
 
         TabFragment tabFragment = TabFragment.newInstance(teams, dirName, bluetoothHandlers);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, tabFragment);
-        ft.commit();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.addToBackStack(null);
+        ft.replace(R.id.fragment_container, tabFragment).commit();
     }
 
 

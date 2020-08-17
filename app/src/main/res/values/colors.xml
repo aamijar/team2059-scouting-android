@@ -20,4 +20,7 @@
     <color name="red_indicator">#E33131</color>
     
     <color name="transparent">#80FFFFFF</color>
+
+    <color name="frc_avatar_blue">#0066B3</color>
+
 </resources>

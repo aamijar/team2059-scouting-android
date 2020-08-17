@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -29,6 +30,7 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         final String versionCode = "v" + BuildConfig.VERSION_NAME;
         TextView text;
 

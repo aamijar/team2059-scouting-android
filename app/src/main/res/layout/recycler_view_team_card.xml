@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="4dp"
-    android:layout_marginBottom="4dp"
-    app:elevation="4dp">
+    android:layout_marginBottom="2dp"
+    android:layout_marginTop="2dp"
+    app:elevation="4dp"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,69 +20,80 @@
             android:id="@+id/team_card_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1"
-            android:textSize="35sp"
             android:layout_alignParentTop="true"
-            android:fontFamily="@font/eagle_book"
-            android:layout_alignEnd="@id/team_card_rank"
             android:layout_alignStart="@id/team_card_rank"
-            android:padding="6dp"
-            android:gravity="center_horizontal"
+            android:layout_alignLeft="@id/team_card_rank"
+            android:layout_alignEnd="@id/team_card_rank"
             android:layout_alignRight="@id/team_card_rank"
-            android:layout_alignLeft="@id/team_card_rank" />
+            android:layout_alignBottom="@id/team_card_name"
+            android:fontFamily="@font/eagle_book"
+            android:gravity="center_vertical"
+            android:text="1"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:fontFamily="sans-serif-black" />
 
         <TextView
             android:id="@+id/team_card_rank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rank 1"
+            android:textSize="15sp"
+            android:layout_marginTop="2dp"
             android:layout_below="@id/team_card_position"
-            app:fontFamily="@font/eagle_light"
+
             android:textStyle="bold"
-            android:layout_marginStart="5dp"/>
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp" />
 
         <ImageView
             android:id="@+id/team_card_avatar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignBottom="@id/team_card_position"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="2dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="56dp"
-            android:padding="4dp"
-            app:srcCompat="@mipmap/hh_launcher" />
+            android:layout_marginStart="60dp"
+            android:layout_marginLeft="60dp"
+            android:background="@drawable/avatar_background"
+            android:padding="2dp"
+            android:transitionName="avatarTransition"
+            app:srcCompat="@mipmap/hh_launcher"
+            tools:targetApi="lollipop" />
 
         <TextView
             android:id="@+id/team_card_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_toEndOf="@id/team_card_avatar"
             android:layout_toRightOf="@id/team_card_avatar"
-            android:paddingStart="5dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="6dp"
-            android:paddingEnd="0dp"
-            android:paddingRight="0dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
             android:text="@string/app_name"
+            android:textColor="@color/black"
             android:textSize="16sp"
-
-            app:fontFamily="@font/eagle_book" />
+            android:transitionName="teamNameTransition"
+            app:fontFamily="sans-serif-black"
+            tools:targetApi="lollipop" />
 
         <TextView
             android:id="@+id/team_card_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2059"
-            app:fontFamily="@font/eagle_book"
-            android:layout_alignBottom="@id/team_card_position"
-            android:layout_below="@id/team_card_name"
-            android:layout_toEndOf="@id/team_card_avatar"
-            android:layout_toRightOf="@id/team_card_avatar"
-            android:paddingLeft="5dp"
-            android:paddingStart="5dp"
-            android:paddingTop="2dp"/>
+
+            android:textStyle="bold"
+            android:layout_alignTop="@id/team_card_rank"
+            android:layout_alignLeft="@id/team_card_name"
+            android:layout_alignBottom="@id/team_card_rank"
+            android:textSize="15sp"
+            android:transitionName="teamNumberTransition"/>
 
         <TextView
             android:id="@+id/team_card_record"
@@ -87,38 +101,36 @@
             android:layout_height="wrap_content"
             android:text="(12-0-0)"
             android:layout_below="@id/team_card_rank"
-            android:textSize="14dp"
-            android:fontFamily="@font/eagle_light"
+            android:textSize="15sp"
+
             android:textStyle="bold"
             android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginBottom="6dp"
-            android:layout_marginTop="2dp"/>
+            android:layout_marginTop="2dp" />
 
         <TextView
             android:id="@+id/team_card_attr1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/team_card_number"
-            android:layout_alignTop="@id/team_card_rank"
-            android:layout_alignBottom="@id/team_card_rank"
-            android:paddingStart="5dp"
-            android:paddingLeft="5dp"
-            android:text="Filter Attribute 1"
-            android:textStyle="bold"
-            app:fontFamily="@font/eagle_light" />
-
-        <TextView
-            android:id="@+id/team_card_attr2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Filter Attribute 2"
-            app:fontFamily="@font/eagle_light"
-            android:textStyle="bold"
+            android:layout_alignLeft="@id/team_card_name"
             android:layout_alignTop="@id/team_card_record"
-            android:layout_alignStart="@id/team_card_attr1"
-            android:paddingStart="5dp"
-            android:paddingLeft="5dp"
-            android:layout_alignLeft="@id/team_card_attr1" />
+            android:layout_alignBottom="@id/team_card_record"
+
+            android:text="Filter Attribute 1"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/team_card_attr2"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Filter Attribute 2"-->
+<!--            app:fontFamily="@font/eagle_light"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_alignTop="@id/team_card_record"-->
+<!--            android:layout_alignStart="@id/team_card_attr1"-->
+
+<!--            android:layout_alignLeft="@id/team_card_attr1" />-->
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

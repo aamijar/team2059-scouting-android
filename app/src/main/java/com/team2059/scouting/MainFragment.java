@@ -2,6 +2,7 @@ package com.team2059.scouting;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -76,7 +77,7 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
         MainFragment mainFragment = new MainFragment();
         Bundle args = new Bundle();
 
-        args.putParcelableArray(ARG_TEAMS, teams);
+        //args.putParcelableArray(ARG_TEAMS, teams);
         args.putString(ARG_DIRNAME, dirName);
         args.putParcelableArrayList(ARG_HANDLERS, bluetoothHandlers);
 
@@ -106,12 +107,22 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
 
         if(getArguments() != null){
             //String jsonTeamsArr = getArguments().getString(ARG_TEAMS);
-            teams = (Team[]) getArguments().getParcelableArray(ARG_TEAMS);
-            //Gson gson = new Gson();
+            //teams = (Team[]) getArguments().getParcelableArray(ARG_TEAMS);
+            dirName = getArguments().getString(ARG_DIRNAME);
+            Gson gson = new Gson();
+            SharedPreferences sharedPreferences = activity.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+            String jsonTeamsArr = sharedPreferences.getString("com.team2059.scouting." + dirName, null);
+            org.team2059.scouting.core.Team[] tmpteams = gson.fromJson(jsonTeamsArr, org.team2059.scouting.core.Team[].class);
+
+            teams = new com.team2059.scouting.Team[tmpteams.length];
+            for(int i = 0; i < tmpteams.length; i ++){
+                teams[i] = new com.team2059.scouting.Team(tmpteams[i].getTeamName(), tmpteams[i].getTeamNumber(), tmpteams[i].getbyteMapString());
+            }
+
             //teams = gson.fromJson(jsonTeamsArr, Team[].class);
 
             //teams = getArguments().getStringArray(ARG_TEAMS);
-            dirName = getArguments().getString(ARG_DIRNAME);
+
             if(teams != null && teams.length != 0){
                 updateTeams();
             }

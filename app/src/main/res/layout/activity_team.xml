@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TeamActivity">
+
+    <include android:id="@+id/team_toolbar" layout="@layout/toolbar"/>
+
+    <ImageView
+        android:id="@+id/teamprofile_avatar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/avatar_background"
+        android:padding="2dp"
+        android:transitionName="avatarTransition"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/hh_logo"
+        tools:targetApi="lollipop" />
+
+    <TextView
+        android:id="@+id/teamprofile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/app_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teamprofile_avatar"
+        android:fontFamily="@font/eagle_book"
+        android:textColor="@color/black"
+        android:transitionName="teamNameTransition"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/teamprofile_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/app_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teamprofile_name"
+        android:fontFamily="@font/eagle_book"
+        android:textColor="@color/black"
+        android:transitionName="teamNumberTransition"
+        android:textSize="15sp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
