@@ -75,4 +75,16 @@
 
     <!--Dialog Box -->
     <string name="dialog_instructions">Select the competition data to share to this device:</string>
+
+    <!--Filter RadioGroup -->
+    <string name="filter_info">Filter Teams Based On:</string>
+    <string name="filter_ranking_score">Ranking Score (Default)</string>
+    <string name="filter_OPR">OPR</string>
+    <string name="filter_auto_points">Auto Points</string>
+    <string name="filter_teleop_points">Teleop Points</string>
+    <string name="filter_endgame_points">Endgame Points</string>
+    <string name="filter_auto_powercell_count">Auto Power Cell Count</string>
+    <string name="filter_teleop_powercell_count">Teleop Power Cell Count</string>
+    <string name="filter_climb_count">Climb Count</string>
+
 </resources>

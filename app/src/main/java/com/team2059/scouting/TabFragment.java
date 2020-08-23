@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import android.view.animation.DecelerateInterpolator;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 
 import androidx.annotation.NonNull;
@@ -68,10 +71,10 @@ public class TabFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_tabview, container, false);
+        final View view = inflater.inflate(R.layout.fragment_tabview, container, false);
 
         viewPager = view.findViewById(R.id.viewPager);
-
+        Log.e("TAG", "TABFRAGMENT RECREATED");
         MainFragment mainFragment;
         AnalyzeFragment analyzeFragment;
         if(getArguments() != null){
@@ -90,7 +93,7 @@ public class TabFragment extends Fragment {
 
         //*Important to use childfragmentmanager since we need to display a fragment within fragment
         // , i.e main & analyze in tab
-        MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getChildFragmentManager(), mainFragment, analyzeFragment);
+        final MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getChildFragmentManager(), mainFragment, analyzeFragment);
 
         viewPager.setAdapter(myPagerAdapter);
 
@@ -113,8 +116,10 @@ public class TabFragment extends Fragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
-        AnalyzeFragment fragment = (AnalyzeFragment) myPagerAdapter.getItem(1);
+        //final AnalyzeFragment fragment = (AnalyzeFragment) myPagerAdapter.getItem(1);
+        //final AnalyzeFragment fragment = (AnalyzeFragment) viewPager.getAdapter().instantiateItem(viewPager, 1);
 
+        final AnalyzeFragment fragment = (AnalyzeFragment) myPagerAdapter.getRegisteredFragment(1);
         layoutMain = view.findViewById(R.id.tab_layoutmain);
         filterContainer = view.findViewById(R.id.tab_filtercontainer);
         foregroundDim = view.findViewById(R.id.tab_foregroundDim);
@@ -138,6 +143,42 @@ public class TabFragment extends Fragment {
 //        layoutParams.weight = 0f;
 //        layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
 //        layout.setLayoutParams(layoutParams);
+
+        final RadioGroup radioGroup = view.findViewById(R.id.filter_radio_group);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton radioButton = view.findViewById(checkedId);
+                viewPager.getAdapter().instantiateItem(viewPager, 1);
+                AnalyzeFragment fragment = (AnalyzeFragment) myPagerAdapter.getRegisteredFragment(1);
+                if(radioButton.getText().toString().equals(getString(R.string.filter_OPR))){
+                    fragment.sortByOPR();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.filter_ranking_score))){
+                    fragment.sortByRankingScore();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.filter_auto_points))){
+                    fragment.sortByAutoPoints();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.filter_teleop_points))){
+                    fragment.sortByTeleopPoints();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.filter_endgame_points))){
+                    fragment.sortByEndgamePoints();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.filter_auto_powercell_count))){
+                    fragment.sortByAutoPowerCellCount();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.filter_teleop_powercell_count))){
+                    fragment.sortByTeleopPowerCellCount();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.filter_climb_count))){
+                    fragment.sortByClimbCount();
+                }
+            }
+        });
+
+
 
         return view;
     }

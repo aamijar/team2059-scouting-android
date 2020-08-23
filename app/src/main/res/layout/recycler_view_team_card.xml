@@ -37,7 +37,7 @@
             android:id="@+id/team_card_rank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rank 1"
+            android:text="Rank 42"
             android:textSize="15sp"
             android:layout_marginTop="2dp"
             android:layout_below="@id/team_card_position"
@@ -54,8 +54,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="60dp"
-            android:layout_marginLeft="60dp"
+            android:layout_marginStart="68dp"
+            android:layout_marginLeft="68dp"
             android:background="@drawable/avatar_background"
             android:padding="2dp"
             android:transitionName="avatarTransition"
@@ -115,8 +115,12 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/team_card_name"
             android:layout_alignTop="@id/team_card_record"
-            android:layout_alignBottom="@id/team_card_record"
 
+
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
             android:text="Filter Attribute 1"
             android:textSize="15sp"
             android:textStyle="bold" />

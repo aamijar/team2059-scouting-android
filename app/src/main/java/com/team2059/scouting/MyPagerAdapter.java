@@ -1,6 +1,8 @@
 package com.team2059.scouting;
 
 import android.content.Context;
+import android.util.SparseArray;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +14,8 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
 
     private MainFragment mainFragment;
     private AnalyzeFragment analyzeFragment;
+
+    SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
 
     public MyPagerAdapter(FragmentManager fm, MainFragment mainFragment, AnalyzeFragment analyzeFragment){
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -49,6 +53,24 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
         }
 
     }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Fragment fragment = (Fragment) super.instantiateItem(container, position);
+        registeredFragments.put(position, fragment);
+        return fragment;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        registeredFragments.remove(position);
+        super.destroyItem(container, position, object);
+    }
+
+    public Fragment getRegisteredFragment(int position) {
+        return registeredFragments.get(position);
+    }
+
 
 
 }

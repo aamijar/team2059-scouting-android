@@ -33,7 +33,11 @@ import org.team2059.scouting.core.frc2020.IrMatch;
 import org.team2059.scouting.core.frc2020.IrTeam;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class AnalyzeFragment extends Fragment {
     private Activity activity;
@@ -68,7 +72,7 @@ public class AnalyzeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_analyze, container, false);
         Gson gson = new Gson();
-
+        //setRetainInstance(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().setExitTransition(null);
         }
@@ -99,6 +103,11 @@ public class AnalyzeFragment extends Fragment {
             recyclerView = view.findViewById(R.id.analyze_recycleview);
             recyclerView.setHasFixedSize(true);
             layoutManager = new LinearLayoutManager(activity);
+            sortByRankingScore();
+            for(int i = 0; i < teamsList.size(); i ++){
+                teamsList.get(i).setOverallRank(i + 1);
+            }
+
             adapter = new RecyclerViewAdapterTeam(teamsList);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);
@@ -138,7 +147,7 @@ public class AnalyzeFragment extends Fragment {
     }
     public void prepareTeamsArr(ArrayList<? extends Match> matches){
         teamsList = FileManager.createTeamsArr(matches);
-
+        Log.e("TEAMLIST", teamsList.get(0).getTeamName());
         for(Team team : teamsList){
             Log.e("TEAM", "team name: " + team.getTeamName());
             Log.e("TEAM", "team number: " + team.getTeamNumber());
@@ -154,6 +163,140 @@ public class AnalyzeFragment extends Fragment {
                 }
             }
         }
+    }
+
+    public void sortByOPR(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                double opr1 = ((double) o1.getTotalPoints())/o1.getIrMatches().size();
+                double opr2 = ((double) o2.getTotalPoints())/o2.getIrMatches().size();
+
+
+                //add negative to sort in descending order
+                return -Double.compare(opr1, opr2);
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.filter_OPR));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
+    public void sortByRankingScore(){
+        //initial sort
+        Log.e("TEAMLIST2", teamsList.size() + "");
+        if(adapter == null){
+            Collections.sort(teamsList, new Comparator<Team>() {
+                @Override
+                public int compare(Team o1, Team o2) {
+                    //add negative to sort in descending order
+                    return -Double.compare(o1.getRankPointAvg(), o2.getRankPointAvg());
+                }
+            });
+        }
+        //use overall rank (set after initial sort) to ensure
+        // relative-rank = overall rank in case of ties
+        else{
+            Collections.sort(teamsList, new Comparator<Team>() {
+                @Override
+                public int compare(Team o1, Team o2) {
+                    return o1.getOverallRank() - o2.getOverallRank();
+                }
+            });
+            adapter.setAttrFilter(getString(R.string.filter_ranking_score));
+            adapter.notifyDataSetChanged();
+            recyclerView.scheduleLayoutAnimation();
+        }
+    }
+    public void sortByAutoPoints(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                IrTeam team1 = (IrTeam) o1;
+                IrTeam team2 = (IrTeam) o2;
+
+                return team2.getAutoPoints() - team1.getAutoPoints();
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.filter_auto_points));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
+    public void sortByTeleopPoints(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                IrTeam team1 = (IrTeam) o1;
+                IrTeam team2 = (IrTeam) o2;
+
+                return team2.getTeleopPoints() - team1.getTeleopPoints();
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.filter_teleop_points));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
+    public void sortByEndgamePoints(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                IrTeam team1 = (IrTeam) o1;
+                IrTeam team2 = (IrTeam) o2;
+
+                return team2.getEndgamePoints() - team1.getEndgamePoints();
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.filter_endgame_points));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
+    public void sortByAutoPowerCellCount(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                IrTeam team1 = (IrTeam) o1;
+                IrTeam team2 = (IrTeam) o2;
+
+                return team2.getAutoPowercellCount() - team1.getAutoPowercellCount();
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.filter_auto_powercell_count));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
+    public void sortByTeleopPowerCellCount(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                IrTeam team1 = (IrTeam) o1;
+                IrTeam team2 = (IrTeam) o2;
+
+                return team2.getTeleopPowercellCount() - team1.getTeleopPowercellCount();
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.filter_teleop_powercell_count));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
+    public void sortByClimbCount(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                IrTeam team1 = (IrTeam) o1;
+                IrTeam team2 = (IrTeam) o2;
+
+                return team2.getClimbCount() - team1.getClimbCount();
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.filter_climb_count));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
     }
 
 

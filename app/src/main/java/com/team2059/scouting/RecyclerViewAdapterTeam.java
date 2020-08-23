@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.team2059.scouting.core.Match;
 import org.team2059.scouting.core.Team;
 import org.team2059.scouting.core.frc2020.IrTeam;
 
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAdapterTeam.ViewHolder> {
 
     private ArrayList<Team> teams;
+    private String attrFilter = "";
+
     private Context context;
 
     private ViewHolderListener listener;
@@ -48,7 +51,6 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
         private TextView teamName;
         private TextView teamNumber;
         private TextView attr1;
-        private TextView attr2;
 
         public ViewHolder(@NonNull View itemView, final ViewHolderListener listener) {
             super(itemView);
@@ -59,7 +61,6 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
             teamName = itemView.findViewById(R.id.team_card_name);
             teamNumber = itemView.findViewById(R.id.team_card_number);
             attr1 = itemView.findViewById(R.id.team_card_attr1);
-            //attr2 = itemView.findViewById(R.id.team_card_attr2);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -114,18 +115,65 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
             }
 
             holder.position.setText(Integer.toString(position + 1));
-            holder.rank.setText("Rank 1");
-            holder.record.setText(Integer.toString(irTeam.getTotalPoints()));
+            holder.rank.setText("Rank " + irTeam.getOverallRank());
+
+            int winCount = 0;
+            int tieCount = 0;
+            int lossCount = 0;
+            for(Match match : irTeam.getMatches()){
+                String result = match.getMatchResult();
+                switch (result) {
+                    case "win":
+                        winCount++;
+                        break;
+                    case "tie":
+                        tieCount++;
+                        break;
+                    case "loss":
+                        lossCount++;
+                        break;
+                }
+            }
+            holder.record.setText(winCount + "-" + tieCount + "-" + lossCount);
             holder.teamName.setText(irTeam.getTeamName());
             holder.teamNumber.setText(irTeam.getTeamNumber());
-            holder.attr1.setText("Auto Powercell Count: " + irTeam.getAutoPowercellCount());
+            //holder.attr1.setText("Auto Powercell Count: " + irTeam.getAutoPowercellCount());
 
-            double opr = ((double) irTeam.getTotalPoints())/irTeam.getIrMatches().size();
-            //round to 2 decimal places
-            String roundopr = new BigDecimal(String.valueOf(opr)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-            holder.attr1.setText("OPR: " + roundopr);
 
-            //holder.attr2.setText(Integer.toString(irTeam.getTeleopPowercellCount()));
+
+            if(attrFilter.equals(context.getString(R.string.filter_OPR))){
+                double opr = ((double) irTeam.getTotalPoints())/irTeam.getIrMatches().size();
+                //round to 2 decimal places
+                String roundopr = new BigDecimal(String.valueOf(opr)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+                holder.attr1.setText("OPR: " + roundopr);
+            }
+            else if(attrFilter.equals(context.getString(R.string.filter_auto_points))){
+                holder.attr1.setText("Auto Points: " + irTeam.getAutoPoints());
+            }
+            else if(attrFilter.equals(context.getString(R.string.filter_teleop_points))){
+                holder.attr1.setText("Teleop Points: " + irTeam.getTeleopPoints());
+            }
+            else if(attrFilter.equals(context.getString(R.string.filter_endgame_points))){
+                holder.attr1.setText("Endgame Points: " + irTeam.getEndgamePoints());
+            }
+            else if(attrFilter.equals(context.getString(R.string.filter_auto_powercell_count))){
+                String accuracy = new BigDecimal(String.valueOf(irTeam.getAutoPowercellAccuracy() * 100)).setScale(0, BigDecimal.ROUND_HALF_UP).toString();
+                holder.attr1.setText("Auto Power Cell Count: " + irTeam.getAutoPowercellCount() + ", Accuracy: " + accuracy + "%");
+            }
+            else if(attrFilter.equals(context.getString(R.string.filter_teleop_powercell_count))){
+                String accuracy = new BigDecimal(String.valueOf(irTeam.getTeleopPowercellAccuracy() * 100)).setScale(0, BigDecimal.ROUND_HALF_UP).toString();
+                holder.attr1.setText("Teleop Power Cell Count: " + irTeam.getTeleopPowercellCount() + ", Accuracy: " + accuracy + "%");
+            }
+            else if(attrFilter.equals(context.getString(R.string.filter_climb_count))){
+                holder.attr1.setText("Climb Count: " + irTeam.getClimbCount());
+            }
+
+
+            else{
+                holder.attr1.setText("Ranking Score: " + irTeam.getRankPointAvg());
+            }
+
+
         }
 
     }
@@ -135,4 +183,7 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
         return teams.size();
     }
 
+    public void setAttrFilter(String attrFilter){
+        this.attrFilter = attrFilter;
+    }
 }

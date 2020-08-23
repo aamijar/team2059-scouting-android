@@ -192,30 +192,31 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
         final Switch switch6 = v.findViewById(R.id.switch6);
         final Switch switch7 = v.findViewById(R.id.switch7);
         final Switch switch8 = v.findViewById(R.id.switch8);
+        final Switch switch9 = v.findViewById(R.id.switch9);
 
-        switch1.setTypeface(eagleLight, Typeface.BOLD);
-        switch2.setTypeface(eagleLight, Typeface.BOLD);
-        switch3.setTypeface(eagleLight, Typeface.BOLD);
-        switch4.setTypeface(eagleLight, Typeface.BOLD);
-        switch5.setTypeface(eagleLight, Typeface.BOLD);
-        switch6.setTypeface(eagleLight, Typeface.BOLD);
-        switch7.setTypeface(eagleLight, Typeface.BOLD);
-        switch8.setTypeface(eagleLight, Typeface.BOLD);
-
+//        switch1.setTypeface(eagleLight, Typeface.BOLD);
+//        switch2.setTypeface(eagleLight, Typeface.BOLD);
+//        switch3.setTypeface(eagleLight, Typeface.BOLD);
+//        switch4.setTypeface(eagleLight, Typeface.BOLD);
+//        switch5.setTypeface(eagleLight, Typeface.BOLD);
+//        switch6.setTypeface(eagleLight, Typeface.BOLD);
+//        switch7.setTypeface(eagleLight, Typeface.BOLD);
+//        switch8.setTypeface(eagleLight, Typeface.BOLD);
+//        switch9.setTypeface(eagleLight, Typeface.BOLD);
 
         Button button = v.findViewById(R.id.submit); //submit button
         //Button buttonActivity = (Button) findViewById(R.id.button); //to switch between pages
-        button.setTypeface(eagleBook);
+        //button.setTypeface(eagleBook);
 
 
-        ImageButton bluetooth_button = v.findViewById(R.id.mainfrag_bluetooth);
-        bluetooth_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO
-
-            }
-        });
+//        ImageButton bluetooth_button = v.findViewById(R.id.mainfrag_bluetooth);
+//        bluetooth_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //TODO
+//
+//            }
+//        });
 
 
         final EditText matchNumber = v.findViewById(R.id.match_number);
@@ -250,7 +251,7 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
                 {
                     RadioButton radioButton = view.findViewById(radioGroup.getCheckedRadioButtonId());
                     if(radioButton != null){
-                        IrPostGame postGame = new IrPostGame(radioButton.getText().toString().toLowerCase(), switch8.isActivated(), notes.getText().toString());
+                        IrPostGame postGame = new IrPostGame(radioButton.getText().toString().toLowerCase(), switch9.isActivated(), switch8.isActivated(), notes.getText().toString());
 
                         IrMatch irMatch = new IrMatch(spinner.getSelectedItem().toString(), Integer.parseInt(matchNumber.getText().toString()), auto, teleop, endgame, postGame);
                         try
