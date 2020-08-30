@@ -8,6 +8,6 @@
     android:paddingTop="10dp"
     android:paddingRight="10dp"
     android:paddingBottom="10dp"
-    android:textColor="@android:color/primary_text_light"
     android:textSize="14sp"
-    app:fontFamily="sans-serif-black" />
+    app:fontFamily="sans-serif-black"
+    android:textColor="?android:attr/textColorPrimary"/>

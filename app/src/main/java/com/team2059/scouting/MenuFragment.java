@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -79,7 +80,6 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
         View view = inflater.inflate(R.layout.activity_menu, container, false);
 
         context = getContext();
-
 
         final String AUTHORIZATION_KEY = "aamijar:E9B244D8-B9FF-4BD6-9BF7-AA763A72292B";
         final String HOST = "https://frc-api.firstinspires.org/v2.0/";

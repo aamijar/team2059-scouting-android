@@ -22,5 +22,5 @@
     <color name="transparent">#80FFFFFF</color>
 
     <color name="frc_avatar_blue">#0066B3</color>
-
+    <color name="editbox_tint">@null</color>
 </resources>

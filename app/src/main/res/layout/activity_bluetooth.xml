@@ -35,7 +35,9 @@
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bluetooth_scan" />
+        app:layout_constraintTop_toBottomOf="@+id/bluetooth_scan"
+        app:fontFamily="sans-serif"
+        android:textStyle="bold"/>
 
     <Button
         android:id="@+id/bluetooth_scan"
@@ -51,7 +53,9 @@
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:fontFamily="sans-serif"
+        android:textStyle="bold"/>
 
     <ImageButton
         android:id="@+id/bluetooth_info"
@@ -64,7 +68,7 @@
         android:maxWidth="24dp"
         android:maxHeight="24dp"
         android:tint="@color/colorPrimaryDark"
-        app:backgroundTint="@color/transparent"
+        app:backgroundTint="@color/text_primary_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_info_black" />
@@ -92,15 +96,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            app:fontFamily="@font/eagle_book"/>
+            app:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary"
+            android:layout_marginRight="15dp"
+            android:layout_marginEnd="15dp" />
 
         <TextView
             android:id="@+id/bluetooth_devaddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            app:fontFamily="@font/eagle_light"
-            android:textSize="12sp"/>
+            app:fontFamily="sans-serif"
+            android:textSize="12sp"
+            android:layout_marginRight="15dp"
+            android:layout_marginEnd="15dp"/>
     </LinearLayout>
 
 

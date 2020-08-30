@@ -227,21 +227,21 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
     public void setBluetoothIcon(ImageView imageView, BluetoothDevice device){
         switch(device.getBluetoothClass().getDeviceClass()){
             case PHONE_SMART:
-                imageView.setImageResource(R.drawable.ic_smartphone_black_24dp);
+                imageView.setBackgroundResource(R.drawable.ic_smartphone_black_24dp);
                 break;
             case COMPUTER_LAPTOP:
             case COMPUTER_DESKTOP:
-                imageView.setImageResource(R.drawable.ic_computer_black_24dp);
+                imageView.setBackgroundResource(R.drawable.ic_computer_black_24dp);
                 break;
             case AUDIO_VIDEO_HEADPHONES:
             case AUDIO_VIDEO_WEARABLE_HEADSET:
-                imageView.setImageResource(R.drawable.ic_headset_black_24dp);
+                imageView.setBackgroundResource(R.drawable.ic_headset_black_24dp);
                 break;
             case WEARABLE_WRIST_WATCH:
-                imageView.setImageResource(R.drawable.ic_watch_black_24dp);
+                imageView.setBackgroundResource(R.drawable.ic_watch_black_24dp);
                 break;
             default:
-                imageView.setImageResource(R.drawable.ic_bluetooth_black);
+                imageView.setBackgroundResource(R.drawable.ic_bluetooth_black);
         }
     }
 

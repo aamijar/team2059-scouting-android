@@ -129,6 +129,8 @@ public class AnalyzeFragment extends Fragment {
                     intent.putExtra("avatar", teamsList.get(position).getbyteMapString());
                     intent.putExtra("teamName", teamName.getText().toString());
                     intent.putExtra("teamNumber", teamNumber.getText().toString());
+                    intent.putExtra("teamObject", teamsList.get(position));
+
                     startActivity(intent, options.toBundle());
                 }
             });

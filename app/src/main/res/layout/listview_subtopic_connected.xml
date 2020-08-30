@@ -13,10 +13,11 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="2dp"
+        android:background="@drawable/ic_smartphone_black_24dp"
+        app:backgroundTint="?android:attr/textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_smartphone_black_24dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/subtopic_connected_textview"
@@ -27,8 +28,9 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="TextView"
-        android:textColor="@color/text_primary_dark"
-        app:fontFamily="@font/eagle_book"
+        android:textColor="?android:attr/textColorPrimary"
+        app:fontFamily="sans-serif"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

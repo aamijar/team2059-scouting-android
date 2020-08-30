@@ -10,10 +10,13 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.team2059.scouting.core.Team;
 
 public class TeamActivity extends AppCompatActivity {
 
@@ -38,7 +41,7 @@ public class TeamActivity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.teamprofile_avatar);
         TextView name = findViewById(R.id.teamprofile_name);
         TextView number = findViewById(R.id.teamprofile_number);
-
+        TextView rankingSummary = findViewById(R.id.teamprofile_ranking_summary);
 
         Intent intent = getIntent();
         String byteMapArr = intent.getStringExtra("avatar");
@@ -57,6 +60,10 @@ public class TeamActivity extends AppCompatActivity {
         name.setText(teamName);
         number.setText(teamNumber);
 
+        Team team = intent.getParcelableExtra("teamObject");
+        Log.e("TAGGED", team.getTeamName());
+        //Log.e("TAGGED", team.getRankPointAvg() + "");
+        //rankingSummary.setText(team.getOverallRank() + " | " + team.getRankPointAvg());
 
         supportStartPostponedEnterTransition();
 

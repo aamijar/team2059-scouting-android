@@ -20,14 +20,15 @@
         android:paddingTop="8dp"
         android:text="@string/logo_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:fontFamily="@font/eagle_book" />
+        app:fontFamily="@font/eagle_bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/email"
+        android:paddingTop="2dp"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        app:fontFamily="@font/eagle_light" />
+        app:fontFamily="sans-serif-medium" />
 
 
 </LinearLayout>

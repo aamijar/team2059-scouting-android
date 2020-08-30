@@ -1,6 +1,7 @@
 package com.team2059.scouting;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GestureDetectorCompat;
 
 import android.content.Intent;
@@ -29,6 +30,7 @@ public class Splash extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
 
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         final String versionCode = "v" + BuildConfig.VERSION_NAME;

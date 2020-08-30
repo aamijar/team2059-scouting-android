@@ -172,7 +172,7 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
         expandableListView.setAdapter(expandableListAdapter);
 
         button_connect = view.findViewById(R.id.bluetooth_connect);
-        button_connect.setTypeface(eagleBook);
+        //button_connect.setTypeface(eagleBook);
 
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -237,7 +237,7 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
 
 
         Button button_scan = view.findViewById(R.id.bluetooth_scan);
-        button_scan.setTypeface(eagleBook);
+        //button_scan.setTypeface(eagleBook);
 
 
         button_scan.setOnClickListener(new View.OnClickListener() {
