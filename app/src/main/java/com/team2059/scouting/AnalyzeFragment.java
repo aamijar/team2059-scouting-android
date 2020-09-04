@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -22,6 +24,8 @@ import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.transition.Fade;
+import android.transition.Transition;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -32,6 +36,7 @@ import org.team2059.scouting.core.Team;
 import org.team2059.scouting.core.frc2020.IrMatch;
 import org.team2059.scouting.core.frc2020.IrTeam;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -65,7 +70,9 @@ public class AnalyzeFragment extends Fragment {
         return analyzeFragment;
     }
 
-
+    public interface AnalyzeFragmentListener{
+        void onTeamProfileSend(Team team);
+    }
 
     @Nullable
     @Override
@@ -73,8 +80,17 @@ public class AnalyzeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_analyze, container, false);
         Gson gson = new Gson();
         //setRetainInstance(true);
+        postponeEnterTransition();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity.getWindow().setExitTransition(null);
+            //activity.getWindow().setExitTransition(null);
+            Fade fade = new Fade();
+            fade.excludeTarget(R.id.navigation_toolbar, true);
+            fade.excludeTarget(R.id.team_toolbar, true);
+            fade.excludeTarget(android.R.id.statusBarBackground, true);
+            fade.excludeTarget(android.R.id.navigationBarBackground, true);
+            fade.excludeTarget(R.id.teamprofile_listview, true);
+            activity.getWindow().setExitTransition(fade);
+            activity.getWindow().setEnterTransition(fade);
         }
 
 
@@ -118,18 +134,23 @@ public class AnalyzeFragment extends Fragment {
                     Intent intent = new Intent(activity, TeamActivity.class);
 
                     Pair[] pairs = new Pair[3];
-                    pairs[0] = new Pair<View, String>(avatar, "avatarTransition");
-                    pairs[1] = new Pair<View, String>(teamName, "teamNameTransition");
-                    pairs[2] = new Pair<View, String>(teamNumber, "teamNumberTransition");
+                    pairs[0] = new Pair<View, String>(avatar, ViewCompat.getTransitionName(avatar));
+                    pairs[1] = new Pair<View, String>(teamName, ViewCompat.getTransitionName(teamName));
+                    pairs[2] = new Pair<View, String>(teamNumber, ViewCompat.getTransitionName(teamNumber));
 
                     //ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
                     //        avatar, ViewCompat.getTransitionName(avatar));
                     ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, pairs);
 
-                    intent.putExtra("avatar", teamsList.get(position).getbyteMapString());
+                    intent.putExtra("avatar", (String) teamsList.get(position).getbyteMapString());
+
                     intent.putExtra("teamName", teamName.getText().toString());
                     intent.putExtra("teamNumber", teamNumber.getText().toString());
                     intent.putExtra("teamObject", teamsList.get(position));
+
+                    intent.putExtra("teamAvatarTransitionName", ViewCompat.getTransitionName(avatar));
+                    intent.putExtra("teamNameTransitionName", ViewCompat.getTransitionName(teamName));
+                    intent.putExtra("teamNumberTransitionName", ViewCompat.getTransitionName(teamNumber));
 
                     startActivity(intent, options.toBundle());
                 }
@@ -137,7 +158,15 @@ public class AnalyzeFragment extends Fragment {
 
         }
 
-
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something after 2000ms
+                Log.e("ELEMENT", "DONE");
+                startPostponedEnterTransition();
+            }
+        }, 2000);
 
         return view;
     }

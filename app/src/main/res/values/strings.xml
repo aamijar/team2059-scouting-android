@@ -87,4 +87,27 @@
     <string name="filter_teleop_powercell_count">Teleop Power Cell Count</string>
     <string name="filter_climb_count">Climb Count</string>
 
+
+    <!--Match Item -->
+    <string name="match_info">
+        Auto:\n\n
+        &#009;&#009;Init line: %1$s\n
+        &#009;&#009;Low att: %2$d\n
+        &#009;&#009;Low made: %3$d\n
+        &#009;&#009;Out att: %4$d\n
+        &#009;&#009;Out made: %5$d\n
+        &#009;&#009;Inner made: %6$d\n\nTeleop:\n\n
+        &#009;&#009;Low att: %7$d\n
+        &#009;&#009;Low made: %8$d\n
+        &#009;&#009;Out att: %9$d\n
+        &#009;&#009;Out made: %10$d\n
+        &#009;&#009;Inner made: %11$d\n
+        &#009;&#009;Position control: %12$s\n
+        &#009;&#009;Rotation control: %13$s\n\nEndgame:\n\n
+        &#009;&#009;Climb att: %14$s\n
+        &#009;&#009;Climb success: %15$s\n
+        &#009;&#009;Park: %16$s\n
+        &#009;&#009;Level: %17$s\n\nNotes:\n\n
+        &#009;&#009;%18$s</string>
+
 </resources>

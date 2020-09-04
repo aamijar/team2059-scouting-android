@@ -95,7 +95,8 @@
             android:textSize="15sp"
             android:textStyle="bold"
             android:transitionName="teamNumberTransition"
-            app:fontFamily="sans-serif" />
+            app:fontFamily="sans-serif"
+            tools:targetApi="lollipop" />
 
         <TextView
             android:id="@+id/team_card_record"

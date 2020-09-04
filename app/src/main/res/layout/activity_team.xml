@@ -7,75 +7,110 @@
     android:layout_height="match_parent"
     tools:context=".TeamActivity">
 
-    <include android:id="@+id/team_toolbar" layout="@layout/toolbar"/>
+    <include
+        android:id="@+id/team_toolbar"
+        layout="@layout/toolbar" />
 
-    <ImageView
-        android:id="@+id/teamprofile_avatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/avatar_background"
-        android:padding="2dp"
-        android:transitionName="avatarTransition"
+<!--    <ScrollView-->
+<!--        android:id="@+id/teamprofile_scrollview"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/team_toolbar"-->
+<!--        app:layout_constraintVertical_bias="0.0">-->
+
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/teamprofile_header"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/teamprofile_ranking_summary"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="12dp"-->
+<!--                android:layout_marginLeft="12dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginEnd="12dp"-->
+<!--                android:layout_marginRight="12dp"-->
+<!--                android:text="Rank 1 | Ranking Score: 0.5"-->
+<!--                android:textColor="?android:attr/textColorPrimary"-->
+<!--                android:textSize="15sp"-->
+<!--                app:fontFamily="sans-serif-black"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/teamprofile_number"-->
+<!--                tools:ignore="HardcodedText" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/teamprofile_avatar"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:layout_marginStart="12dp"-->
+<!--                android:layout_marginLeft="12dp"-->
+<!--                android:layout_marginTop="40dp"-->
+<!--                android:layout_marginEnd="12dp"-->
+<!--                android:layout_marginRight="12dp"-->
+<!--                android:background="@drawable/avatar_background"-->
+<!--                android:padding="2dp"-->
+<!--                android:transitionName="avatarTransition"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:srcCompat="@drawable/hh_logo"-->
+<!--                tools:targetApi="lollipop" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/teamprofile_name"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="12dp"-->
+<!--                android:layout_marginLeft="12dp"-->
+<!--                android:layout_marginTop="14dp"-->
+<!--                android:layout_marginEnd="12dp"-->
+<!--                android:layout_marginRight="12dp"-->
+<!--                android:text="The Hitchhikers"-->
+<!--                android:textColor="?android:attr/textColorPrimary"-->
+<!--                android:textSize="16sp"-->
+<!--                android:transitionName="teamNameTransition"-->
+<!--                app:fontFamily="sans-serif-black"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/teamprofile_avatar"-->
+<!--                tools:targetApi="lollipop" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/teamprofile_number"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="12dp"-->
+<!--                android:layout_marginLeft="12dp"-->
+<!--                android:layout_marginTop="10dp"-->
+
+<!--                android:layout_marginEnd="12dp"-->
+<!--                android:layout_marginRight="12dp"-->
+<!--                android:text="2059"-->
+<!--                android:textColor="?android:attr/textColorPrimary"-->
+<!--                android:textSize="15sp"-->
+<!--                app:fontFamily="sans-serif-black"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/teamprofile_name"-->
+<!--                tools:targetApi="lollipop" />-->
+
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--    </ScrollView>-->
+
+    <ListView
+        android:id="@+id/teamprofile_listview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/hh_logo"
-        tools:targetApi="lollipop" />
-
-    <TextView
-        android:id="@+id/teamprofile_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
-        android:text="The Hitchhikers"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp"
-        android:transitionName="teamNameTransition"
-        app:fontFamily="sans-serif-black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/teamprofile_avatar"
-        tools:targetApi="lollipop" />
-
-    <TextView
-        android:id="@+id/teamprofile_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
-        android:text="2059"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="15sp"
-        android:transitionName="teamNumberTransition"
-        app:fontFamily="sans-serif-black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/teamprofile_name"
-        tools:targetApi="lollipop" />
-
-    <TextView
-        android:id="@+id/teamprofile_ranking_summary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
-        android:text="Rank 1 (4-1-1)"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/teamprofile_number"
-        android:textSize="15sp"
-        android:textColor="?android:attr/textColorPrimary"
-        app:fontFamily="sans-serif-black"/>
+        app:layout_constraintTop_toBottomOf="@+id/team_toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

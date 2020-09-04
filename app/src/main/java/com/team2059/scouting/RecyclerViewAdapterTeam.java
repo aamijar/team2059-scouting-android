@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Base64;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.team2059.scouting.core.Match;
@@ -29,10 +31,12 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
 
     private ArrayList<Team> teams;
     private String attrFilter = "";
-
+    private static final String TAG = "RecyclerViewAdapterTeam";
     private Context context;
 
+
     private ViewHolderListener listener;
+
 
     public interface ViewHolderListener{
         void onTeamClick(int position, ImageView avatar, TextView teamName, TextView teamNumber);
@@ -139,6 +143,11 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
             holder.teamNumber.setText(irTeam.getTeamNumber());
             //holder.attr1.setText("Auto Powercell Count: " + irTeam.getAutoPowercellCount());
 
+//            ViewCompat.setTransitionName(holder.teamName, irTeam.getTeamNumber() + "teamName");
+//            ViewCompat.setTransitionName(holder.teamNumber, irTeam.getTeamNumber() + "teamNumber");
+//            ViewCompat.setTransitionName(holder.avatar, irTeam.getTeamNumber() + "avatar");
+
+            Log.e(TAG, "onBindViewHolder: " + ViewCompat.getTransitionName(holder.teamName));
 
 
             if(attrFilter.equals(context.getString(R.string.filter_OPR))){
@@ -170,7 +179,8 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
 
 
             else{
-                holder.attr1.setText("Ranking Score: " + irTeam.getRankPointAvg());
+                String rankPointAvg = new BigDecimal(String.valueOf(irTeam.getRankPointAvg())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+                holder.attr1.setText("Ranking Score: " + rankPointAvg);
             }
 
 

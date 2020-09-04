@@ -15,7 +15,7 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
     private MainFragment mainFragment;
     private AnalyzeFragment analyzeFragment;
 
-    SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+    SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
     public MyPagerAdapter(FragmentManager fm, MainFragment mainFragment, AnalyzeFragment analyzeFragment){
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);

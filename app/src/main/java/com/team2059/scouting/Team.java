@@ -13,9 +13,10 @@ package com.team2059.scouting;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Team implements Parcelable {
+
+public class Team implements Parcelable, Serializable {
 
     private String teamNumber;
     private String teamName;

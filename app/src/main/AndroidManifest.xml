@@ -16,13 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TeamActivity"></activity>
+        <activity android:name=".TeamActivity" />
         <activity android:name=".NavigationDrawer" />
-        <activity
-            android:name=".BluetoothActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".Menu" />
-        <activity android:name=".MainActivity" />
         <activity android:name=".MasterView" />
         <activity android:name=".Splash">
             <intent-filter>
