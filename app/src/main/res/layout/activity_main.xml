@@ -1081,16 +1081,6 @@
                 app:layout_constraintStart_toEndOf="@+id/increment_up"
                 app:layout_constraintTop_toTopOf="@+id/increment_down4" />
 
-            <ImageView
-                android:id="@+id/testimage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:scaleType="fitXY"
-                app:layout_constraintBottom_toTopOf="@+id/switch3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/hh_launcher" />
-
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
@@ -1205,6 +1195,17 @@
                 app:layout_constraintStart_toEndOf="@+id/increment_up10"
                 app:layout_constraintTop_toTopOf="@+id/switch8" />
 
+            <ImageButton
+                android:id="@+id/undo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_button"
+                app:layout_constraintBottom_toBottomOf="@+id/submit"
+                app:layout_constraintEnd_toStartOf="@+id/submit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/submit"
+                app:srcCompat="@drawable/ic_baseline_undo_24"
+                android:padding="8dp"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

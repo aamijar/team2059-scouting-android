@@ -4,6 +4,7 @@
  * in dir data/data/app_name
  *
  * @author Anupam
+ *
  */
 
 package com.team2059.scouting;
@@ -22,13 +23,9 @@ import java.io.File;
 
 
 import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Scanner;
+
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
@@ -36,16 +33,14 @@ import android.content.Context;
 
 import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
-import android.os.Environment;
+
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -319,33 +314,80 @@ public class FileManager
      * @param context context of application
      * @return json formatted string, default null
      */
+
+
+    // this function needs to be able to read from a competition directory as well,
+    // while omitting checkpoints directory
+
     public static String readFile(String filepath, Context context){
 
+        ArrayList<IrMatch> irMatchArr = new ArrayList<>();
+
         File file = new File(context.getExternalFilesDir(null), filepath);
-        if(!file.exists()){
-            return null;
+        File [] files = file.listFiles();
+
+        Gson gson = new Gson();
+
+        if(files != null){
+
+            ArrayList<File> filesList = getFileArray(files, new ArrayList<File>());
+            for (File f : filesList){
+                try{
+                    Log.e(TAG, f.getName());
+                    FileReader reader = new FileReader(f);
+
+                    JSONParser jsonParser = new JSONParser();
+                    org.json.simple.JSONArray updateJsonArr = (org.json.simple.JSONArray) jsonParser.parse(reader);
+
+                    Type irMatchType = new TypeToken<ArrayList<IrMatch>>(){}.getType();
+                    ArrayList<IrMatch> tmp = gson.fromJson(updateJsonArr.toJSONString(), irMatchType);
+                    irMatchArr.addAll(tmp);
+                }
+                catch (ParseException e){
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
+        else{
+            Log.e(TAG, "list files null");
+            if(file.exists()){
+                try{
+                    FileReader reader = new FileReader(file);
 
-        try{
-            FileReader reader = new FileReader(context.getExternalFilesDir(filepath));
+                    JSONParser jsonParser = new JSONParser();
+                    org.json.simple.JSONArray updateJsonArr = (org.json.simple.JSONArray) jsonParser.parse(reader);
 
-            JSONParser jsonParser = new JSONParser();
-            org.json.simple.JSONArray updateJsonArr = (org.json.simple.JSONArray) jsonParser.parse(reader);
+                    Type irMatchType = new TypeToken<ArrayList<IrMatch>>(){}.getType();
+                    ArrayList<IrMatch> tmp = gson.fromJson(updateJsonArr.toJSONString(), irMatchType);
+                    irMatchArr.addAll(tmp);
+                }
+                catch (ParseException e){
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                return null;
+            }
 
-            Gson gson = new Gson();
-
-            Type irMatchType = new TypeToken<ArrayList<IrMatch>>(){}.getType();
-            ArrayList<IrMatch> irMatchArr = gson.fromJson(updateJsonArr.toJSONString(), irMatchType);
-
-            return gson.toJson(irMatchArr);
         }
-        catch (ParseException e){
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return gson.toJson(irMatchArr);
     }
+
+    private static ArrayList<File> getFileArray(File [] files, ArrayList<File> filesList){
+        for(File f : files){
+            if(f.isDirectory() && !f.getName().equals("checkpoints")) {
+                getFileArray(f.listFiles(), filesList);
+            } else{
+                filesList.add(f);
+            }
+        }
+        return filesList;
+    }
+
 
 
     /**
@@ -363,6 +405,13 @@ public class FileManager
         writer.close();
     }
 
+    /**
+     *
+     * @param incomingMessage json string shared from device
+     * @param bluetoothDevice device that sent the data
+     * @param context context of application
+     */
+
     public static void writeFromBluetoothResponse(String incomingMessage, final BluetoothDevice bluetoothDevice, final Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -371,6 +420,16 @@ public class FileManager
         final String root = incomingMessage.split(",", 2)[0];
         String jsonString = incomingMessage.split(",", 2)[1];
         String dirName = sharedPreferences.getString(bluetoothDevice.getAddress(), null);
+        if(!new File(context.getExternalFilesDir(null), root).exists()){
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context, root + " does not exist on you device and data received could not be saved.", Toast.LENGTH_LONG).show();
+                }
+            });
+            return;
+        }
+
         if(dirName == null){
             boolean dirCreated = false;
             int count = 0;
@@ -390,6 +449,9 @@ public class FileManager
             }
             editor.putString(bluetoothDevice.getAddress(), dirName);
             editor.apply();
+        }
+        else{
+            FileManager.makeDir(root + "/" + dirName, context);
         }
         try {
             FileManager.writeToJsonFile(root + "/" + dirName + "/shared-copy.json", jsonString, context);
@@ -428,6 +490,12 @@ public class FileManager
 
 
     }
+
+    /**
+     *
+     * @param mlist list of match objects
+     * @return list of team objects containing match objects
+     */
 
     public static ArrayList<Team> createTeamsArr(ArrayList<? extends Match> mlist)
     {
@@ -471,7 +539,40 @@ public class FileManager
     }
 
 
+    /**
+     *
+     * @param fileName name of file
+     * @param context context of application
+     * @throws IOException file not found
+     * @throws ParseException cannot parse json file
+     */
+    public static void undoLastMatchSheet(String fileName, Context context) throws IOException, ParseException {
 
+        File jsonFile = new File(context.getExternalFilesDir(null), fileName);
+        FileReader reader = new FileReader(context.getExternalFilesDir(fileName));
+
+
+        JSONParser jsonParser = new JSONParser();
+        org.json.simple.JSONArray updateJsonArr = (org.json.simple.JSONArray) jsonParser.parse(reader);
+
+        Gson gson = new Gson();
+
+        Type irMatchType = new TypeToken<ArrayList<IrMatch>>(){}.getType();
+        ArrayList<IrMatch> irMatchArr = gson.fromJson(updateJsonArr.toJSONString(), irMatchType);
+
+        //remove last match object from arr
+        irMatchArr.remove(irMatchArr.size() - 1);
+
+        String gsonStr = gson.toJson(irMatchArr);
+
+        FileWriter writer = new FileWriter(jsonFile);
+        writer.write(gsonStr); //updated JSON String written
+
+
+        writer.close();
+        Toast.makeText(context, fileName + " updated successfully!", Toast.LENGTH_LONG).show();
+
+    }
 
 
 }

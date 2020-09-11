@@ -86,7 +86,7 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
     private Typeface eagleLight;
     private Typeface eagleBook;
 
-    private BluetoothFragmentListener listener;
+
 
 
     @Override
@@ -122,9 +122,7 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
         showConnectionStatus();
     }
 
-    public interface BluetoothFragmentListener{
-        void onBluetoothHandlerAttached(ArrayList<BluetoothHandler> bluetoothHandlers);
-    }
+
 
 
 
@@ -137,6 +135,9 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
 
         if(savedInstanceState != null){
             bluetoothHandlers = savedInstanceState.getParcelableArrayList(ARG_HANDLERS);
+            if(bluetoothHandlers == null){
+                bluetoothHandlers = new ArrayList<>();
+            }
         }
         else{
             if(bluetoothHandlers == null){
@@ -299,13 +300,7 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
-        if(context instanceof BluetoothFragmentListener){
-            activity = (Activity) context;
-            listener = (BluetoothFragmentListener) context;
-        }else{
-            throw new RuntimeException(context.toString() + " must implement BluetoothFragmentListener");
-        }
+        activity = (Activity) context;
     }
 
 
@@ -523,7 +518,6 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
     @Override
     public void onDetach() {
         super.onDetach();
-        listener = null;
     }
 
     public void initBluetoothHandler(){

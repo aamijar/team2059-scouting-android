@@ -2,6 +2,7 @@ package com.team2059.scouting;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,10 +29,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 
+import org.json.simple.parser.ParseException;
 import org.team2059.scouting.core.frc2020.IrAuto;
 import org.team2059.scouting.core.frc2020.IrControlPanel;
 import org.team2059.scouting.core.frc2020.IrEndgame;
@@ -40,6 +44,7 @@ import org.team2059.scouting.core.frc2020.IrPostGame;
 import org.team2059.scouting.core.frc2020.IrTeleop;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainFragment extends Fragment implements BluetoothHandler.BluetoothHandlerCallback {
@@ -70,16 +75,28 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
 
     private Spinner spinner;
 
+    private Switch switch1;
+    private Switch switch2;
+    private Switch switch3;
+    private Switch switch4;
+    private Switch switch5;
+    private Switch switch6;
+    private Switch switch7;
+    private Switch switch8;
+    private Switch switch9;
+
+    private EditText matchNumber;
+    private EditText notes;
+    private RadioGroup radioGroup;
+
+
     private ArrayList<BluetoothHandler> bluetoothHandlers;
 
 
-    static MainFragment newInstance(com.team2059.scouting.Team[] teams, String dirName, ArrayList<BluetoothHandler> bluetoothHandlers) {
+    static MainFragment newInstance(String dirName) {
         MainFragment mainFragment = new MainFragment();
         Bundle args = new Bundle();
-
-        //args.putParcelableArray(ARG_TEAMS, teams);
         args.putString(ARG_DIRNAME, dirName);
-        args.putParcelableArrayList(ARG_HANDLERS, bluetoothHandlers);
 
         mainFragment.setArguments(args);
         return mainFragment;
@@ -97,7 +114,7 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_main, container, false);
         view = v;
 
@@ -128,7 +145,7 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
             }
 
             //bluetoothHandlers = (ArrayList<BluetoothHandler>) getArguments().getSerializable(ARG_HANDLERS);
-            bluetoothHandlers = getArguments().getParcelableArrayList(ARG_HANDLERS);
+            //bluetoothHandlers = getArguments().getParcelableArrayList(ARG_HANDLERS);
         }
 
 
@@ -179,58 +196,52 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
         ImageButton button20 = v.findViewById(R.id.increment_down10);
 
         /*Define Fonts from assets folder NOT from /res/font */
-        Typeface eagleLight = Typeface.createFromAsset(activity.getAssets(), "fonts/eagle_light.otf");
-        Typeface eagleBook = Typeface.createFromAsset(activity.getAssets(), "fonts/eagle_book.otf");
+        //Typeface eagleLight = Typeface.createFromAsset(activity.getAssets(), "fonts/eagle_light.otf");
+        //Typeface eagleBook = Typeface.createFromAsset(activity.getAssets(), "fonts/eagle_book.otf");
         //Typeface eagleBold = Typeface.createFromAsset(activity.getAssets(), "fonts/eagle_bold.otf");
 
 
-        final Switch switch1 = v.findViewById(R.id.switch1);
-        final Switch switch2 = v.findViewById(R.id.switch2);
-        final Switch switch3 = v.findViewById(R.id.switch3);
-        final Switch switch4 = v.findViewById(R.id.switch4);
-        final Switch switch5 = v.findViewById(R.id.switch5);
-        final Switch switch6 = v.findViewById(R.id.switch6);
-        final Switch switch7 = v.findViewById(R.id.switch7);
-        final Switch switch8 = v.findViewById(R.id.switch8);
-        final Switch switch9 = v.findViewById(R.id.switch9);
+        switch1 = v.findViewById(R.id.switch1);
+        switch2 = v.findViewById(R.id.switch2);
+        switch3 = v.findViewById(R.id.switch3);
+        switch4 = v.findViewById(R.id.switch4);
+        switch5 = v.findViewById(R.id.switch5);
+        switch6 = v.findViewById(R.id.switch6);
+        switch7 = v.findViewById(R.id.switch7);
+        switch8 = v.findViewById(R.id.switch8);
+        switch9 = v.findViewById(R.id.switch9);
 
-//        switch1.setTypeface(eagleLight, Typeface.BOLD);
-//        switch2.setTypeface(eagleLight, Typeface.BOLD);
-//        switch3.setTypeface(eagleLight, Typeface.BOLD);
-//        switch4.setTypeface(eagleLight, Typeface.BOLD);
-//        switch5.setTypeface(eagleLight, Typeface.BOLD);
-//        switch6.setTypeface(eagleLight, Typeface.BOLD);
-//        switch7.setTypeface(eagleLight, Typeface.BOLD);
-//        switch8.setTypeface(eagleLight, Typeface.BOLD);
-//        switch9.setTypeface(eagleLight, Typeface.BOLD);
 
         Button button = v.findViewById(R.id.submit); //submit button
-        //Button buttonActivity = (Button) findViewById(R.id.button); //to switch between pages
-        //button.setTypeface(eagleBook);
 
 
-//        ImageButton bluetooth_button = v.findViewById(R.id.mainfrag_bluetooth);
-//        bluetooth_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //TODO
-//
-//            }
-//        });
+        matchNumber = v.findViewById(R.id.match_number);
+        notes = v.findViewById(R.id.notes);
+        radioGroup = v.findViewById(R.id.main_radiogroup);
 
-
-        final EditText matchNumber = v.findViewById(R.id.match_number);
-        final EditText notes = v.findViewById(R.id.notes);
-        final RadioGroup radioGroup = v.findViewById(R.id.main_radiogroup);
-//        Log.e(TAG, "" + radioGroup.getId());
-//        RadioButton radioButton = v.findViewById(R.id.radioButtonWin);
-//        Log.e(TAG, radioButton.getText() + "");
-//        RadioButton radioButton1 = v.findViewById(R.id.radioButtonTie);
-//        Log.e(TAG, radioButton1.getText() + "");
-//        RadioButton radioButton2 = v.findViewById(R.id.radioButtonLoss);
-//        Log.e(TAG, radioButton2.getText() + "");
-
-
+        ImageButton undoButton = v.findViewById(R.id.undo);
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(activity)
+                        .setTitle("Undo entry")
+                        .setMessage("Are you sure you want to undo your last recorded match?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    FileManager.undoLastMatchSheet(dirName + "/my-data/Competition.json", activity);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .setIconAttribute(android.R.attr.alertDialogIcon)
+                        .show();
+            }
+        });
 
 
 
@@ -251,12 +262,13 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
                 {
                     RadioButton radioButton = view.findViewById(radioGroup.getCheckedRadioButtonId());
                     if(radioButton != null){
-                        IrPostGame postGame = new IrPostGame(radioButton.getText().toString().toLowerCase(), switch9.isActivated(), switch8.isActivated(), notes.getText().toString());
+                        IrPostGame postGame = new IrPostGame(radioButton.getText().toString().toLowerCase(), switch9.isChecked(), switch8.isChecked(), notes.getText().toString());
 
                         IrMatch irMatch = new IrMatch(spinner.getSelectedItem().toString(), Integer.parseInt(matchNumber.getText().toString()), auto, teleop, endgame, postGame);
                         try
                         {
                             FileManager.writeToJsonFile(dirName + "/my-data/Competition.json", irMatch, activity);
+                            clearSheet();
                         }
                         catch (Exception e)
                         {
@@ -280,22 +292,12 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
             public void onClick(View v)
             {
                 incrementUp(low_att);
-                if(bluetoothHandlers.size() != 0){
-                    bluetoothHandlers.get(0).write("hello");
-                }
-
-
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
                 incrementDown(low_att);
-                if(bluetoothHandlers.size() != 0){
-                    bluetoothHandlers.get(1).write("hello");
-                }
-
-
             }
         });
         button3.setOnClickListener(new View.OnClickListener() {
@@ -442,18 +444,29 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
     }
 
     private void updateTeams(){
+
         String [] teamNames = new String[teams.length];
 
-        for (int i = 0; i < teams.length; i ++){
-            teamNames[i] = teams[i].getTeamName() + ", " + teams[i].getTeamNumber();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        if(sharedPreferences.getBoolean("placeholder_teams", false)){
+            teamNames = new String[teams.length + 5];
+
+            for (int i = 0; i < teamNames.length - 5; i ++){
+                teamNames[i] = teams[i].getTeamName() + ", " + teams[i].getTeamNumber();
+            }
+            teamNames[teamNames.length - 5] = "Team 9999, 9999";
+            teamNames[teamNames.length - 4] = "Team 9998, 9998";
+            teamNames[teamNames.length - 3] = "Team 9997, 9997";
+            teamNames[teamNames.length - 2] = "Team 9996, 9996";
+            teamNames[teamNames.length - 1] = "Team 9995, 9995";
+        }
+        else{
+            for (int i = 0; i < teams.length; i ++){
+                teamNames[i] = teams[i].getTeamName() + ", " + teams[i].getTeamNumber();
+            }
         }
 
-        ImageView imageView = view.findViewById(R.id.testimage);
-        byte [] bytes = Base64.decode(teams[0].getByteMapArr(), Base64.DEFAULT);
-        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        imageView.setImageBitmap(bmp);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spinner_item, teamNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, R.layout.spinner_item, teamNames);
         spinner.setAdapter(adapter);
     }
 
@@ -466,6 +479,35 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
 
         this.bluetoothHandlers.get(0).write(msg);
     }
+
+    private void clearSheet(){
+        matchNumber.getText().clear();
+        notes.getText().clear();
+        radioGroup.clearCheck();
+        spinner.setSelection(0);
+
+        low_att.setText("0");
+        low_made.setText("0");
+        out_att.setText("0");
+        out_made.setText("0");
+        inn_made.setText("0");
+        low_att2.setText("0");
+        low_made2.setText("0");
+        out_att2.setText("0");
+        out_made2.setText("0");
+        inn_made2.setText("0");
+
+        switch1.setChecked(false);
+        switch2.setChecked(false);
+        switch3.setChecked(false);
+        switch4.setChecked(false);
+        switch5.setChecked(false);
+        switch6.setChecked(false);
+        switch7.setChecked(false);
+        switch8.setChecked(false);
+        switch9.setChecked(false);
+    }
+
 
 
 }

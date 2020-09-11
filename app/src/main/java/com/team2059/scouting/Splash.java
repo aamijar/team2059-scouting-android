@@ -2,9 +2,12 @@ package com.team2059.scouting;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.BuildCompat;
 import androidx.core.view.GestureDetectorCompat;
+import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -29,6 +32,22 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String theme = sharedPreferences.getString("theme", null);
+
+        if(theme.equals("Dark")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else if(theme.equals("Light")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+        else if(BuildCompat.isAtLeastQ()){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        }
+        else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
+        }
+
         setContentView(R.layout.activity_splash);
 
 
@@ -45,15 +64,20 @@ public class Splash extends AppCompatActivity {
         Animation splashAnim = AnimationUtils.loadAnimation(this, R.anim.rotation_cw);
         image.startAnimation(splashAnim);
 
-        new Handler().postDelayed(new Runnable() {
+        splashAnim.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void run()
-            {
-                //Intent homeIntent = new Intent(Splash.this, MainActivity.class);
-                if(!splashDone) {openMainActivity();}
-                finish();
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if(!splashDone){
+                    openMainActivity();
+                }
             }
-        }, SPLASH_TIMEOUT);
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
     }
 
     @Override
@@ -86,9 +110,9 @@ public class Splash extends AppCompatActivity {
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             Log.d(DEBUG_TAG, "onSingleTapUp" + e.toString());
+            splashDone = true;
             openMainActivity();
             image.clearAnimation();
-            splashDone = true;
             return true;
         }
     }

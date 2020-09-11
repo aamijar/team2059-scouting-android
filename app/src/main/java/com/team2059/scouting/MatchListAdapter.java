@@ -2,6 +2,7 @@ package com.team2059.scouting;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,7 @@ public class MatchListAdapter extends ArrayAdapter<Match> {
         }
 
 
+
         //in future check for different competition types
         if(matches.get(position) instanceof IrMatch){
             //down cast
@@ -93,6 +95,19 @@ public class MatchListAdapter extends ArrayAdapter<Match> {
                     getSymbol(irMatch.getTeleop().getControlPanel().getPosition()), getSymbol(irMatch.getTeleop().getControlPanel().getRotation()), getSymbol(irMatch.getEndgame().getClimbAttempt()),
                     getSymbol(irMatch.getEndgame().getClimb()), getSymbol(irMatch.getEndgame().getPark()), getSymbol(irMatch.getEndgame().getLevel()), irMatch.getPostGame().getNotes());
             holder.matchBreakdown.setText(matchBreakDownData);
+
+            final String RP_INDICATOR = "\u25c6   ";
+            final String RP_HARD_INDICATOR = "\u2756   ";
+
+
+            if(irMatch.getPostGame().isStageThreeActivated()){
+                holder.matchResult.setText(RP_HARD_INDICATOR + holder.matchResult.getText());
+            }
+            if(irMatch.getPostGame().isClimbRankPoint()){
+                holder.matchResult.setText(RP_INDICATOR + holder.matchResult.getText());
+            }
+
+
         }
 
 

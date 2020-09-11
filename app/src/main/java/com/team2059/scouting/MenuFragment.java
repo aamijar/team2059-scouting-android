@@ -71,7 +71,7 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
     private MenuFragmentListener listener;
 
     public interface MenuFragmentListener{
-        void onInputSend(Team [] input, String dirName);
+        void onInputSend(String dirName);
     }
 
     @Nullable
@@ -250,7 +250,7 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
         editor.putString("com.team2059.scouting." + dirName, jsonTeamsArr);
         editor.apply();
 
-        listener.onInputSend(teams, dirName);
+        listener.onInputSend(dirName);
     }
 
 

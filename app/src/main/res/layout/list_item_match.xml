@@ -16,7 +16,6 @@
         android:id="@+id/match_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/match_result"
         android:textSize="16sp"
         android:textStyle="bold"
         tools:text="Match 1"
@@ -35,17 +34,14 @@
         android:lines="1"
         android:textSize="16sp"
         android:textStyle="bold"
-        tools:text="W"
+        tools:text="\u25c6   \u25c6   W"
         android:drawablePadding="5dp"
-        android:textColor="?android:attr/textColorPrimary"/>
+        android:textColor="?android:attr/textColorPrimary"
+        android:layout_alignTop="@id/match_number"
+        android:layout_alignBottom="@id/match_number"/>
 
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="sample"
-        android:layout_toLeftOf="@id/match_result"/>
+
 
     <LinearLayout
         android:id="@+id/match_breakdown_container"

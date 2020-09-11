@@ -1,9 +1,11 @@
 package com.team2059.scouting;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.Base64;
 
 import android.util.Log;
@@ -15,7 +17,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.team2059.scouting.core.Match;
@@ -103,15 +108,30 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
         if(team instanceof IrTeam){
             IrTeam irTeam = (IrTeam) team;
 
-            byte [] bytes = Base64.decode(irTeam.getbyteMapString(), Base64.DEFAULT);
+            byte [] bytes;
+            if(irTeam.getbyteMapString() == null){
+                bytes = new byte[]{};
+            }
+            else{
+                bytes = Base64.decode(irTeam.getbyteMapString(), Base64.DEFAULT);
+            }
             Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
             // in a recycler view holder may be "recycled" so a default value for background
             // color and image must be assigned to prevent the recycled background color or image from showing
             if(bytes.length > 0){
                 holder.avatar.setImageBitmap(bmp);
-                //holder.avatar.setBackgroundColor(context.getResources().getColor(R.color.frc_avatar_blue));
-                holder.avatar.setBackgroundResource(R.drawable.avatar_background);
+
+                /* set avatar backdrop according to preferences */
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                String avatarColor = sharedPreferences.getString("avatar_color", "Blue");
+                if(avatarColor.equals("Blue")){
+                    holder.avatar.setBackgroundResource(R.drawable.avatar_background);
+                }
+                else if(avatarColor.equals("Red")){
+                    holder.avatar.setBackgroundResource(R.drawable.avatar_background_red);
+                }
+
             }
             else{
                 holder.avatar.setImageBitmap(null);

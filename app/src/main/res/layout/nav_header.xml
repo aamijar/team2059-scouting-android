@@ -25,7 +25,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/email"
+        android:text="team2059.org"
         android:paddingTop="2dp"
         android:textAppearance="@style/TextAppearance.AppCompat"
         app:fontFamily="sans-serif-medium" />

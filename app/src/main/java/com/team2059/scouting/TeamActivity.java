@@ -2,13 +2,18 @@ package com.team2059.scouting;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.preference.PreferenceManager;
 
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -28,10 +33,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.team2059.scouting.core.Match;
 import org.team2059.scouting.core.Team;
 import org.team2059.scouting.core.frc2020.IrTeam;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class TeamActivity extends AppCompatActivity {
@@ -72,13 +81,27 @@ public class TeamActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String byteMapArr = intent.getStringExtra("avatar");
-        byte [] bytes = Base64.decode(byteMapArr, Base64.DEFAULT);
+
+        byte [] bytes;
+        if(byteMapArr != null)
+        {
+            bytes = Base64.decode(byteMapArr, Base64.DEFAULT);
+
+        }
+        else{
+            bytes = new byte[]{};
+        }
         Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         imageView.setImageBitmap(bmp);
 
-
-        if(bytes.length > 0){
-            //imageView.setBackgroundColor(getResources().getColor(R.color.frc_avatar_blue));
+        /* set avatar backdrop according to preferences*/
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String avatarColor = sharedPreferences.getString("avatar_color", "Blue");
+        if(avatarColor.equals("Blue")){
+            imageView.setBackgroundResource(R.drawable.avatar_background);
+        }
+        else if(avatarColor.equals("Red")){
+            imageView.setBackgroundResource(R.drawable.avatar_background_red);
         }
 
 
@@ -111,7 +134,7 @@ public class TeamActivity extends AppCompatActivity {
 
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, vals);
-        MatchListAdapter matchListAdapter = new MatchListAdapter(this, 0, irTeam.getMatches());
+        MatchListAdapter matchListAdapter = new MatchListAdapter(this, 0, getSortedMatchList(irTeam.getMatches()));
 
         listView.setAdapter(matchListAdapter);
 
@@ -204,7 +227,15 @@ public class TeamActivity extends AppCompatActivity {
         valueAnimator.start();
     }
 
-
+    private ArrayList<Match> getSortedMatchList(ArrayList<Match> matches){
+        Collections.sort(matches, new Comparator<Match>() {
+            @Override
+            public int compare(Match m1, Match m2) {
+                return m1.getMatchNumber() - m2.getMatchNumber();
+            }
+        });
+        return matches;
+    }
 
 
 }

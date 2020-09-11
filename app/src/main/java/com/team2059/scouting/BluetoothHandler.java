@@ -287,6 +287,10 @@ class BluetoothHandler implements Parcelable {
                         completeMessage = incomingMessage.substring(digits + 1);
                         Log.e("MESSAGE", incomingMessage);
                         Log.e("Modisize", "" + dataSize);
+                        if(dataSize == 0){
+                            Log.e("FINAL MESSAGE", completeMessage.substring(completeMessage.length() - 10));
+                            FileManager.writeFromBluetoothResponse(completeMessage, bluetoothDevice, activity);
+                        }
 
                     }
                     else{

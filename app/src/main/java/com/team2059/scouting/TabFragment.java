@@ -51,7 +51,7 @@ public class TabFragment extends Fragment {
     private static final float DIMMED_ALPHA = 0.7f;
     private View foregroundDim;
 
-    static TabFragment newInstance(Team[] teams, String dirName, ArrayList<BluetoothHandler> bluetoothHandlers){
+    static TabFragment newInstance(String dirName){
         TabFragment tabFragment = new TabFragment();
         Bundle args = new Bundle();
 
@@ -61,7 +61,7 @@ public class TabFragment extends Fragment {
         //args.putString(ARG_TEAMS, jsonTeamsArr);
         //args.putParcelableArray(ARG_TEAMS, teams);
         args.putString(ARG_DIRNAME, dirName);
-        args.putParcelableArrayList(ARG_HANDLERS, bluetoothHandlers);
+        //args.putParcelableArrayList(ARG_HANDLERS, bluetoothHandlers);
         tabFragment.setArguments(args);
         return tabFragment;
     }
@@ -82,9 +82,8 @@ public class TabFragment extends Fragment {
 //                    getArguments().<BluetoothHandler>getParcelableArrayList(ARG_HANDLERS));
 //            analyzeFragment = AnalyzeFragment.newInstance((Team[]) getArguments().getParcelableArray(ARG_TEAMS), getArguments().getString(ARG_DIRNAME));
 
-            mainFragment = MainFragment.newInstance(new Team[]{}, getArguments().getString(ARG_DIRNAME),
-                    getArguments().<BluetoothHandler>getParcelableArrayList(ARG_HANDLERS));
-            analyzeFragment = AnalyzeFragment.newInstance(new Team[]{}, getArguments().getString(ARG_DIRNAME));
+            mainFragment = MainFragment.newInstance(getArguments().getString(ARG_DIRNAME));
+            analyzeFragment = AnalyzeFragment.newInstance(getArguments().getString(ARG_DIRNAME));
         }
         else{
             mainFragment = new MainFragment();

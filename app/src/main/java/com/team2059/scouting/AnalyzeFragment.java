@@ -58,7 +58,7 @@ public class AnalyzeFragment extends Fragment {
     private RecyclerViewAdapterTeam adapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    public static AnalyzeFragment newInstance(com.team2059.scouting.Team[] teams, String dirName){
+    public static AnalyzeFragment newInstance(String dirName){
         AnalyzeFragment analyzeFragment = new AnalyzeFragment();
         Bundle args = new Bundle();
 
@@ -70,9 +70,6 @@ public class AnalyzeFragment extends Fragment {
         return analyzeFragment;
     }
 
-    public interface AnalyzeFragmentListener{
-        void onTeamProfileSend(Team team);
-    }
 
     @Nullable
     @Override
@@ -111,7 +108,7 @@ public class AnalyzeFragment extends Fragment {
         }
 
         //In future add different Type objects to correlate with new Competitions
-        String gsonStr = FileManager.readFile(dirName + "/my-data/Competition.json", activity);
+        String gsonStr = FileManager.readFile(dirName, activity);
         Type irMatchType = new TypeToken<ArrayList<IrMatch>>(){}.getType();
         ArrayList<IrMatch> irMatchArr = gson.fromJson(gsonStr, irMatchType);
         if(irMatchArr != null){
@@ -178,7 +175,7 @@ public class AnalyzeFragment extends Fragment {
     }
     public void prepareTeamsArr(ArrayList<? extends Match> matches){
         teamsList = FileManager.createTeamsArr(matches);
-        Log.e("TEAMLIST", teamsList.get(0).getTeamName());
+        //Log.e("TEAMLIST", teamsList.get(0).getTeamName());
         for(Team team : teamsList){
             Log.e("TEAM", "team name: " + team.getTeamName());
             Log.e("TEAM", "team number: " + team.getTeamNumber());

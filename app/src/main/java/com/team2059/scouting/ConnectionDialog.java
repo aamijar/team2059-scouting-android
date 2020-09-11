@@ -155,7 +155,7 @@ public class ConnectionDialog extends DialogFragment {
                             //send data to connected device
                             String dirName = checkedRadioButton.getText().toString();
 
-                            String jsonString = FileManager.readFile(dirName + "/Competition.json", context);
+                            String jsonString = FileManager.readFile(dirName + "/my-data/Competition.json", context);
 
                             BluetoothHandler bluetoothHandler = getArguments().getParcelable(ARG_HANDLER);
                             bluetoothHandler.write(dirName +  "," + jsonString);

@@ -49,7 +49,7 @@ public class OpenFragment extends Fragment {
     private OpenFragmentListener listener;
 
     public interface OpenFragmentListener{
-        void onInputOpenSend(Team[] input, String dirName);
+        void onInputOpenSend(String dirName);
     }
 
 
@@ -88,14 +88,8 @@ public class OpenFragment extends Fragment {
             public void onItemClick(int position) {
 
                 String dirName = titles.get(position);
-                SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
 
-                Gson gson = new Gson();
-
-                String jsonTeamsArr = sharedPreferences.getString("com.team2059.scouting." + dirName, null);
-                Team [] teams = gson.fromJson(jsonTeamsArr, Team[].class);
-
-                listener.onInputOpenSend(teams, dirName);
+                listener.onInputOpenSend(dirName);
             }
         });
 

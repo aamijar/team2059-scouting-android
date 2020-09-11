@@ -48,4 +48,6 @@ dependencies {
 
     implementation files('libs/team2059-scouting-1.0.jar')
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
+    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
 }

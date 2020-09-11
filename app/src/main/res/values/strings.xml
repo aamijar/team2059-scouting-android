@@ -6,7 +6,7 @@
     <string name="letterhead_info">Hitchhikers Logo</string>
     <string name="first_logo">FIRST Logo</string>
     <string name="email">business@team2059.org</string>
-    <string name="website">team2059.org</string>
+    <string name="website">http://team2059.org</string>
     <string name="title_bar">The Hitchhikers | FRC Team 2059</string>
 
     <string name="scout_header">Scout Sheet</string>
@@ -109,5 +109,23 @@
         &#009;&#009;Park: %16$s\n
         &#009;&#009;Level: %17$s\n\nNotes:\n\n
         &#009;&#009;%18$s</string>
+
+    <!--settings values -->
+
+    <string-array name="theme_options">
+        <item>Dark</item>
+        <item>Light</item>
+        <item>Set By Battery Saver</item>
+    </string-array>
+
+    <string-array name="avatar_colors">
+        <item>Blue</item>
+        <item>Red</item>
+    </string-array>
+    
+    <!--about values -->
+    
+    <string name="acknowledgements">Event Data provided by <i>FIRST</i></string>
+    <string name="frcAPI_link">https://frc-events.firstinspires.org/services/API</string>
 
 </resources>
