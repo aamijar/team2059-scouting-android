@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.team2059.scouting">
+    package="org.team2059.scouting">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -16,10 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TeamActivity" />
-        <activity android:name=".NavigationDrawer" />
-        <activity android:name=".MasterView" />
-        <activity android:name=".Splash">
+        <activity android:name="org.team2059.scouting.TeamActivity" />
+        <activity android:name="org.team2059.scouting.NavigationDrawer" />
+        <activity android:name="org.team2059.scouting.MasterView" />
+        <activity android:name="org.team2059.scouting.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

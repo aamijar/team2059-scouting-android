@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TeamActivity">
+    tools:context="org.team2059.scouting.TeamActivity">
 
     <include
         android:id="@+id/team_toolbar"

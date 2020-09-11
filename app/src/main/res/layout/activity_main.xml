@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context="org.team2059.scouting.MainActivity">
 
 
     <ScrollView
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            tools:context=".MainActivity">
+            tools:context="org.team2059.scouting.MainActivity">
 
             <!--            <include layout="@layout/toolbar"/>-->
 
