@@ -22,6 +22,8 @@ import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.transition.Fade;
 
 import com.google.gson.Gson;
@@ -46,7 +48,7 @@ public class AnalyzeFragment extends Fragment {
     private static final String ARG_TEAMS = "arg_teams";
     private static final String ARG_DIRNAME = "arg_dirName";
 
-    private ArrayList<Team> teamsList;
+    private ArrayList<Team> teamsList = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerViewAdapterTeam adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -68,7 +70,7 @@ public class AnalyzeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_analyze, container, false);
-        Gson gson = new Gson();
+        final Gson gson = new Gson();
         //setRetainInstance(true);
         postponeEnterTransition();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -107,16 +109,17 @@ public class AnalyzeFragment extends Fragment {
         if(irMatchArr != null){
             prepareTeamsArr(irMatchArr);
             recyclerView = view.findViewById(R.id.analyze_recycleview);
-            recyclerView.setHasFixedSize(true);
+            //recyclerView.setHasFixedSize(true);
             layoutManager = new LinearLayoutManager(activity);
-            sortByRankingScore();
-            for(int i = 0; i < teamsList.size(); i ++){
-                teamsList.get(i).setOverallRank(i + 1);
-            }
+//            sortByRankingScore();
+//            for(int i = 0; i < teamsList.size(); i ++){
+//                teamsList.get(i).setOverallRank(i + 1);
+//            }
 
             adapter = new RecyclerViewAdapterTeam(teamsList);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);
+
             adapter.setViewHolderListener(new RecyclerViewAdapterTeam.ViewHolderListener() {
                 @Override
                 public void onTeamClick(int position, ImageView avatar, TextView teamName, TextView teamNumber) {
@@ -146,6 +149,31 @@ public class AnalyzeFragment extends Fragment {
                 }
             });
 
+            final SwipeRefreshLayout refreshLayout = view.findViewById(R.id.fragment_analyze_refresh);
+            refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    String gsonStr = FileManager.readFile(dirName, activity);
+                    Type irMatchType = new TypeToken<ArrayList<IrMatch>>(){}.getType();
+                    ArrayList<IrMatch> irMatchArr = gson.fromJson(gsonStr, irMatchType);
+                    if(irMatchArr != null){
+                        Log.e("gotten here", irMatchArr.size() + "");
+                        prepareTeamsArr(irMatchArr);
+                        String attrFilter = adapter.getAttrFilter();
+                        if(attrFilter != null){
+                            if(attrFilter.equals(getString(R.string.filter_OPR))){
+                                sortByOPR();
+                            }
+                            else if(attrFilter.equals(getString(R.string.filter_auto_powercell_count))){
+                                sortByAutoPowerCellCount();
+                            }
+                        }
+                    }
+                    refreshLayout.setRefreshing(false);
+                }
+            });
+
+
         }
 
         final Handler handler = new Handler();
@@ -167,16 +195,11 @@ public class AnalyzeFragment extends Fragment {
         activity = (Activity) context;
     }
     public void prepareTeamsArr(ArrayList<? extends Match> matches){
-        teamsList = FileManager.createTeamsArr(matches);
-        //Log.e("TEAMLIST", teamsList.get(0).getTeamName());
-        for(Team team : teamsList){
-            Log.e("TEAM", "team name: " + team.getTeamName());
-            Log.e("TEAM", "team number: " + team.getTeamNumber());
-            Log.e("TEAM", "total points: " + team.getTotalPoints());
+        teamsList.clear();
+        teamsList.addAll(FileManager.createTeamsArr(matches));
 
-            for (IrMatch irMatch : team.getIrMatches()){
-                Log.e("MATCH", "match number: " + irMatch.getMatchNumber());
-            }
+        for(Team team : teamsList){
+
             //set team avatars
             for (org.team2059.scouting.Team team1: teams){
                 if(team.getTeamName().equals(team1.getTeamName()) && team.getTeamNumber().equals(team1.getTeamNumber())){
@@ -184,6 +207,18 @@ public class AnalyzeFragment extends Fragment {
                 }
             }
         }
+        sortByRankingScore();
+        for(int i = 0; i < teamsList.size(); i ++){
+            teamsList.get(i).setOverallRank(i + 1);
+        }
+
+        if(adapter != null){
+
+            adapter.notifyDataSetChanged();
+            recyclerView.scheduleLayoutAnimation();
+            Log.e("gotten here", teamsList.size() + "");
+        }
+
     }
 
     public void sortByOPR(){
@@ -206,7 +241,7 @@ public class AnalyzeFragment extends Fragment {
     public void sortByRankingScore(){
         //initial sort
         Log.e("TEAMLIST2", teamsList.size() + "");
-        if(adapter == null){
+        if(adapter == null || teamsList.get(0).getOverallRank() == 0){
             Collections.sort(teamsList, new Comparator<Team>() {
                 @Override
                 public int compare(Team o1, Team o2) {

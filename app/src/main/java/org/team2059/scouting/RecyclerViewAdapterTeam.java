@@ -212,4 +212,8 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
     public void setAttrFilter(String attrFilter){
         this.attrFilter = attrFilter;
     }
+
+    public String getAttrFilter(){
+        return attrFilter;
+    }
 }
