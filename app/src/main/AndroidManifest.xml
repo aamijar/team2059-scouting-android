@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="org.team2059.scouting.TeamActivity" />
-        <activity android:name="org.team2059.scouting.NavigationDrawer" />
+        <activity android:name="org.team2059.scouting.NavigationDrawer" android:windowSoftInputMode="adjustNothing"/>
         <activity android:name="org.team2059.scouting.MasterView" />
         <activity android:name="org.team2059.scouting.Splash">
             <intent-filter>
