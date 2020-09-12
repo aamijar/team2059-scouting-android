@@ -179,54 +179,55 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:targetApi="o" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="25dp"
-                android:switchPadding="7dp"
+                app:switchPadding="7dp"
                 android:text="@string/init_line"
                 android:textColor="@color/text_primary_dark"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:thumb="@drawable/thumb"
-                android:track="@drawable/track"
+                app:track="@drawable/track"
                 app:fontFamily="sans-serif"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/simple_divider2" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="35dp"
-                android:switchPadding="7dp"
+                android:fontFamily="sans-serif"
+                app:switchPadding="7dp"
                 android:text="@string/position_control"
                 android:textColor="@color/text_primary_dark"
-                android:textSize="14sp"
 
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:thumb="@drawable/thumb"
-                android:track="@drawable/track"
+                app:track="@drawable/track"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="25dp"
-                android:switchPadding="7dp"
+                app:switchPadding="7dp"
                 android:text="@string/level"
                 android:textColor="@color/text_primary_dark"
                 android:textSize="14sp"
@@ -234,21 +235,20 @@
                 android:theme="@style/Switch"
 
                 android:thumb="@drawable/thumb_orange"
-                android:track="@drawable/track_orange"
-                app:fontFamily="@font/eagle_light"
+                app:track="@drawable/track_orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/increment_up10"
                 app:layout_constraintTop_toBottomOf="@+id/switch5" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="25dp"
-                android:switchPadding="10dp"
+                app:switchPadding="10dp"
                 android:text="@string/park"
                 android:textColor="@color/text_primary_dark"
                 android:textSize="14sp"
@@ -256,72 +256,70 @@
                 android:theme="@style/Switch"
                 android:thumb="@drawable/thumb_orange"
 
-                android:track="@drawable/track_orange"
-                app:fontFamily="@font/eagle_light"
+                app:track="@drawable/track_orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/increment_up10"
                 app:layout_constraintTop_toBottomOf="@+id/simple_divider4" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="25dp"
-                android:switchPadding="10dp"
+                android:fontFamily="sans-serif"
+                app:switchPadding="10dp"
                 android:text="@string/climb_att"
                 android:textColor="@color/text_primary_dark"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:thumb="@drawable/thumb"
 
-                android:track="@drawable/track"
-                app:fontFamily="@font/eagle_light"
+                android:thumb="@drawable/thumb"
+                app:track="@drawable/track"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/simple_divider4" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="25dp"
-                android:switchPadding="7dp"
+                android:fontFamily="sans-serif"
+                app:switchPadding="8dp"
                 android:text="@string/climb"
                 android:textColor="@color/text_primary_dark"
                 android:textSize="14sp"
-                android:textStyle="bold"
 
+                android:textStyle="bold"
                 android:thumb="@drawable/thumb"
-                android:track="@drawable/track"
-                app:fontFamily="@font/eagle_light"
+                app:track="@drawable/track"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/switch4" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="35dp"
-                android:switchPadding="7dp"
+                app:switchPadding="7dp"
                 android:text="@string/rotation_control"
                 android:textColor="@color/text_primary_dark"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:theme="@style/Switch"
                 android:thumb="@drawable/thumb_orange"
-                android:track="@drawable/track_orange"
+                app:track="@drawable/track_orange"
 
-                app:fontFamily="@font/eagle_light"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/increment_up10"
@@ -1097,20 +1095,20 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="48dp"
-                android:switchPadding="7dp"
+                app:switchPadding="7dp"
                 android:text="Stage 3 Complete:"
                 android:textColor="@color/text_primary_dark"
                 android:textStyle="bold"
                 android:thumb="@drawable/thumb"
-                android:track="@drawable/track"
-                app:fontFamily="@font/eagle_light"
+                app:track="@drawable/track"
+
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
@@ -1177,19 +1175,18 @@
 
             </RadioGroup>
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:switchPadding="7dp"
+                app:switchPadding="7dp"
                 android:text="Climb RP: "
                 android:textColor="@color/text_primary_dark"
                 android:textStyle="bold"
                 android:thumb="@drawable/thumb_orange"
-                android:track="@drawable/track_orange"
-                app:fontFamily="@font/eagle_light"
+                app:track="@drawable/track_orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/increment_up10"

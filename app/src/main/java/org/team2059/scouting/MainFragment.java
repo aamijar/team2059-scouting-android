@@ -19,12 +19,12 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
@@ -40,7 +40,6 @@ import org.team2059.scouting.core.frc2020.IrTeleop;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class MainFragment extends Fragment implements BluetoothHandler.BluetoothHandlerCallback {
 
@@ -70,22 +69,19 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
 
     private Spinner spinner;
 
-    private Switch switch1;
-    private Switch switch2;
-    private Switch switch3;
-    private Switch switch4;
-    private Switch switch5;
-    private Switch switch6;
-    private Switch switch7;
-    private Switch switch8;
-    private Switch switch9;
+    private SwitchCompat switch1;
+    private SwitchCompat switch2;
+    private SwitchCompat switch3;
+    private SwitchCompat switch4;
+    private SwitchCompat switch5;
+    private SwitchCompat switch6;
+    private SwitchCompat switch7;
+    private SwitchCompat switch8;
+    private SwitchCompat switch9;
 
     private EditText matchNumber;
     private EditText notes;
     private RadioGroup radioGroup;
-
-
-    private ArrayList<BluetoothHandler> bluetoothHandlers;
 
 
     static MainFragment newInstance(String dirName) {
@@ -463,16 +459,6 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, R.layout.spinner_item, teamNames);
         spinner.setAdapter(adapter);
-    }
-
-    public void setBluetoothHandlers(ArrayList<BluetoothHandler> bluetoothHandlers){
-        this.bluetoothHandlers = bluetoothHandlers;
-        //Toast.makeText(activity, "worked", Toast.LENGTH_SHORT).show();
-        Log.e("Bluetooth", "Handler is here");
-
-        String msg = "Test Message From MainFragment Class";
-
-        this.bluetoothHandlers.get(0).write(msg);
     }
 
     private void clearSheet(){
