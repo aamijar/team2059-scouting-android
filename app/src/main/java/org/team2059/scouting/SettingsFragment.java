@@ -37,6 +37,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 else{
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
                 }
+                //((NavigationDrawer) getActivity()).showBackButton(true);
                 return true;
             }
         });

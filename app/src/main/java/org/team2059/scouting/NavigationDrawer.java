@@ -27,7 +27,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
 
 
     private ActionBarDrawerToggle toggle;
-    private boolean navIsRegistered= false;
+    private boolean navIsRegistered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +63,14 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
             navigationView.setCheckedItem(R.id.nav_new);
         }
         else{
+
             navIsRegistered = savedInstanceState.getBoolean("navIsRegistered");
-            showBackButton(!navIsRegistered);
+
+            if(navIsRegistered){
+                navIsRegistered = false;
+                showBackButton(true);
+            }
+
         }
 
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
@@ -216,8 +222,8 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putBoolean("navIsRegistered", navIsRegistered);
     }
 }
