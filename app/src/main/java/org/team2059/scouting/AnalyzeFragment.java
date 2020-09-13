@@ -164,8 +164,23 @@ public class AnalyzeFragment extends Fragment {
                             if(attrFilter.equals(getString(R.string.filter_OPR))){
                                 sortByOPR();
                             }
+                            else if(attrFilter.equals(getString(R.string.filter_auto_points))){
+                                sortByAutoPoints();
+                            }
+                            else if(attrFilter.equals(getString(R.string.filter_teleop_points))){
+                                sortByTeleopPoints();
+                            }
+                            else if(attrFilter.equals(getString(R.string.filter_endgame_points))){
+                                sortByEndgamePoints();
+                            }
                             else if(attrFilter.equals(getString(R.string.filter_auto_powercell_count))){
                                 sortByAutoPowerCellCount();
+                            }
+                            else if(attrFilter.equals(getString(R.string.filter_teleop_powercell_count))){
+                                sortByTeleopPowerCellCount();
+                            }
+                            else if(attrFilter.equals(getString(R.string.filter_climb_count))){
+                                sortByClimbCount();
                             }
                         }
                     }

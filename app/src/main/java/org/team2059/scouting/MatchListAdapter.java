@@ -6,13 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+
+import com.google.android.material.tabs.TabLayout;
 
 import org.team2059.scouting.core.Match;
 import org.team2059.scouting.core.frc2020.IrMatch;
@@ -23,13 +27,18 @@ public class MatchListAdapter extends ArrayAdapter<Match> {
     private Activity activity;
     private ArrayList<Match> matches;
     private static LayoutInflater inflater = null;
+    private ArrayList<Boolean> states;
+    private ArrayList<Integer> heights;
+    private int minHeight;
 
 
-    public MatchListAdapter(Activity activity, int resource, ArrayList<Match> matches) {
+    public MatchListAdapter(Activity activity, int resource, ArrayList<Match> matches, ArrayList<Boolean> states, ArrayList<Integer> heights) {
         super(activity, resource, matches);
         this.activity = activity;
         this.matches = matches;
         inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.states = states;
+        this.heights = heights;
     }
 
     @Override
@@ -41,6 +50,7 @@ public class MatchListAdapter extends ArrayAdapter<Match> {
         public TextView matchNumber;
         public TextView matchResult;
         public TextView matchBreakdown;
+        public LinearLayout matchBreakdownContainer;
     }
 
     @Nullable
@@ -56,7 +66,7 @@ public class MatchListAdapter extends ArrayAdapter<Match> {
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         View v = convertView;
         ViewHolder holder;
@@ -67,6 +77,7 @@ public class MatchListAdapter extends ArrayAdapter<Match> {
             holder.matchNumber = v.findViewById(R.id.match_number);
             holder.matchResult = v.findViewById(R.id.match_result);
             holder.matchBreakdown = v.findViewById(R.id.match_breakdown_textview);
+            holder.matchBreakdownContainer = v.findViewById(R.id.match_breakdown_container);
 
             v.setTag(holder);
         }else{
@@ -82,7 +93,97 @@ public class MatchListAdapter extends ArrayAdapter<Match> {
             holder.matchResult.setText("L");
         }
 
+        if(states.get(position)){
+            holder.matchBreakdownContainer.setVisibility(View.VISIBLE);
+            //holder.matchBreakdownContainer.setBackgroundColor(activity.getResources().getColor(R.color.colorPrimaryDark));
+            Log.e("matchlistadapter", "current height of position " + position + ": "  + heights.get(position));
+            Log.e("VISIBLITY", String.valueOf(holder.matchBreakdownContainer.getVisibility()));
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, heights.get(position)));
+            if(v.getAnimation() == null){
+                //Log.e("matchlistadapter", "animation ended");
+            }
+            else{
+                //Log.e("matchlistadapter", "animation in progress");
+            }
+            v.setLayoutParams(lp);
+        }
+        else{
+            //v.clearAnimation();
+            //holder.matchBreakdownContainer.clearAnimation();
+            //v.findViewById(R.id.match_breakdown_container).setVisibility(View.INVISIBLE);
+            holder.matchBreakdownContainer.setVisibility(View.GONE);
+            //holder.matchBreakdownContainer.setBackgroundColor(activity.getResources().getColor(R.color.text_primary_light));
+            //v.requestLayout();
+            Log.e("matchlistadapter", "current height collapsed of position " + position + ": " + heights.get(position));
+            //if(holder.matchBreakdownContainer.getVisibility())
 
+            Log.e("VISIBLITY", String.valueOf(holder.matchBreakdownContainer.getVisibility()));
+            if(v.getAnimation() == null){
+                //Log.e("matchlistadapter", "animation ended");
+            }
+            else{
+                //Log.e("matchlistadapter", "animation in progress");
+            }
+//            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, heights.get(position)));
+//            v.setLayoutParams(lp);
+
+            if(heights.get(position) != 0){
+                //Log.e("matchlistadapter", v.getHeight() + " position: " + position);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, heights.get(position)));
+                v.setLayoutParams(lp);
+            }
+
+
+
+            else{
+//                int min = 1000;
+//                for(int i = 0; i < heights.size(); i ++){
+//                    Log.e("heights", "heights 0 = : " + heights.get(0));
+//                    if(min > heights.get(i) && heights.get(i) != 0){
+//
+//                        min = heights.get(i);
+//                    }
+//                }
+//                Log.e("min", "" + min);
+//                if(position != 0 && min!= 1000){
+//                    Log.e("min", "" + min);
+//                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, min));
+//                    v.setLayoutParams(lp);
+//                }
+                if(position != 0){
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, minHeight));
+                    v.setLayoutParams(lp);
+                }
+
+                else{
+                    final View finalV = v;
+                    finalV.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            finalV.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            heights.set(position, finalV.getHeight());
+                            if(position == 0){
+                                minHeight = finalV.getHeight();
+                            }
+                            //finalV.getLayoutParams().height = finalV.getHeight();
+                        }
+                    });
+                }
+            }
+
+        }
+        //holder.matchBreakdownContainer.setVisibility(View.INVISIBLE);
+
+//        v.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                states.set(position, !states.get(position));
+//                int finalHeight = ((TeamActivity) activity).toggleRankingsExpanded(v);
+//                Log.e("matchlistadapter", "finalheight: " + finalHeight);
+//                heights.set(position, finalHeight);
+//            }
+//        });
 
         //in future check for different competition types
         if(matches.get(position) instanceof IrMatch){
@@ -125,5 +226,16 @@ public class MatchListAdapter extends ArrayAdapter<Match> {
         }
     }
 
+    public ArrayList<Boolean> getStates(){
+        return states;
+    }
+    public ArrayList<Integer> getHeights(){
+        return heights;
+    }
+
+    @Override
+    public boolean areAllItemsEnabled() {
+        return false;
+    }
 
 }

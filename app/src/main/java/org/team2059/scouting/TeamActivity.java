@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
 
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,10 +15,12 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.transition.Fade;
 
 import android.util.Base64;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -43,6 +46,12 @@ import java.util.Comparator;
 public class TeamActivity extends AppCompatActivity {
 
     private static final String TAG = "TeamActivity";
+
+    private ArrayList<Boolean> states = new ArrayList<>();
+    private ArrayList<Integer> heights = new ArrayList<>();
+
+    private MatchListAdapter matchListAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,8 +139,9 @@ public class TeamActivity extends AppCompatActivity {
         String [] vals = {"Match 1", "Match 2", "Match 3", "Match 4", "Match 5", "Match 6", "Match 7", "Match 8"};
 
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, vals);
-        MatchListAdapter matchListAdapter = new MatchListAdapter(this, 0, getSortedMatchList(irTeam.getMatches()));
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, vals);
+
+        matchListAdapter = new MatchListAdapter(this, 0, getSortedMatchList(irTeam.getMatches()), states, heights);
 
         listView.setAdapter(matchListAdapter);
 
@@ -148,7 +158,18 @@ public class TeamActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                toggleRankingsExpanded(view);
+                //position = position + 1;
+                //view.setClickable(false);
+                Log.e("teamactivity", "onitemclick position:" + (position - 1));
+                matchListAdapter.getStates().set(position - 1, !matchListAdapter.getStates().get(position - 1));
+                //states.set(position - 1, !states.get(position - 1));
+                //matchListAdapter.notifyDataSetChanged();
+                int finalHeight = toggleRankingsExpanded(view);
+                Log.e("teamactivity", "position " + (position - 1) + ": " + finalHeight);
+                matchListAdapter.getHeights().set(position - 1, finalHeight);
+                //heights.set(position - 1, finalHeight);
+                //matchListAdapter.notifyDataSetChanged();
+
             }
         });
 
@@ -167,7 +188,7 @@ public class TeamActivity extends AppCompatActivity {
     }
 
 
-    public void toggleRankingsExpanded(final View view) {
+    public int toggleRankingsExpanded(final View view) {
 
 
         final View breakdownContainer = view.findViewById(R.id.match_breakdown_container);
@@ -175,32 +196,42 @@ public class TeamActivity extends AppCompatActivity {
 
         int originalHeight = view.getHeight();
         int expandedHeightDelta = breakdownContainer.getMeasuredHeight();
+        int finalHeight;
+
+        //heights.set(position, originalHeight);
 
         ValueAnimator valueAnimator;
 
         if (breakdownContainer.getVisibility() == View.INVISIBLE || breakdownContainer.getVisibility() == View.GONE) {
+            Log.e("visible", "vis");
             breakdownContainer.setVisibility(View.VISIBLE);
-            breakdownContainer.setEnabled(true);
+            //breakdownContainer.setEnabled(true);
 
             valueAnimator = ValueAnimator.ofInt(originalHeight, originalHeight + expandedHeightDelta);
+            finalHeight = originalHeight + expandedHeightDelta;
         } else {
 
             valueAnimator = ValueAnimator.ofInt(originalHeight, originalHeight - expandedHeightDelta);
-
-            Animation a = new AlphaAnimation(1.00f, 0.00f); // Fade out
+            finalHeight = originalHeight - expandedHeightDelta;
+            final Animation a = new AlphaAnimation(1.00f, 0.00f); // Fade out
 
             a.setDuration(200);
             // Set a listener to the animation and configure onAnimationEnd
             a.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-
+                    //view.findViewById(R.id.match_item_container).setEnabled(false);
+                    Log.e("start collapse", "start collapse");
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    breakdownContainer.setVisibility(View.INVISIBLE);
-                    breakdownContainer.setEnabled(false);
+                    Log.e("visible", "invis");
+                    //breakdownContainer.setVisibility(View.INVISIBLE);
+                    //breakdownContainer.setEnabled(false);
+                    //view.findViewById(R.id.match_item_container).setEnabled(true);
+
+
                 }
 
                 @Override
@@ -209,8 +240,19 @@ public class TeamActivity extends AppCompatActivity {
                 }
             });
 
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    breakdownContainer.setVisibility(View.GONE);
+                    //breakdownContainer.setEnabled(false);
+                    Log.e("visible", "invis");
+                    //matchListAdapter.notifyDataSetChanged();
+
+                }
+            }, a.getDuration());
             // Set the animation on the custom view
-            breakdownContainer.startAnimation(a);
+            //breakdownContainer.startAnimation(a);
+
         }
         valueAnimator.setDuration(400);
         valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -221,7 +263,29 @@ public class TeamActivity extends AppCompatActivity {
                 view.requestLayout();
             }
         });
+        valueAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                view.setEnabled(false);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                view.setEnabled(true);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
         valueAnimator.start();
+        return finalHeight;
     }
 
     private ArrayList<Match> getSortedMatchList(ArrayList<Match> matches){
@@ -231,6 +295,11 @@ public class TeamActivity extends AppCompatActivity {
                 return m1.getMatchNumber() - m2.getMatchNumber();
             }
         });
+        for(Match m: matches){
+            states.add(false);
+            heights.add(0);
+        }
+
         return matches;
     }
 

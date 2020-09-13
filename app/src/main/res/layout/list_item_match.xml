@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/match_item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?android:attr/selectableItemBackground"
     android:minHeight="88dp"
     android:paddingLeft="16dp"
@@ -16,31 +17,29 @@
         android:id="@+id/match_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="16sp"
         android:textStyle="bold"
-        tools:text="Match 1"
-        android:textColor="?android:attr/textColorPrimary"/>
+        tools:text="Match 1" />
 
     <TextView
         android:id="@+id/match_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@id/match_number"
+        android:layout_alignBottom="@id/match_number"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:drawableEnd="@drawable/ic_keyboard_arrow_down_black_24dp"
         android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
-        app:drawableTint="?android:attr/textColorPrimary"
+        android:drawablePadding="5dp"
         android:ellipsize="end"
         android:lines="1"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="16sp"
         android:textStyle="bold"
-        tools:text="\u25c6   \u25c6   W"
-        android:drawablePadding="5dp"
-        android:textColor="?android:attr/textColorPrimary"
-        android:layout_alignTop="@id/match_number"
-        android:layout_alignBottom="@id/match_number"/>
-
-
+        app:drawableTint="?android:attr/textColorPrimary"
+        tools:text="\u25c6   \u25c6   W" />
 
 
     <LinearLayout
@@ -50,19 +49,19 @@
         android:layout_below="@+id/match_number"
         android:layout_alignStart="@+id/match_number"
         android:layout_alignLeft="@+id/match_number"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
         android:visibility="gone"
-        tools:visibility="visible"
-        android:layout_marginTop="10dp">
+        tools:visibility="visible">
 
         <TextView
-            android:textStyle="bold"
             android:id="@+id/match_breakdown_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/match_info"
             android:textSize="14sp"
-            tools:text="@string/match_info"
-            android:text="@string/match_info"/>
+            android:textStyle="bold"
+            tools:text="@string/match_info" />
 
     </LinearLayout>
 </RelativeLayout>
