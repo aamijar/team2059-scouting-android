@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,7 +57,7 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
 
     private final String TAG = "BluetoothProtocol";
 
-    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private BluetoothDevice bluetoothDevice;
     private ArrayList<BluetoothDevice> bluetoothDevices = new ArrayList<>();
 
@@ -93,7 +94,13 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
     public void onRetryConnection() {
 
         //since we are retrying getbluetoothdevice should not be null
-        bluetoothHandler.startClient(bluetoothHandler.getBluetoothDevice());
+
+        if(bluetoothAdapter != null && bluetoothAdapter.isEnabled()){
+            bluetoothHandler.startClient(bluetoothHandler.getBluetoothDevice());
+        }else{
+            Toast.makeText(activity, "bluetooth not available", Toast.LENGTH_SHORT).show();
+        }
+
     }
     @Override
     public void onPair() {
@@ -164,7 +171,14 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
         map = new HashMap<>();
         initExListView();
         expandableListAdapter = new MyExpandableAdapter(activity, topics, map, bluetoothHandlers, checkBoxStates);
-        initBluetoothHandler();
+        if(bluetoothAdapter!= null && bluetoothAdapter.isEnabled()){
+            initBluetoothHandler();
+        }
+        else{
+            enableBluetooth();
+        }
+
+
         //in case of orientation change or screen change
         if(bluetoothHandlers.size() > 0){
             showConnectionStatus();
@@ -252,7 +266,14 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
         button_connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startBTConnection();
+
+                if(bluetoothAdapter != null && bluetoothAdapter.isEnabled()){
+                    startBTConnection();
+                }
+                else{
+                    Toast.makeText(activity, "bluetooth is unavailable", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -271,8 +292,10 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
                     linearLayout.startAnimation(scaleUp);
 
                     //info.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                    info.setBackgroundTintList(activity.getResources().getColorStateList(R.color.colorPrimaryDark));
-                    info.setColorFilter(ContextCompat.getColor(activity, R.color.text_primary_light), android.graphics.PorterDuff.Mode.SRC_IN);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        info.setBackgroundTintList(activity.getResources().getColorStateList(R.color.colorPrimaryDark));
+                    }
+                    info.setColorFilter(ContextCompat.getColor(activity, R.color.text_primary_light), PorterDuff.Mode.SRC_IN);
 
                     TextView name = view.findViewById(R.id.bluetooth_devname);
                     SpannableString nickname = new SpannableString("Your Device Nickname: " + Settings.Secure.getString(activity.getContentResolver(), "bluetooth_name"));
@@ -286,8 +309,10 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
                     linearLayout.startAnimation(scaleDown);
                     linearLayout.setVisibility(View.INVISIBLE);
 
-                    info.setBackgroundTintList(activity.getResources().getColorStateList(R.color.text_primary_light));
-                    info.setColorFilter(ContextCompat.getColor(activity, R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.SRC_IN);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        info.setBackgroundTintList(activity.getResources().getColorStateList(R.color.text_primary_light));
+                    }
+                    info.setColorFilter(ContextCompat.getColor(activity, R.color.colorPrimaryDark), PorterDuff.Mode.SRC_IN);
                 }
 
             }
@@ -364,6 +389,7 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
                     new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 10);
             startActivityForResult(discoverableIntent, REQUEST_ENABLE_BT);
+
         }
         else{
 
@@ -419,6 +445,9 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
         //resultCode is the number of seconds device is discoverable
         else{
             Log.e("Blue", "bluetooth enabled");
+            if(currentBluetoothHandler == null){
+                initBluetoothHandler();
+            }
             showPairedDevices();
             bluetoothAdapter.startDiscovery();
         }
@@ -485,6 +514,7 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
                         break;
                     case BluetoothDevice.BOND_BONDED:
                         pairedDeviceList.add(device);
+                        checkBoxStates.add(false);
                         expandableListAdapter.notifyDataSetChanged();
                 }
 

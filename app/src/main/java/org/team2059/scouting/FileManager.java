@@ -338,8 +338,12 @@ public class FileManager
                     org.json.simple.JSONArray updateJsonArr = (org.json.simple.JSONArray) jsonParser.parse(reader);
 
                     Type irMatchType = new TypeToken<ArrayList<IrMatch>>(){}.getType();
-                    ArrayList<IrMatch> tmp = gson.fromJson(updateJsonArr.toJSONString(), irMatchType);
-                    irMatchArr.addAll(tmp);
+                    if(updateJsonArr != null){
+                        ArrayList<IrMatch> tmp = gson.fromJson(updateJsonArr.toJSONString(), irMatchType);
+                        irMatchArr.addAll(tmp);
+                    }
+
+
                 }
                 catch (ParseException e){
                     e.printStackTrace();
@@ -358,8 +362,11 @@ public class FileManager
                     org.json.simple.JSONArray updateJsonArr = (org.json.simple.JSONArray) jsonParser.parse(reader);
 
                     Type irMatchType = new TypeToken<ArrayList<IrMatch>>(){}.getType();
-                    ArrayList<IrMatch> tmp = gson.fromJson(updateJsonArr.toJSONString(), irMatchType);
-                    irMatchArr.addAll(tmp);
+                    if(updateJsonArr != null){
+                        ArrayList<IrMatch> tmp = gson.fromJson(updateJsonArr.toJSONString(), irMatchType);
+                        irMatchArr.addAll(tmp);
+                    }
+
                 }
                 catch (ParseException e){
                     e.printStackTrace();

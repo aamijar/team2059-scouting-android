@@ -156,7 +156,15 @@ public class AnalyzeFragment extends Fragment {
                     String gsonStr = FileManager.readFile(dirName, activity);
                     Type irMatchType = new TypeToken<ArrayList<IrMatch>>(){}.getType();
                     ArrayList<IrMatch> irMatchArr = gson.fromJson(gsonStr, irMatchType);
-                    if(irMatchArr != null){
+
+                    //case where undo button was used until irMatchArr is empty
+                    if(irMatchArr != null && irMatchArr.size() == 0){
+                        teamsList.clear();
+                        adapter.notifyDataSetChanged();
+                    }
+
+
+                    else if(irMatchArr != null){
                         Log.e("gotten here", irMatchArr.size() + "");
                         prepareTeamsArr(irMatchArr);
                         String attrFilter = adapter.getAttrFilter();

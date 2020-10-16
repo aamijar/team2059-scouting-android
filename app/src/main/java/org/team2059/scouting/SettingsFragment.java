@@ -46,32 +46,42 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         editTextPreference.setSummaryProvider(new Preference.SummaryProvider() {
             @Override
             public CharSequence provideSummary(Preference preference) {
-                return BluetoothAdapter.getDefaultAdapter().getName();
+                if(BluetoothAdapter.getDefaultAdapter() != null){
+                    return BluetoothAdapter.getDefaultAdapter().getName();
+                }
+                return "Not Available";
             }
         });
         editTextPreference.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
             @Override
             public void onBindEditText(@NonNull EditText editText) {
-                editText.setText(BluetoothAdapter.getDefaultAdapter().getName());
-            }
-        });
-
-        editTextPreference.setDefaultValue(BluetoothAdapter.getDefaultAdapter().getName());
-
-        editTextPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-                Log.e("Settings", bluetoothAdapter.getName());
-
-                if(bluetoothAdapter.isEnabled()){
-                    Log.e("Settings", "enabled");
-                    bluetoothAdapter.setName(newValue.toString());
+                if(BluetoothAdapter.getDefaultAdapter() != null){
+                    editText.setText(BluetoothAdapter.getDefaultAdapter().getName());
                 }
-                return true;
+
             }
         });
+
+        if(BluetoothAdapter.getDefaultAdapter() != null){
+            editTextPreference.setDefaultValue(BluetoothAdapter.getDefaultAdapter().getName());
+
+            editTextPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+                    Log.e("Settings", bluetoothAdapter.getName());
+
+                    if(bluetoothAdapter.isEnabled()){
+                        Log.e("Settings", "enabled");
+                        bluetoothAdapter.setName(newValue.toString());
+                    }
+                    return true;
+                }
+            });
+        }
+
+
 
 
     }

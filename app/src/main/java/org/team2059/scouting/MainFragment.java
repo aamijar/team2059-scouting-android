@@ -28,6 +28,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
+//import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
 import org.json.simple.parser.ParseException;
@@ -40,6 +41,8 @@ import org.team2059.scouting.core.frc2020.IrTeleop;
 
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainFragment extends Fragment implements BluetoothHandler.BluetoothHandlerCallback {
 
@@ -122,22 +125,26 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
             String jsonTeamsArr = sharedPreferences.getString("com.team2059.scouting." + dirName, null);
             org.team2059.scouting.core.Team[] tmpteams = gson.fromJson(jsonTeamsArr, org.team2059.scouting.core.Team[].class);
 
+            // * Note in future check if tmpteams is null
             teams = new Team[tmpteams.length];
+
             for(int i = 0; i < tmpteams.length; i ++){
                 teams[i] = new Team(tmpteams[i].getTeamName(), tmpteams[i].getTeamNumber(), tmpteams[i].getbyteMapString());
             }
 
-            //teams = gson.fromJson(jsonTeamsArr, Team[].class);
 
-            //teams = getArguments().getStringArray(ARG_TEAMS);
 
             if(teams != null && teams.length != 0){
                 updateTeams();
             }
-
+            else{
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, R.layout.spinner_item, new String[]{"No Teams Found, 0000"});
+                spinner.setAdapter(adapter);
+            }
             //bluetoothHandlers = (ArrayList<BluetoothHandler>) getArguments().getSerializable(ARG_HANDLERS);
             //bluetoothHandlers = getArguments().getParcelableArrayList(ARG_HANDLERS);
         }
+
 
 
         /*Initialize editText number widgets with value of 0*/
@@ -366,6 +373,20 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
             public void onClick(View v)
             {incrementDown(inn_made2);}
         });
+
+
+        /*Firebase Firestore Test*/
+
+//        Map<String, String> map = new HashMap<>();
+//        map.put("name", "TEST");
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//
+//        db.collection("districts").add(map);
+
+
+
+
+
 
 
         return v;

@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        ImageView imageView = findViewById(R.id.testimage);
+        //ImageView imageView = findViewById(R.id.testimage);
         //ImageView imageView1 = new ImageView();
 
         String [] parts = teams[0].split(",");
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         byte [] bytes = Base64.decode(parts[2], Base64.DEFAULT);
 
         Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        imageView.setImageBitmap(bmp);
+        //imageView.setImageBitmap(bmp);
 
         final Spinner spinner = findViewById(R.id.spinner1);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, teamNames);

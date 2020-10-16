@@ -11,6 +11,8 @@
 
     <string name="scout_header">Scout Sheet</string>
 
+    <string name="launcher_name">FRC Scouting</string>
+
     <!--Headers-->
     <string name="sheet_auto_header">Autonomous</string>
     <string name="sheet_teleop_header">Teleoperated</string>

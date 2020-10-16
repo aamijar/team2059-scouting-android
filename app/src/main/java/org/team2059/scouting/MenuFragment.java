@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -34,7 +42,12 @@ import org.team2059.scouting.core.frcapiclient.HttpHandler;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -68,6 +81,8 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
     private JSONArray teamJsonArray;
 
     private MenuFragmentListener listener;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public interface MenuFragmentListener{
         void onInputSend(String dirName);
@@ -115,7 +130,7 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
         spinner2.setOnItemSelectedListener(this);
 
 
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(context, R.layout.spinner_item, array);
+        final ArrayAdapter<String> adapter1 = new ArrayAdapter<>(context, R.layout.spinner_item, array);
         ArrayAdapter<String> adapter2 = new ArrayAdapter<>(context, R.layout.spinner_item, temp);
         ArrayAdapter<String> adapter3 = new ArrayAdapter<>(context, R.layout.spinner_item, temp);
 
@@ -143,27 +158,126 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
                 if(selected.equals("District")){
                     if(!selected2.equals("-")){
                         String districtCode = districtComps.get(indexDistrict).getCode();
-                        String query = "2020/events?districtCode=" + districtCode;
-                        Request request = hh.getRequest(query);
-                        startCall(request, "event");
+//                        String query = "2020/events?districtCode=" + districtCode;
+//                        Request request = hh.getRequest(query);
+//                        startCall(request, "event");
+
+                        DocumentReference docRef = db.document("cloud functions/districts/district events/" + districtCode);
+                        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if(documentSnapshot.exists()){
+                                    @SuppressWarnings("unchecked")
+                                    List<Map<String, String>> districtList = (List<Map<String, String>>)
+                                            documentSnapshot.getData().get("district event");
+                                    display2.clear();
+
+                                    Event [] events = new Event[districtList.size()];
+                                    for(int i = 0; i < districtList.size(); i ++){
+                                        events[i] = new Event(districtList.get(i).get("name"), districtList.get(i).get("code"));
+                                    }
+                                    districtComps.get(indexDistrict).setEvents(events);
+                                    for(Event e: districtComps.get(indexDistrict).getEvents()) {
+                                        display2.add(e.getName());
+                                    }
+
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, display2);
+                                    spinner3.setAdapter(adapter);
+                                }
+                            }
+
+                        });
+                        isNetworkConnected();
+
                     }
                     else{
-                        String query = "2020/districts";
-                        Request request = hh.getRequest(query);
-                        startCall(request, "district");
+//                        String query = "2020/districts";
+//                        Request request = hh.getRequest(query);
+//                        startCall(request, "district");
+
+                        DocumentReference docRef = db.collection("cloud functions").document("districts");
+                        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if(documentSnapshot.exists()){
+
+                                    @SuppressWarnings("unchecked")
+                                    List<Map<String, String>> districtList = (List<Map<String, String>>)
+                                            documentSnapshot.getData().get("districtCodes");
+                                    districtComps.clear();
+                                    display.clear();
+                                    for(Map<String, String> district: districtList){
+                                        districtComps.add(new Competition("District", district.get("name"), district.get("code")));
+                                        display.add(district.get("name"));
+                                    }
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, display);
+                                    spinner2.setAdapter(adapter);
+                                }
+                            }
+
+                        });
+                        isNetworkConnected();
+
                     }
                 }
                 else if(selected.equals("Regional")){
-                    String query = "2020/events";
-                    Request request = hh.getRequest(query);
-                    startCall(request, "regional");
+//                    String query = "2020/events";
+//                    Request request = hh.getRequest(query);
+//                    startCall(request, "regional");
+                    DocumentReference docRef = db.document("cloud functions/regionals");
+                    docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if(documentSnapshot.exists()){
+
+                                @SuppressWarnings("unchecked")
+                                List<Map<String, String>> regionalList = (List<Map<String, String>>)
+                                        documentSnapshot.getData().get("regionalCodes");
+                                regionalComps.clear();
+                                display2.clear();
+                                for(Map<String, String> regional: regionalList){
+                                    regionalComps.add(new Competition("District", regional.get("name"), regional.get("code")));
+                                    display2.add(regional.get("name"));
+                                }
+                                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, display2);
+                                spinner3.setAdapter(adapter);
+                            }
+                        }
+
+                    });
+                    isNetworkConnected();
+
+
+
                 }
                 else{
-                    String query = "2020/events";
-                    Request request = hh.getRequest(query);
-                    startCall(request, "championship");
-                }
+//                    String query = "2020/events";
+//                    Request request = hh.getRequest(query);
+//                    startCall(request, "championship");
+                    DocumentReference docRef = db.document("cloud functions/championships");
+                    docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if(documentSnapshot.exists()){
 
+                                @SuppressWarnings("unchecked")
+                                List<Map<String, String>> championshipList = (List<Map<String, String>>)
+                                        documentSnapshot.getData().get("championshipCodes");
+                                champComps.clear();
+                                display2.clear();
+                                for(Map<String, String> champ: championshipList){
+                                    champComps.add(new Competition("District", champ.get("name"), champ.get("code")));
+                                    display2.add(champ.get("name"));
+                                }
+                                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, display2);
+                                spinner3.setAdapter(adapter);
+                            }
+                        }
+
+                    });
+                    isNetworkConnected();
+                }
+                saveData();
                 refreshLayout.setRefreshing(false);
             }
         });
@@ -179,10 +293,41 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
                 else{
                     index = spinner3.getSelectedItemPosition();
                     if(!spinner2.getSelectedItem().equals("-")){
+                        String districtCode = districtComps.get(indexDistrict).getCode();
                         String eventCode = districtComps.get(indexDistrict).getEvents()[index].getCode();
-                        String query = "2020/teams?eventCode=" + eventCode;
-                        Request request = hh.getRequest(query);
-                        startCall(request, "teamOfEvent:" + eventCode);
+//                        String query = "2020/teams?eventCode=" + eventCode;
+//                        Request request = hh.getRequest(query);
+//                        startCall(request, "teamOfEvent:" + eventCode);
+                        DocumentReference docRef = db.document("cloud functions/districts/district events/" + districtCode + "/teams/" + eventCode);
+                        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if(documentSnapshot.exists()){
+
+                                    @SuppressWarnings("unchecked")
+                                    List<Map<String, Object>> teamsList = (List<Map<String, Object>>)
+                                            documentSnapshot.getData().get("teams");
+
+                                    Team [] teams = new Team[teamsList.size()];
+                                    for(int i = 0; i < teamsList.size(); i ++){
+                                        // number in firestore database is integer and must be converted to string first
+                                        teams[i] = new Team((String) teamsList.get(i).get("name"), teamsList.get(i).get("number").toString(), (String) teamsList.get(i).get("avatar"));
+                                    }
+
+                                    districtComps.get(indexDistrict).getEvents()[index].setTeams(teams);
+                                    openMainActivity(districtComps.get(indexDistrict).getEvents()[index].getTeams());
+                                }
+                            }
+
+                        });
+                        docRef.get().addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                e.printStackTrace();
+                                Toast.makeText(context, "Oops something went wrong", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        isNetworkConnected();
 
 
 
@@ -191,28 +336,102 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
                         String eventCode;
                         if(spinner1.getSelectedItem().toString().equals("Regional")){
                             eventCode = regionalComps.get(index).getCode();
+                            DocumentReference docRef = db.document("cloud functions/regionals/teams/" + eventCode);
+                            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if(documentSnapshot.exists()){
+
+                                        @SuppressWarnings("unchecked")
+                                        List<Map<String, Object>> teamsList = (List<Map<String, Object>>)
+                                                documentSnapshot.getData().get("teams");
+
+                                        Team [] teams = new Team[teamsList.size()];
+                                        for(int i = 0; i < teamsList.size(); i ++){
+                                            // number in firestore database is integer and must be converted to string first
+                                            teams[i] = new Team((String) teamsList.get(i).get("name"), teamsList.get(i).get("number").toString(), (String) teamsList.get(i).get("avatar"));
+                                        }
+
+                                        regionalComps.get(index).setTeams(teams);
+                                        openMainActivity(regionalComps.get(index).getTeams());
+                                    }
+                                }
+
+                            });
+                            docRef.get().addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(context, "Oops something went wrong", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            isNetworkConnected();
+
+
+
                         }
                         else{
                             eventCode = champComps.get(index).getCode();
+                            DocumentReference docRef = db.document("cloud functions/championships/teams/" + eventCode);
+                            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if(documentSnapshot.exists()){
+
+                                        @SuppressWarnings("unchecked")
+                                        List<Map<String, Object>> teamsList = (List<Map<String, Object>>)
+                                                documentSnapshot.getData().get("teams");
+
+                                        Team [] teams = new Team[teamsList.size()];
+                                        for(int i = 0; i < teamsList.size(); i ++){
+                                            // number in firestore database is integer and must be converted to string first
+                                            teams[i] = new Team((String) teamsList.get(i).get("name"), teamsList.get(i).get("number").toString(), (String) teamsList.get(i).get("avatar"));
+                                        }
+
+                                        champComps.get(index).setTeams(teams);
+                                        openMainActivity(champComps.get(index).getTeams());
+                                    }
+                                }
+
+                            });
+                            docRef.get().addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(context, "Oops something went wrong", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            isNetworkConnected();
+
+
+
                         }
-                        String query = "2020/teams?eventCode=" + eventCode;
-                        Request request = hh.getRequest(query);
-                        startCall(request, "team:" + eventCode);
+//                        String query = "2020/teams?eventCode=" + eventCode;
+//                        Request request = hh.getRequest(query);
+//                        startCall(request, "team:" + eventCode);
 
 
                     }
 
                 }
-
+                saveData();
             }
         });
-
-
 
 
         return view;
 
     }
+
+
+    private void isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (cm != null && !(cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected())) {
+            Toast.makeText(context, "Not connected to network", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     @Override
     public void onAttach(@NonNull Context context) {
