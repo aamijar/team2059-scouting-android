@@ -1,7 +1,5 @@
-# Team2059_Scouting
+# FRC Scouting
 
-Digital Scouting Application for the FRC Robotics Competition
+Digital Scouting Application for the FIRST® Robotics Competition
 
-
-
-Runs on Android and developed using Android Studio 
+Runs on Android and developed using Android Studio
