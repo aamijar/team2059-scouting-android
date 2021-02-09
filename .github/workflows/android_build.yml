@@ -21,7 +21,7 @@ jobs:
       - name: Decode GCP_KEY
         env:
           GCP_SERVICES: ${{secrets.GCP_KEY}}
-        run: echo "$GCP_SERVICES" > $HOME/google-services.json
+        run: echo "$GCP_SERVICES" > ~/work/team2059-scouting-android/team2059-scouting-android/app/google-services.json
 
       - name: Run Tests
         run: ./gradlew test
