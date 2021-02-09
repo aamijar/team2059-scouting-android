@@ -16,7 +16,7 @@ jobs:
           java-version: 1.8
 
       - name: Create Placeholder file
-        run: echo "" > ./keystore.properties
+        run: echo "keystorePath='' keystorePass='' keyAlias='' keyPass=''" > ./keystore.properties
 
       - name: Run Tests
         run: ./gradlew test
