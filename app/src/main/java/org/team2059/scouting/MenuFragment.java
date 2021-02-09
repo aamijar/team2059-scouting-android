@@ -95,6 +95,9 @@ public class MenuFragment extends Fragment implements AdapterView.OnItemSelected
 
         context = getContext();
 
+        // TODO remove unused references
+
+        // VOID key, does not work
         final String AUTHORIZATION_KEY = "aamijar:E9B244D8-B9FF-4BD6-9BF7-AA763A72292B";
         final String HOST = "https://frc-api.firstinspires.org/v2.0/";
 
