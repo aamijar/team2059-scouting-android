@@ -1,5 +1,7 @@
 # FRC Scouting
 
+<img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/aamijar/team2059-scouting-android/App%20Build">
+
 Digital Scouting Application for the FIRST® Robotics Competition
 
 Runs on Android and developed using Android Studio
