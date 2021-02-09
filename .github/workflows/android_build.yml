@@ -18,6 +18,11 @@ jobs:
       - name: Create Placeholder file
         run: echo "keystorePath='' keystorePass='' keyAlias='' keyPass=''" > ./keystore.properties
 
+      - name: Decode GCP_KEY
+        env:
+          GCP_SERVICES: ${{secrets.GCP_KEY}}
+          run: echo "$GCP_SERVICES" > team2059-scouting-android/app/src/google-services.json
+
       - name: Run Tests
         run: ./gradlew test
 
