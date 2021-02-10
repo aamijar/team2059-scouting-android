@@ -1,6 +1,6 @@
 # FRC Scouting
 
-<img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/aamijar/team2059-scouting-android/App%20Build">
+<a href="https://github.com/aamijar/team2059-scouting-android/actions"><img alt="App Build" src="https://github.com/aamijar/team2059-scouting-android/workflows/App Build/badge.svg"></a>
 
 Digital Scouting Application for the FIRST® Robotics Competition
 
