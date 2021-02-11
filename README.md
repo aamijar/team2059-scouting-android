@@ -1,6 +1,7 @@
 # FRC Scouting
 
 <a href="https://github.com/aamijar/team2059-scouting-android/actions"><img alt="App Build" src="https://github.com/aamijar/team2059-scouting-android/workflows/App Build/badge.svg"></a>
+<img alt="Snyk Vulnerabilities for GitHub Repo" src="https://img.shields.io/snyk/vulnerabilities/github/aamijar/team2059-scouting-android">
 <img alt="GitHub commits since latest release (by date) for a branch" src="https://img.shields.io/github/commits-since/aamijar/team2059-scouting-android/latest">
 
 Android app for collecting, analyzing, and sharing *FIRST* robotics competition data.
