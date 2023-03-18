@@ -90,7 +90,7 @@
                 android:paddingStart="16dp"
                 android:paddingLeft="16dp"
                 android:paddingBottom="16dp"
-                android:text="v1.0" />
+                android:text="v2.0" />
 
 
             <LinearLayout
@@ -139,7 +139,7 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="Acknoledgements"
+                android:text="Acknowledgements"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
 
@@ -215,7 +215,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="16dp"
-                android:text="2020\n\u25c6 = Climb RP\n\u2756 = Stage 3 Activated RP" />
+                android:text="2023\n\u25c6 = Activation Bonus RP\n\u2756 = Sustainability Bonus RP" />
 
             <TextView
                 android:id="@+id/about_future_comp"
@@ -238,7 +238,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="16dp"
-                android:text="Yes! Currently, this app supports the 2020 FRC Competition. New competition support will be added when a season is revealed. " />
+                android:text="Yes! Currently, this app supports the 2023 FRC Competition. New competition support will be added when a season is revealed. " />
 
             <TextView
                 android:id="@+id/about_backup"

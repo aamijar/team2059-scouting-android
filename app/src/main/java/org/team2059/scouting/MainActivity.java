@@ -31,7 +31,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -135,33 +134,33 @@ public class MainActivity extends AppCompatActivity {
 
 
         /*Initialize editText number widgets with value of 0*/
-        low_att = findViewById(R.id.low_att);
+        low_att = findViewById(R.id.bot_cube);
         low_att.setText("0");
-        low_made = findViewById(R.id.low_made);
+        low_made = findViewById(R.id.bot_cone);
         low_made.setText("0");
-        out_att = findViewById(R.id.out_att);
+        out_att = findViewById(R.id.mid_cube);
         out_att.setText("0");
-        out_made = findViewById(R.id.out_made);
+        out_made = findViewById(R.id.mid_cone);
         out_made.setText("0");
-        inn_made = findViewById(R.id.inn_made);
+        inn_made = findViewById(R.id.top_cube);
         inn_made.setText("0");
 
-        low_att2 = findViewById(R.id.low_att2);
+        low_att2 = findViewById(R.id.bot_cube2);
         low_att2.setText("0");
-        low_made2 = findViewById(R.id.low_made2);
+        low_made2 = findViewById(R.id.bot_cone2);
         low_made2.setText("0");
-        out_att2 = findViewById(R.id.out_att2);
+        out_att2 = findViewById(R.id.mid_cube2);
         out_att2.setText("0");
-        out_made2 = findViewById(R.id.out_made2);
+        out_made2 = findViewById(R.id.mid_cone2);
         out_made2.setText("0");
-        inn_made2 = findViewById(R.id.inn_made2);
+        inn_made2 = findViewById(R.id.top_cube2);
         inn_made2.setText("0");
 
 
 
         /*Initialize increment up and down buttons*/
-        ImageButton button1 = findViewById(R.id.increment_up);
-        ImageButton button2 = findViewById(R.id.increment_down);
+        ImageButton button1 = findViewById(R.id.increment_up1);
+        ImageButton button2 = findViewById(R.id.increment_down1);
         ImageButton button3 = findViewById(R.id.increment_up2);
         ImageButton button4 = findViewById(R.id.increment_down2);
         ImageButton button5 = findViewById(R.id.increment_up3);
@@ -171,16 +170,16 @@ public class MainActivity extends AppCompatActivity {
         ImageButton button9 = findViewById(R.id.increment_up5);
         ImageButton button10 = findViewById(R.id.increment_down5);
 
-        ImageButton button11 = findViewById(R.id.increment_up6);
-        ImageButton button12 = findViewById(R.id.increment_down6);
-        ImageButton button13 = findViewById(R.id.increment_up7);
-        ImageButton button14 = findViewById(R.id.increment_down7);
-        ImageButton button15 = findViewById(R.id.increment_up8);
-        ImageButton button16 = findViewById(R.id.increment_down8);
-        ImageButton button17 = findViewById(R.id.increment_up9);
-        ImageButton button18 = findViewById(R.id.increment_down9);
-        ImageButton button19 = findViewById(R.id.increment_up10);
-        ImageButton button20 = findViewById(R.id.increment_down10);
+        ImageButton button11 = findViewById(R.id.increment_up7);
+        ImageButton button12 = findViewById(R.id.increment_down7);
+        ImageButton button13 = findViewById(R.id.increment_up8);
+        ImageButton button14 = findViewById(R.id.increment_down8);
+        ImageButton button15 = findViewById(R.id.increment_up9);
+        ImageButton button16 = findViewById(R.id.increment_down9);
+        ImageButton button17 = findViewById(R.id.increment_up10);
+        ImageButton button18 = findViewById(R.id.increment_down10);
+        ImageButton button19 = findViewById(R.id.increment_up11);
+        ImageButton button20 = findViewById(R.id.increment_down11);
 
 
         /*Define Fonts from assets folder NOT from /res/font */

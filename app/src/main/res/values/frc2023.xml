@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Auto-->
+    <string name="left_community">Taxi:</string>
+    <string name="bot_cube">Bottom Cube</string>
+    <string name="bot_cone">Bottom Cone</string>
+    <string name="mid_cube">Middle Cube</string>
+    <string name="mid_cone">Middle Cone</string>
+    <string name="top_cube">Top Cube</string>
+    <string name="top_cone">Top Cone</string>
+    <string name="docked_not_engaged">Docked, Not Engaged:</string>
+    <string name="docked_engaged">Docked, Engaged:</string>
+
+    <string name="links">Links:</string>
+    <string name="a_bonus">Activation Bonus:</string>
+    <string name="s_bonus">Sustainability Bonus:</string>
+    <string name="c_bonus">Coop Bonus:</string>
+
+</resources>

@@ -151,7 +151,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="12dp"
-                        android:text="@string/filter_auto_powercell_count"
+                        android:text="@string/cube_count"
                         android:textSize="16sp"
                         app:fontFamily="sans-serif"
                         android:textStyle="bold"/>
@@ -161,7 +161,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="12dp"
-                        android:text="@string/filter_teleop_powercell_count"
+                        android:text="@string/cone_count"
                         android:textSize="16sp"
                         app:fontFamily="sans-serif"
                         android:textStyle="bold"/>
@@ -171,10 +171,91 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="12dp"
-                        android:text="@string/filter_climb_count"
+                        android:text="@string/links_count"
                         android:textSize="16sp"
                         app:fontFamily="sans-serif"
                         android:textStyle="bold"/>
+                    <RadioButton
+                        android:id="@+id/radioButton9"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:text="@string/bot_count"
+                        android:textSize="16sp"
+                        app:fontFamily="sans-serif"
+                        android:textStyle="bold"/>
+                    <RadioButton
+                        android:id="@+id/radioButton10"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:text="@string/mid_count"
+                        android:textSize="16sp"
+                        app:fontFamily="sans-serif"
+                        android:textStyle="bold"/>
+                    <RadioButton
+                        android:id="@+id/radioButton11"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:text="@string/top_count"
+                        android:textSize="16sp"
+                        app:fontFamily="sans-serif"
+                        android:textStyle="bold"/>
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/radioButton12"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:padding="12dp"-->
+<!--                        android:text="@string/bot_cube_count"-->
+<!--                        android:textSize="16sp"-->
+<!--                        app:fontFamily="sans-serif"-->
+<!--                        android:textStyle="bold"/>-->
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/radioButton13"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:padding="12dp"-->
+<!--                        android:text="@string/bot_cone_count"-->
+<!--                        android:textSize="16sp"-->
+<!--                        app:fontFamily="sans-serif"-->
+<!--                        android:textStyle="bold"/>-->
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/radioButton14"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:padding="12dp"-->
+<!--                        android:text="@string/mid_cube_count"-->
+<!--                        android:textSize="16sp"-->
+<!--                        app:fontFamily="sans-serif"-->
+<!--                        android:textStyle="bold"/>-->
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/radioButton15"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:padding="12dp"-->
+<!--                        android:text="@string/mid_cone_count"-->
+<!--                        android:textSize="16sp"-->
+<!--                        app:fontFamily="sans-serif"-->
+<!--                        android:textStyle="bold"/>-->
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/radioButton16"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:padding="12dp"-->
+<!--                        android:text="@string/top_cube_count"-->
+<!--                        android:textSize="16sp"-->
+<!--                        app:fontFamily="sans-serif"-->
+<!--                        android:textStyle="bold"/>-->
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/radioButton17"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:padding="12dp"-->
+<!--                        android:text="@string/top_cone_count"-->
+<!--                        android:textSize="16sp"-->
+<!--                        app:fontFamily="sans-serif"-->
+<!--                        android:textStyle="bold"/>-->
                 </RadioGroup>
             </LinearLayout>
         </ScrollView>

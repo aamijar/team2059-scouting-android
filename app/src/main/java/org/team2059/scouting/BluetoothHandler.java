@@ -174,6 +174,7 @@ class BluetoothHandler implements Parcelable {
                 Log.e("Blue", "before stacktrace");
                 e.printStackTrace();
                 Log.e("Blue", "Could not connect to UUID" + MY_UUID);
+                Log.e("Blue", e.toString());
                 writeMessage("Could not connect to " + bluetoothDevice.getName());
                 //progressBar.setVisibility(View.INVISIBLE);
                 callback.onBluetoothHandlerCallback(BluetoothHandler.this);

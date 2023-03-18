@@ -104,7 +104,7 @@ public class ConnectionDialog extends DialogFragment {
             builder.setView(view2);
 
 
-            ArrayList<String> fileNames = FileManager.getDirs(getActivity());
+            ArrayList<String> fileNames = CuFileManager.getDirs(getActivity());
 
 
             final RadioGroup radioGroup = view2.findViewById(R.id.dialog_radiogroup);
@@ -147,7 +147,13 @@ public class ConnectionDialog extends DialogFragment {
                             //send data to connected device
                             String dirName = checkedRadioButton.getText().toString();
 
-                            String jsonString = FileManager.readFile(dirName + "/my-data/Competition.json", context);
+                            // TODO: new feature share data from all directories
+                            // if include all data button is checked
+                            // loop through the shared data directories
+                            // change writeFromBluetoothResponse
+
+
+                            String jsonString = CuFileManager.readFile(dirName + "/my-data/Competition.json", context);
 
                             BluetoothHandler bluetoothHandler = getArguments().getParcelable(ARG_HANDLER);
                             bluetoothHandler.write(dirName +  "," + jsonString);

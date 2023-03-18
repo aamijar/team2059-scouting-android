@@ -31,8 +31,10 @@ import com.google.gson.reflect.TypeToken;
 
 import org.team2059.scouting.core.Match;
 import org.team2059.scouting.core.Team;
-import org.team2059.scouting.core.frc2020.IrMatch;
-import org.team2059.scouting.core.frc2020.IrTeam;
+import org.team2059.scouting.core.frc2023.CuMatch;
+import org.team2059.scouting.core.frc2023.CuTeam;
+// import org.team2059.scouting.core.frc2020.IrMatch;
+// import org.team2059.scouting.core.frc2020.IrTeam;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -103,9 +105,9 @@ public class AnalyzeFragment extends Fragment {
         }
 
         //In future add different Type objects to correlate with new Competitions
-        String gsonStr = FileManager.readFile(dirName, activity);
-        Type irMatchType = new TypeToken<ArrayList<IrMatch>>(){}.getType();
-        ArrayList<IrMatch> irMatchArr = gson.fromJson(gsonStr, irMatchType);
+        String gsonStr = CuFileManager.readFile(dirName, activity);
+        Type irMatchType = new TypeToken<ArrayList<CuMatch>>(){}.getType();
+        ArrayList<CuMatch> irMatchArr = gson.fromJson(gsonStr, irMatchType);
         if(irMatchArr != null){
             prepareTeamsArr(irMatchArr);
             recyclerView = view.findViewById(R.id.analyze_recycleview);
@@ -153,9 +155,9 @@ public class AnalyzeFragment extends Fragment {
             refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    String gsonStr = FileManager.readFile(dirName, activity);
-                    Type irMatchType = new TypeToken<ArrayList<IrMatch>>(){}.getType();
-                    ArrayList<IrMatch> irMatchArr = gson.fromJson(gsonStr, irMatchType);
+                    String gsonStr = CuFileManager.readFile(dirName, activity);
+                    Type irMatchType = new TypeToken<ArrayList<CuMatch>>(){}.getType();
+                    ArrayList<CuMatch> irMatchArr = gson.fromJson(gsonStr, irMatchType);
 
                     //case where undo button was used until irMatchArr is empty
                     if(irMatchArr != null && irMatchArr.size() == 0){
@@ -181,14 +183,41 @@ public class AnalyzeFragment extends Fragment {
                             else if(attrFilter.equals(getString(R.string.filter_endgame_points))){
                                 sortByEndgamePoints();
                             }
-                            else if(attrFilter.equals(getString(R.string.filter_auto_powercell_count))){
-                                sortByAutoPowerCellCount();
+                            else if(attrFilter.equals(getString(R.string.cube_count))){
+                                sortByCubeCount();
                             }
-                            else if(attrFilter.equals(getString(R.string.filter_teleop_powercell_count))){
-                                sortByTeleopPowerCellCount();
+                            else if(attrFilter.equals(getString(R.string.cone_count))){
+                                sortByConeCount();
                             }
-                            else if(attrFilter.equals(getString(R.string.filter_climb_count))){
-                                sortByClimbCount();
+                            else if(attrFilter.equals(getString(R.string.links_count))){
+                                sortByLinksCount();
+                            }
+                            else if(attrFilter.equals(getString(R.string.bot_count))){
+                                sortByBotCount();
+                            }
+                            else if(attrFilter.equals(getString(R.string.mid_count))){
+                                sortByMidCount();
+                            }
+                            else if(attrFilter.equals(getString(R.string.top_count))){
+                                sortByTopCount();
+                            }
+                            else if(attrFilter.equals(getString(R.string.bot_cube_count))){
+                                sortByBotCubeCount();
+                            }
+                            else if(attrFilter.equals(getString(R.string.bot_cone_count))){
+                                sortByBotConeCount();
+                            }
+                            else if(attrFilter.equals(getString(R.string.mid_cube_count))){
+                                sortByMidCubeCount();
+                            }
+                            else if(attrFilter.equals(getString(R.string.mid_cone_count))){
+                                sortByMidConeCount();
+                            }
+                            else if(attrFilter.equals(getString(R.string.top_cube_count))){
+                                sortByTopCubeCount();
+                            }
+                            else if(attrFilter.equals(getString(R.string.top_cone_count))){
+                                sortByTopConeCount();
                             }
                         }
                     }
@@ -219,7 +248,8 @@ public class AnalyzeFragment extends Fragment {
     }
     public void prepareTeamsArr(ArrayList<? extends Match> matches){
         teamsList.clear();
-        teamsList.addAll(FileManager.createTeamsArr(matches));
+        Log.e("matches", matches.size() + "");
+        teamsList.addAll(CuFileManager.createTeamsArr(matches));
 
         for(Team team : teamsList){
 
@@ -249,8 +279,8 @@ public class AnalyzeFragment extends Fragment {
             @Override
             public int compare(Team o1, Team o2) {
 
-                double opr1 = ((double) o1.getTotalPoints())/o1.getIrMatches().size();
-                double opr2 = ((double) o2.getTotalPoints())/o2.getIrMatches().size();
+                double opr1 = ((double) o1.getTotalPoints())/o1.getCuMatches().size();
+                double opr2 = ((double) o2.getTotalPoints())/o2.getCuMatches().size();
 
 
                 //add negative to sort in descending order
@@ -292,8 +322,8 @@ public class AnalyzeFragment extends Fragment {
             @Override
             public int compare(Team o1, Team o2) {
 
-                IrTeam team1 = (IrTeam) o1;
-                IrTeam team2 = (IrTeam) o2;
+                CuTeam team1 = (CuTeam) o1;
+                CuTeam team2 = (CuTeam) o2;
 
                 return team2.getAutoPoints() - team1.getAutoPoints();
             }
@@ -307,8 +337,8 @@ public class AnalyzeFragment extends Fragment {
             @Override
             public int compare(Team o1, Team o2) {
 
-                IrTeam team1 = (IrTeam) o1;
-                IrTeam team2 = (IrTeam) o2;
+                CuTeam team1 = (CuTeam) o1;
+                CuTeam team2 = (CuTeam) o2;
 
                 return team2.getTeleopPoints() - team1.getTeleopPoints();
             }
@@ -322,8 +352,8 @@ public class AnalyzeFragment extends Fragment {
             @Override
             public int compare(Team o1, Team o2) {
 
-                IrTeam team1 = (IrTeam) o1;
-                IrTeam team2 = (IrTeam) o2;
+                CuTeam team1 = (CuTeam) o1;
+                CuTeam team2 = (CuTeam) o2;
 
                 return team2.getEndgamePoints() - team1.getEndgamePoints();
             }
@@ -332,48 +362,183 @@ public class AnalyzeFragment extends Fragment {
         adapter.notifyDataSetChanged();
         recyclerView.scheduleLayoutAnimation();
     }
-    public void sortByAutoPowerCellCount(){
+    public void sortByCubeCount(){
         Collections.sort(teamsList, new Comparator<Team>() {
             @Override
             public int compare(Team o1, Team o2) {
 
-                IrTeam team1 = (IrTeam) o1;
-                IrTeam team2 = (IrTeam) o2;
+                CuTeam team1 = (CuTeam) o1;
+                CuTeam team2 = (CuTeam) o2;
 
-                return team2.getAutoPowercellCount() - team1.getAutoPowercellCount();
+                return team2.getCubeCount() - team1.getCubeCount();
             }
         });
-        adapter.setAttrFilter(getString(R.string.filter_auto_powercell_count));
+        adapter.setAttrFilter(getString(R.string.cube_count));
         adapter.notifyDataSetChanged();
         recyclerView.scheduleLayoutAnimation();
     }
-    public void sortByTeleopPowerCellCount(){
+    public void sortByConeCount(){
         Collections.sort(teamsList, new Comparator<Team>() {
             @Override
             public int compare(Team o1, Team o2) {
 
-                IrTeam team1 = (IrTeam) o1;
-                IrTeam team2 = (IrTeam) o2;
+                CuTeam team1 = (CuTeam) o1;
+                CuTeam team2 = (CuTeam) o2;
 
-                return team2.getTeleopPowercellCount() - team1.getTeleopPowercellCount();
+                return team2.getConeCount() - team1.getConeCount();
             }
         });
-        adapter.setAttrFilter(getString(R.string.filter_teleop_powercell_count));
+        adapter.setAttrFilter(getString(R.string.cone_count));
         adapter.notifyDataSetChanged();
         recyclerView.scheduleLayoutAnimation();
     }
-    public void sortByClimbCount(){
+    public void sortByLinksCount(){
         Collections.sort(teamsList, new Comparator<Team>() {
             @Override
             public int compare(Team o1, Team o2) {
 
-                IrTeam team1 = (IrTeam) o1;
-                IrTeam team2 = (IrTeam) o2;
+                CuTeam team1 = (CuTeam) o1;
+                CuTeam team2 = (CuTeam) o2;
 
-                return team2.getClimbCount() - team1.getClimbCount();
+                return team2.getLinksCount() - team1.getLinksCount();
             }
         });
-        adapter.setAttrFilter(getString(R.string.filter_climb_count));
+        adapter.setAttrFilter(getString(R.string.links_count));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
+    public void sortByBotCount(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                CuTeam team1 = (CuTeam) o1;
+                CuTeam team2 = (CuTeam) o2;
+
+                return team2.getBotCount() - team1.getBotCount();
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.bot_count));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
+    public void sortByMidCount(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                CuTeam team1 = (CuTeam) o1;
+                CuTeam team2 = (CuTeam) o2;
+
+                return team2.getMidCount() - team1.getMidCount();
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.mid_count));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
+    public void sortByTopCount(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                CuTeam team1 = (CuTeam) o1;
+                CuTeam team2 = (CuTeam) o2;
+
+                return team2.getTopCount() - team1.getTopCount();
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.top_count));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
+    public void sortByBotCubeCount(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                CuTeam team1 = (CuTeam) o1;
+                CuTeam team2 = (CuTeam) o2;
+
+                return team2.getBotCubeCount() - team1.getBotCubeCount();
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.bot_cube_count));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
+    public void sortByBotConeCount(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                CuTeam team1 = (CuTeam) o1;
+                CuTeam team2 = (CuTeam) o2;
+
+                return team2.getBotConeCount() - team1.getBotConeCount();
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.bot_cone_count));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
+    public void sortByMidCubeCount(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                CuTeam team1 = (CuTeam) o1;
+                CuTeam team2 = (CuTeam) o2;
+
+                return team2.getMidCubeCount() - team1.getMidCubeCount();
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.mid_cube_count));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
+    public void sortByMidConeCount(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                CuTeam team1 = (CuTeam) o1;
+                CuTeam team2 = (CuTeam) o2;
+
+                return team2.getMidConeCount() - team1.getMidConeCount();
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.mid_cone_count));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
+    public void sortByTopCubeCount(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                CuTeam team1 = (CuTeam) o1;
+                CuTeam team2 = (CuTeam) o2;
+
+                return team2.getTopCubeCount() - team1.getTopCubeCount();
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.top_cube_count));
+        adapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
+    public void sortByTopConeCount(){
+        Collections.sort(teamsList, new Comparator<Team>() {
+            @Override
+            public int compare(Team o1, Team o2) {
+
+                CuTeam team1 = (CuTeam) o1;
+                CuTeam team2 = (CuTeam) o2;
+
+                return team2.getTopConeCount() - team1.getTopConeCount();
+            }
+        });
+        adapter.setAttrFilter(getString(R.string.top_cone_count));
         adapter.notifyDataSetChanged();
         recyclerView.scheduleLayoutAnimation();
     }

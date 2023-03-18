@@ -163,14 +163,41 @@ public class TabFragment extends Fragment {
                 else if(radioButton.getText().toString().equals(getString(R.string.filter_endgame_points))){
                     fragment.sortByEndgamePoints();
                 }
-                else if(radioButton.getText().toString().equals(getString(R.string.filter_auto_powercell_count))){
-                    fragment.sortByAutoPowerCellCount();
+                else if(radioButton.getText().toString().equals(getString(R.string.cube_count))){
+                    fragment.sortByCubeCount();
                 }
-                else if(radioButton.getText().toString().equals(getString(R.string.filter_teleop_powercell_count))){
-                    fragment.sortByTeleopPowerCellCount();
+                else if(radioButton.getText().toString().equals(getString(R.string.cone_count))){
+                    fragment.sortByConeCount();
                 }
-                else if(radioButton.getText().toString().equals(getString(R.string.filter_climb_count))){
-                    fragment.sortByClimbCount();
+                else if(radioButton.getText().toString().equals(getString(R.string.links_count))){
+                    fragment.sortByLinksCount();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.bot_count))){
+                    fragment.sortByBotCount();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.mid_count))){
+                    fragment.sortByMidCount();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.top_count))){
+                    fragment.sortByTopCount();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.bot_cube_count))){
+                    fragment.sortByBotCubeCount();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.bot_cone_count))){
+                    fragment.sortByBotConeCount();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.mid_cube_count))){
+                    fragment.sortByMidCubeCount();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.mid_cone_count))){
+                    fragment.sortByMidConeCount();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.top_cube_count))){
+                    fragment.sortByTopCubeCount();
+                }
+                else if(radioButton.getText().toString().equals(getString(R.string.top_cone_count))){
+                    fragment.sortByTopConeCount();
                 }
             }
         });

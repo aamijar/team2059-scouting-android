@@ -38,28 +38,34 @@ import org.team2059.scouting.core.frc2020.IrEndgame;
 import org.team2059.scouting.core.frc2020.IrMatch;
 import org.team2059.scouting.core.frc2020.IrPostGame;
 import org.team2059.scouting.core.frc2020.IrTeleop;
+import org.team2059.scouting.core.frc2023.CuAuto;
+import org.team2059.scouting.core.frc2023.CuEndgame;
+import org.team2059.scouting.core.frc2023.CuMatch;
+import org.team2059.scouting.core.frc2023.CuPostGame;
+import org.team2059.scouting.core.frc2023.CuTeleop;
 
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainFragment extends Fragment implements BluetoothHandler.BluetoothHandlerCallback {
 
     private Activity activity;
     private View view;
 
-    private EditText low_att;
-    private EditText low_made;
-    private EditText out_att;
-    private EditText out_made;
-    private EditText inn_made;
+    private EditText bot_cube;
+    private EditText bot_cone;
+    private EditText mid_cube;
+    private EditText mid_cone;
+    private EditText top_cube;
+    private EditText top_cone;
 
-    private EditText low_att2;
-    private EditText low_made2;
-    private EditText out_att2;
-    private EditText out_made2;
-    private EditText inn_made2;
+    private EditText bot_cube2;
+    private EditText bot_cone2;
+    private EditText mid_cube2;
+    private EditText mid_cone2;
+    private EditText top_cube2;
+    private EditText top_cone2;
+    private EditText links;
 
     private Team[] teams;
     private String dirName;
@@ -109,7 +115,7 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_main, container, false);
+        View v = inflater.inflate(R.layout.activity2023_main, container, false);
         view = v;
 
         setupUI(v.findViewById(R.id.parentView));
@@ -148,31 +154,37 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
 
 
         /*Initialize editText number widgets with value of 0*/
-        low_att = v.findViewById(R.id.low_att);
-        low_att.setText("0");
-        low_made = v.findViewById(R.id.low_made);
-        low_made.setText("0");
-        out_att = v.findViewById(R.id.out_att);
-        out_att.setText("0");
-        out_made = v.findViewById(R.id.out_made);
-        out_made.setText("0");
-        inn_made = v.findViewById(R.id.inn_made);
-        inn_made.setText("0");
+        bot_cube = v.findViewById(R.id.bot_cube);
+        bot_cube.setText("0");
+        bot_cone = v.findViewById(R.id.bot_cone);
+        bot_cone.setText("0");
+        mid_cube = v.findViewById(R.id.mid_cube);
+        mid_cube.setText("0");
+        mid_cone = v.findViewById(R.id.mid_cone);
+        mid_cone.setText("0");
+        top_cube = v.findViewById(R.id.top_cube);
+        top_cube.setText("0");
+        top_cone = v.findViewById(R.id.top_cone);
+        top_cone.setText("0");
 
-        low_att2 = v.findViewById(R.id.low_att2);
-        low_att2.setText("0");
-        low_made2 = v.findViewById(R.id.low_made2);
-        low_made2.setText("0");
-        out_att2 = v.findViewById(R.id.out_att2);
-        out_att2.setText("0");
-        out_made2 = v.findViewById(R.id.out_made2);
-        out_made2.setText("0");
-        inn_made2 = v.findViewById(R.id.inn_made2);
-        inn_made2.setText("0");
+        bot_cube2 = v.findViewById(R.id.bot_cube2);
+        bot_cube2.setText("0");
+        bot_cone2 = v.findViewById(R.id.bot_cone2);
+        bot_cone2.setText("0");
+        mid_cube2 = v.findViewById(R.id.mid_cube2);
+        mid_cube2.setText("0");
+        mid_cone2 = v.findViewById(R.id.mid_cone2);
+        mid_cone2.setText("0");
+        top_cube2 = v.findViewById(R.id.top_cube2);
+        top_cube2.setText("0");
+        top_cone2 = v.findViewById(R.id.top_cone2);
+        top_cone2.setText("0");
+        links = v.findViewById(R.id.links);
+        links.setText("0");
 
         /*Initialize increment up and down buttons*/
-        ImageButton button1 = v.findViewById(R.id.increment_up);
-        ImageButton button2 = v.findViewById(R.id.increment_down);
+        ImageButton button1 = v.findViewById(R.id.increment_up1);
+        ImageButton button2 = v.findViewById(R.id.increment_down1);
         ImageButton button3 = v.findViewById(R.id.increment_up2);
         ImageButton button4 = v.findViewById(R.id.increment_down2);
         ImageButton button5 = v.findViewById(R.id.increment_up3);
@@ -181,9 +193,11 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
         ImageButton button8 = v.findViewById(R.id.increment_down4);
         ImageButton button9 = v.findViewById(R.id.increment_up5);
         ImageButton button10 = v.findViewById(R.id.increment_down5);
-
         ImageButton button11 = v.findViewById(R.id.increment_up6);
         ImageButton button12 = v.findViewById(R.id.increment_down6);
+
+
+
         ImageButton button13 = v.findViewById(R.id.increment_up7);
         ImageButton button14 = v.findViewById(R.id.increment_down7);
         ImageButton button15 = v.findViewById(R.id.increment_up8);
@@ -192,6 +206,13 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
         ImageButton button18 = v.findViewById(R.id.increment_down9);
         ImageButton button19 = v.findViewById(R.id.increment_up10);
         ImageButton button20 = v.findViewById(R.id.increment_down10);
+        ImageButton button21 = v.findViewById(R.id.increment_up11);
+        ImageButton button22 = v.findViewById(R.id.increment_down11);
+        ImageButton button23 = v.findViewById(R.id.increment_up12);
+        ImageButton button24 = v.findViewById(R.id.increment_down12);
+        ImageButton button25 = v.findViewById(R.id.increment_up13);
+        ImageButton button26 = v.findViewById(R.id.increment_down13);
+
 
         /*Define Fonts from assets folder NOT from /res/font */
         //Typeface eagleLight = Typeface.createFromAsset(activity.getAssets(), "fonts/eagle_light.otf");
@@ -227,7 +248,7 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                    FileManager.undoLastMatchSheet(dirName + "/my-data/Competition.json", activity);
+                                    CuFileManager.undoLastMatchSheet(dirName + "/my-data/Competition.json", activity);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 } catch (ParseException e) {
@@ -248,24 +269,47 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
             public void onClick(View v){
                 /*create Match Object and append data from scout sheet*/
 
-                IrAuto auto = new IrAuto(switch1.isChecked(), Integer.parseInt(low_att.getText().toString()),
-                        Integer.parseInt(low_made.getText().toString()), Integer.parseInt(out_att.getText().toString()),
-                        Integer.parseInt(out_made.getText().toString()), Integer.parseInt(inn_made.getText().toString()));
-                IrControlPanel controlPanel = new IrControlPanel(switch2.isChecked(), switch3.isChecked());
-                IrTeleop teleop = new IrTeleop(Integer.parseInt(low_att2.getText().toString()), Integer.parseInt(low_made2.getText().toString()), Integer.parseInt(out_att2.getText().toString()), Integer.parseInt(out_made2.getText().toString()), Integer.parseInt(inn_made2.getText().toString()), controlPanel);
-                IrEndgame endgame = new IrEndgame(switch5.isChecked(), switch4.isChecked(), switch6.isChecked(), switch7.isChecked());
+                CuAuto auto = new CuAuto(switch1.isChecked(), Integer.parseInt(bot_cube.getText().toString()),
+                        Integer.parseInt(bot_cone.getText().toString()), Integer.parseInt(mid_cube.getText().toString()),
+                        Integer.parseInt(mid_cone.getText().toString()), Integer.parseInt(top_cube.getText().toString()),
+                        Integer.parseInt(top_cone.getText().toString()), switch2.isChecked(), switch3.isChecked());
+                CuTeleop teleop = new CuTeleop(true, Integer.parseInt(bot_cube2.getText().toString()),
+                        Integer.parseInt(bot_cone2.getText().toString()), Integer.parseInt(mid_cube2.getText().toString()),
+                        Integer.parseInt(mid_cone2.getText().toString()), Integer.parseInt(top_cube2.getText().toString()),
+                        Integer.parseInt(top_cone2.getText().toString()), false, false,
+                        Integer.parseInt(links.getText().toString()));
+                CuEndgame endgame = new CuEndgame(switch4.isChecked(), switch5.isChecked(), switch6.isChecked());
+
+
+                if (switch2.isChecked() && switch3.isChecked()) {
+                    Toast.makeText(activity, "Auto: Cannot be Docked Not Engaged and Docked Engaged at the same time!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if ((switch4.isChecked() && switch5.isChecked())) {
+                    Toast.makeText(activity, "Endgame: Cannot be Docked Not Engaged and Docked Engaged at the same time!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if ((switch4.isChecked() && switch6.isChecked())) {
+                    Toast.makeText(activity, "Endgame: Cannot be Docked Not Engaged and Parked at the same time!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if ((switch5.isChecked() && switch6.isChecked())) {
+                    Toast.makeText(activity, "Endgame: Cannot be Docked Engaged and Parked at the same time!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
 
                 if(!matchNumber.getText().toString().equals(""))
                 {
                     RadioButton radioButton = view.findViewById(radioGroup.getCheckedRadioButtonId());
                     if(radioButton != null){
-                        IrPostGame postGame = new IrPostGame(radioButton.getText().toString().toLowerCase(), switch9.isChecked(), switch8.isChecked(), notes.getText().toString());
+                        CuPostGame postGame = new CuPostGame(switch7.isChecked(), switch8.isChecked(), switch9.isChecked(),
+                                radioButton.getText().toString().toLowerCase(), notes.getText().toString());
 
-                        IrMatch irMatch = new IrMatch(spinner.getSelectedItem().toString(), Integer.parseInt(matchNumber.getText().toString()), auto, teleop, endgame, postGame);
+                        CuMatch cuMatch = new CuMatch(spinner.getSelectedItem().toString(), Integer.parseInt(matchNumber.getText().toString()), auto, teleop, endgame, postGame);
                         try
                         {
-                            FileManager.writeToJsonFile(dirName + "/my-data/Competition.json", irMatch, activity);
+                            CuFileManager.writeToJsonFile(dirName + "/my-data/Competition.json", cuMatch, activity);
                             clearSheet();
                         }
                         catch (Exception e)
@@ -289,90 +333,114 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
         button1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
-                incrementUp(low_att);
+                incrementUp(bot_cube);
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
-                incrementDown(low_att);
+                incrementDown(bot_cube);
             }
         });
         button3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementUp(low_made);}
+            {incrementUp(bot_cone);}
         });
         button4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementDown(low_made);}
+            {incrementDown(bot_cone);}
         });
         button5.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementUp(out_att);}
+            {incrementUp(mid_cube);}
         });
         button6.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementDown(out_att);}
+            {incrementDown(mid_cube);}
         });
         button7.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementUp(out_made);}
+            {incrementUp(mid_cone);}
         });
         button8.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementDown(out_made);}
+            {incrementDown(mid_cone);}
         });
         button9.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementUp(inn_made);}
+            {incrementUp(top_cube);}
         });
         button10.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementDown(inn_made);}
+            {incrementDown(top_cube);}
         });
-
-
-
         button11.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementUp(low_att2);}
+            {incrementUp(top_cone);}
         });
         button12.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementDown(low_att2);}
+            {incrementDown(top_cone);}
         });
+
+
         button13.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementUp(low_made2);}
+            {incrementUp(bot_cube2);}
         });
         button14.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementDown(low_made2);}
+            {incrementDown(bot_cube2);}
         });
         button15.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementUp(out_att2);}
+            {incrementUp(bot_cone2);}
         });
         button16.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementDown(out_att2);}
+            {incrementDown(bot_cone2);}
         });
         button17.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementUp(out_made2);}
+            {incrementUp(mid_cube2);}
         });
         button18.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementDown(out_made2);}
+            {incrementDown(mid_cube2);}
         });
         button19.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementUp(inn_made2);}
+            {incrementUp(mid_cone2);}
         });
         button20.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
-            {incrementDown(inn_made2);}
+            {incrementDown(mid_cone2);}
         });
+        button21.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {incrementUp(top_cube2);}
+        });
+        button22.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {incrementDown(top_cube2);}
+        });
+        button23.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {incrementUp(top_cone2);}
+        });
+        button24.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {incrementDown(top_cone2);}
+        });
+        button25.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {incrementUp(links);}
+        });
+        button26.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {incrementDown(links);}
+        });
+
 
 
         /*Firebase Firestore Test*/
@@ -488,16 +556,19 @@ public class MainFragment extends Fragment implements BluetoothHandler.Bluetooth
         radioGroup.clearCheck();
         spinner.setSelection(0);
 
-        low_att.setText("0");
-        low_made.setText("0");
-        out_att.setText("0");
-        out_made.setText("0");
-        inn_made.setText("0");
-        low_att2.setText("0");
-        low_made2.setText("0");
-        out_att2.setText("0");
-        out_made2.setText("0");
-        inn_made2.setText("0");
+        bot_cube.setText("0");
+        bot_cone.setText("0");
+        mid_cube.setText("0");
+        mid_cone.setText("0");
+        top_cube.setText("0");
+        top_cone.setText("0");
+        bot_cube2.setText("0");
+        bot_cone2.setText("0");
+        mid_cube2.setText("0");
+        mid_cone2.setText("0");
+        top_cube2.setText("0");
+        top_cube2.setText("0");
+        links.setText("0");
 
         switch1.setChecked(false);
         switch2.setChecked(false);

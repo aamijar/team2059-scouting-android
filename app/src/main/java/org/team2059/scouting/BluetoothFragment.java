@@ -53,6 +53,29 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
     private final static int REQUEST_ENABLE_BT = 1;
     private final static int PERMISSION_REQUEST_LOCATION = 1;
 
+//    private static String[] PERMISSIONS_STORAGE = {
+//            Manifest.permission.READ_EXTERNAL_STORAGE,
+//            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//            Manifest.permission.ACCESS_FINE_LOCATION,
+//            Manifest.permission.ACCESS_COARSE_LOCATION,
+//            Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+//            Manifest.permission.BLUETOOTH_SCAN,
+//            Manifest.permission.BLUETOOTH_CONNECT,
+//            Manifest.permission.BLUETOOTH_PRIVILEGED
+//    };
+//    private static String[] PERMISSIONS_LOCATION = {
+//            Manifest.permission.ACCESS_FINE_LOCATION,
+//            Manifest.permission.ACCESS_COARSE_LOCATION,
+//            Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+//            Manifest.permission.BLUETOOTH_SCAN,
+//            Manifest.permission.BLUETOOTH_CONNECT,
+//            Manifest.permission.BLUETOOTH_PRIVILEGED
+//    };
+    private static String[] PERMISSIONS_BLUETOOTH = {
+            Manifest.permission.BLUETOOTH_SCAN,
+            Manifest.permission.BLUETOOTH_CONNECT,
+    };
+
     private final String ARG_HANDLERS = "arg handlers";
 
     private final String TAG = "BluetoothProtocol";
@@ -171,7 +194,12 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
         map = new HashMap<>();
         initExListView();
         expandableListAdapter = new MyExpandableAdapter(activity, topics, map, bluetoothHandlers, checkBoxStates);
-        if(bluetoothAdapter!= null && bluetoothAdapter.isEnabled()){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            ActivityCompat.requestPermissions(activity,
+                    PERMISSIONS_BLUETOOTH,
+                    PERMISSION_REQUEST_LOCATION);
+        }
+        else if(bluetoothAdapter!= null && bluetoothAdapter.isEnabled()){
             initBluetoothHandler();
         }
         else{
@@ -384,15 +412,23 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
         if(bluetoothAdapter == null){
             Log.e("Blue", "Device does not support bluetooth");
         }
+        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+                ContextCompat.checkSelfPermission(activity, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            Log.e("build S", "asking new");
+//            ActivityCompat.requestPermissions(activity,
+//                    PERMISSIONS_BLUETOOTH,
+//                    PERMISSION_REQUEST_LOCATION);
+            requestPermissions(PERMISSIONS_BLUETOOTH, PERMISSION_REQUEST_LOCATION);
+        }
         else if(!bluetoothAdapter.isEnabled()){
+            Log.e("not enabled", "not enabled");
             Intent discoverableIntent =
                     new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 10);
             startActivityForResult(discoverableIntent, REQUEST_ENABLE_BT);
-
         }
         else{
-
+            Log.e("show", "paired devices");
             showPairedDevices();
             bluetoothAdapter.startDiscovery();
         }
@@ -539,7 +575,7 @@ public class BluetoothFragment extends Fragment implements ConnectionDialog.Conn
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if(ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            Toast.makeText(activity, "Unable to Discover Devices", Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, "Unable to discover devices, please allow permission through system settings", Toast.LENGTH_LONG).show();
         }
     }
 

@@ -36,6 +36,7 @@ import android.widget.TextView;
 import org.team2059.scouting.core.Match;
 import org.team2059.scouting.core.Team;
 import org.team2059.scouting.core.frc2020.IrTeam;
+import org.team2059.scouting.core.frc2023.CuTeam;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -119,7 +120,8 @@ public class TeamActivity extends AppCompatActivity {
         Team team = (Team) intent.getSerializableExtra("teamObject");
 
         //casting working properly and serializable dependacies working for subclasses
-        IrTeam irTeam = (IrTeam) team;
+        // IrTeam irTeam = (IrTeam) team;
+        CuTeam irTeam = (CuTeam) team;
 
 
         String rankPointAvg = new BigDecimal(String.valueOf(team.getRankPointAvg())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();

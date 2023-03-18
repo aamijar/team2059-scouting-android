@@ -17,6 +17,7 @@
     <string name="sheet_auto_header">Autonomous</string>
     <string name="sheet_teleop_header">Teleoperated</string>
     <string name="sheet_endgame_header">Endgame</string>
+    <string name="sheet_postgame_header">Post Game</string>
     <string name="sheet_comments_header">Comments</string>
 
     <string name="match_number">Match:</string>
@@ -25,7 +26,7 @@
 
 
     <string name="comments_hint">IMPORTANT* Enter in any other information about the team performance (no show, poor driver, lost connection)</string>
-
+    <string name="comments_hint2023">Type notes here</string>
 
     <!--Auto Entries-->
     <string name="popup">Info!</string>
@@ -81,13 +82,28 @@
     <!--Filter RadioGroup -->
     <string name="filter_info">Filter Teams Based On:</string>
     <string name="filter_ranking_score">Ranking Score (Default)</string>
-    <string name="filter_OPR">OPR</string>
+    <string name="filter_OPR">Average Points per Game</string>
     <string name="filter_auto_points">Auto Points</string>
     <string name="filter_teleop_points">Teleop Points</string>
     <string name="filter_endgame_points">Endgame Points</string>
     <string name="filter_auto_powercell_count">Auto Power Cell Count</string>
     <string name="filter_teleop_powercell_count">Teleop Power Cell Count</string>
     <string name="filter_climb_count">Climb Count</string>
+
+    <!--2023 Filters-->
+    <string name="cube_count">Cube Count</string>
+    <string name="cone_count">Cone Count</string>
+    <string name="links_count">Links Count</string>
+    <string name="bot_count">Bottom Count</string>
+    <string name="mid_count">Middle Count</string>
+    <string name="top_count">Top Count</string>
+    <string name="bot_cube_count">Bottom Cube Count</string>
+    <string name="bot_cone_count">Bottom Cone Count</string>
+    <string name="mid_cube_count">Middle Cube Count</string>
+    <string name="mid_cone_count">Middle Cone Count</string>
+    <string name="top_cube_count">Top Cube Count</string>
+    <string name="top_cone_count">Top Cone Count</string>
+
 
 
     <!--Match Item -->
@@ -111,6 +127,32 @@
         &#009;&#009;Park: %16$s\n
         &#009;&#009;Level: %17$s\n\nNotes:\n\n
         &#009;&#009;%18$s</string>
+
+    <string name="match_info2023">
+        Auto:\n\n
+        &#009;&#009;Taxi: %1$s\n
+        &#009;&#009;Bottom Cube: %2$d\n
+        &#009;&#009;Bottom Cone: %3$d\n
+        &#009;&#009;Middle Cube: %4$d\n
+        &#009;&#009;Middle Cone: %5$d\n
+        &#009;&#009;Top Cube: %6$d\n
+        &#009;&#009;Top Cone: %7$d\n
+        &#009;&#009;Docked, Not Engaged: %8$s\n
+        &#009;&#009;Docked, Engaged: %9$s\n\nTeleop:\n\n
+        &#009;&#009;Bottom Cube: %10$d\n
+        &#009;&#009;Bottom Cone: %11$d\n
+        &#009;&#009;Middle Cube: %12$d\n
+        &#009;&#009;Middle Cone: %13$d\n
+        &#009;&#009;Top Cube: %14$d\n
+        &#009;&#009;Top Cone: %15$d\n
+        &#009;&#009;Links: %16$d\n\nEndgame:\n\n
+        &#009;&#009;Docked, Not Engaged: %17$s\n
+        &#009;&#009;Docked, Engaged: %18$s\n
+        &#009;&#009;Park: %19$s\n
+        &#009;&#009;Sustainability Bonus: %20$s\n
+        &#009;&#009;Activation Bonus: %21$s\n
+        &#009;&#009;Coop Bonus: %22$s\n\nNotes:\n\n
+        &#009;&#009;%23$s</string>
 
     <!--settings values -->
 

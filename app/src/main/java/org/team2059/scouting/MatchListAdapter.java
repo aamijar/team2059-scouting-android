@@ -20,6 +20,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.team2059.scouting.core.Match;
 import org.team2059.scouting.core.frc2020.IrMatch;
+import org.team2059.scouting.core.frc2023.CuMatch;
 
 import java.util.ArrayList;
 
@@ -208,8 +209,40 @@ public class MatchListAdapter extends ArrayAdapter<Match> {
             if(irMatch.getPostGame().isClimbRankPoint()){
                 holder.matchResult.setText(RP_INDICATOR + holder.matchResult.getText());
             }
+        }
+        else if(matches.get(position) instanceof CuMatch){
+            //down cast
+            CuMatch irMatch = (CuMatch) matches.get(position);
 
 
+            String matchBreakDownData = activity.getString(R.string.match_info2023,
+                    getSymbol(irMatch.getAuto().getInitLine()),
+                    irMatch.getAuto().getBotCube(),irMatch.getAuto().getBotCone(),
+                    irMatch.getAuto().getMidCube(), irMatch.getAuto().getMidCone(),
+                    irMatch.getAuto().getTopCube(), irMatch.getAuto().getTopCone(),
+                    getSymbol(irMatch.getTeleop().getDockedNotEngaged()), getSymbol(irMatch.getTeleop().getDockedEngaged()),
+                    irMatch.getTeleop().getBotCube(), irMatch.getTeleop().getBotCone(),
+                    irMatch.getTeleop().getMidCube(), irMatch.getTeleop().getMidCone(),
+                    irMatch.getTeleop().getTopCube(), irMatch.getTeleop().getTopCone(),
+                    irMatch.getTeleop().getLinks(),
+                    getSymbol(irMatch.getEndgame().getDockedNotEngaged()), getSymbol(irMatch.getEndgame().getDockedEngaged()),
+                    getSymbol(irMatch.getEndgame().getPark()),
+                    getSymbol(irMatch.getPostGame().getSustainibilityBonus()),
+                    getSymbol(irMatch.getPostGame().getActivationBonus()), getSymbol(irMatch.getPostGame().getCoopBonus()),
+                    irMatch.getPostGame().getNotes());
+
+            holder.matchBreakdown.setText(matchBreakDownData);
+
+            final String RP_INDICATOR = "\u25c6   ";
+            final String RP_HARD_INDICATOR = "\u2756   ";
+
+
+            if(irMatch.getPostGame().getSustainibilityBonus()){
+                holder.matchResult.setText(RP_HARD_INDICATOR + holder.matchResult.getText());
+            }
+            if(irMatch.getPostGame().getActivationBonus()){
+                holder.matchResult.setText(RP_INDICATOR + holder.matchResult.getText());
+            }
         }
 
 
