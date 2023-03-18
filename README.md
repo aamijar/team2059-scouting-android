@@ -1,7 +1,6 @@
 # FRC Scouting
 
 <a href="https://github.com/aamijar/team2059-scouting-android/actions"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/aamijar/team2059-scouting-android/android_build.yml?logo=gradle"></a>
-<img alt="Snyk Vulnerabilities for GitHub Repo" src="https://img.shields.io/snyk/vulnerabilities/github/aamijar/team2059-scouting-android?logo=snyk">
 <img alt="GitHub commits since latest release (by date) for a branch" src="https://img.shields.io/github/commits-since/aamijar/team2059-scouting-android/latest?logo=github">
 <img alt="GitHub Release Date" src="https://img.shields.io/github/release-date/aamijar/team2059-scouting-android?color=%23db1495&logo=android">
 
