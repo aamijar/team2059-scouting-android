@@ -38,9 +38,7 @@ android {
         }
 
         dev {
-            signingConfig signingConfigs.signed_config
-            // minifyEnabled true
-            // proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable true
         }
 
     }
